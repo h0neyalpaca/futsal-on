@@ -9,4 +9,6 @@
 <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/common/all.css" />
 <link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/common/common.css" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="/resources/img/common/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/resources/img/common/favicon.ico" type="image/x-icon">
 <script type="text/javascript" src="${contextPath}/resources/js/webUtil.js"></script>

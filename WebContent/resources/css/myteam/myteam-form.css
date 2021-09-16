@@ -95,11 +95,12 @@
 	font-weight:bold;
 }
 
-/* team member*/
+/* team member */
 
 .team-member-form{
 	width:100%;
 	border-collapse: collapse;
+	border-bottom:1px solid #ccc;
 }
 .team-member-form tr{
 	border-top:1px solid #ccc;
@@ -144,4 +145,65 @@
 	cursor:pointer;
 	border-radius:5px;
 	color:#fff;
+}
+
+/* team score */
+
+.rating_area{
+	text-align:center;
+	margin-bottom:30px;
+}
+.rating_area p{
+	margin-bottom:10px;
+}
+.rating_area i{
+	font-size:2em;
+}
+
+.star i{
+	color:#aaa;
+}
+.star i.full-star{
+	color:#000;
+}
+.rating_area i.full-star{
+	color:#DC143C;
+}
+
+/* match board */
+.match-box.use-myteam{
+	border:1px solid #ccc;
+	border-radius:0;
+	box-shadow:0px 5px 15px #fff;
+}
+
+/* delete team */
+.team-img{
+	width:200px;
+	height:200px;
+	border-radius:100px;
+	background-color:gray;
+	margin:0 auto;
+}
+.leave-msg{
+	font-size:1.1em;
+	margin-top:30px;
+}
+.leave-msg strong{
+	color:#DC143C;
+}
+
+.btn-leave-team{
+	display:block;
+	margin:20px auto 0;
+	text-align:center;
+	width:30%;
+	background:linear-gradient(45deg, #000, #1c1350, #000);
+	border-radius:5px;
+	border:none;
+	padding:15px;
+	color:#fff;
+	font-size:1.2em;
+	cursor:pointer;
+	font-weight:bold;
 }

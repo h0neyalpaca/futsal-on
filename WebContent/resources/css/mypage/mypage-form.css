@@ -1,0 +1,150 @@
+@charset "UTF-8";
+/* 2021-09-15 SEO.WOOKYUNG */
+
+/* match board */
+.match-box.use-mypage{
+	border:1px solid #ccc;
+	border-radius:0;
+	box-shadow:0px 5px 15px #fff;
+}
+
+/* notice */
+.mypage-notice-form{
+	width:100%;
+	border-collapse: collapse;
+	border-bottom:1px solid #ccc;
+}
+.mypage-notice-form tr{
+	border-top:1px solid #ccc;
+}
+.mypage-notice-form th{
+	background-color:#f7f7f7;
+	padding:12px;
+}
+.mypage-notice-form td{
+	text-align:center;
+	padding:12px;
+}
+
+/* pagenation */
+.pagenation{
+	margin-top:20px;
+	display:flex;
+	justify-content:center;
+}
+.pagenation li{
+	font-size:1.2em;
+	padding:8px;
+	cursor:pointer;
+	color:#aaa;
+}
+.pagenation li i {
+	color:#888;
+}
+
+.pagenation li.selected,
+.pagenation li.selected i{
+	color:#483D8B;
+}
+
+/* inq */
+.btn-inq button{
+	width:50px;
+	padding: 10px;
+	border:none;
+	background-color:#837ab9;
+	cursor:pointer;
+	border-radius:5px;
+	color:#fff;
+	margin-left:5px;
+}
+
+/* modify */
+.mypage-form{
+	width:100%;
+	border-collapse: collapse;
+}
+.mypage-form tr{
+	border-top:1px solid #ccc;
+}
+.mypage-form th{
+	background-color:#f7f7f7;
+	width:15%;
+	max-width:150px;
+}
+.mypage-form td{
+	padding:12px;
+}
+.mypage-form input[type="text"],
+.mypage-form input[type="password"],
+.mypage-form input[type="tel"],
+.mypage-form input[type="email"]{
+	width:250px;
+	padding: 6px;
+	border:1px solid #aaa;
+}
+.mypage-form input[type="radio"],
+.mypage-form input[type="checkbox"]{
+	cursor:pointer;
+	border:1px solid #aaa;
+}
+.mypage-form label{
+	margin-right:15px;
+	cursor:pointer;
+}
+.mypage-form label:last-child{
+	margin-right:0px;
+}
+.mypage-form button{
+	padding: 7px;
+	border:none;
+	background:#837ab9;
+	color:#fff;
+	border-radius:5px;
+	cursor:pointer;
+}
+.mypage-form .msg{
+	margin-left:5px;
+	font-size:0.9em;
+}
+.mypage-form .msg.imp{
+	color:#DC143C;
+}
+.mypage-form .msg.imp i{
+	color:#DC143C;
+}
+
+.mypage-form h4{
+	text-align:center;
+	font-size:1.3em;
+	margin-bottom:5px;
+}
+.mypage-form .terms-wrap{
+	text-align:center;
+}
+.mypage-form  .terms_necessary{
+	color:#DC143C;
+	font-size:0.9em;
+}
+.mypage-form .btn-join{
+	margin-top:30px;
+	text-align:center;
+}
+.mypage-form .btn-join input[type="submit"]{
+	width:30%;
+	background:linear-gradient(45deg, #000, #1c1350, #000);
+	border-radius:5px;
+	border:none;
+	padding:15px;
+	color:#fff;
+	font-size:1.2em;
+	cursor:pointer;
+	font-weight:bold;
+}
+
+.mypage-form .leave_member{
+	display:block;
+	margin-top:20px;
+	text-decoration:underline;
+	text-align:center;
+}
