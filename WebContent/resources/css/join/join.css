@@ -1,0 +1,138 @@
+@charset "UTF-8";
+/* 2021-09-15 SEO.WOOKYUNG */
+
+.join-wrap{
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 10px 30px 70px;
+}
+
+.join-wrap h2{
+	padding-top:50px;
+	padding-bottom:20px;
+	font-size:2.3em;
+	text-align:center;
+}
+.join-wrap h2 i{
+	color:#483D8B;
+	font-size:0.9em;
+}
+.join-wrap .join-con{
+	background-color:#ffffff;
+	padding: 50px;
+	box-shadow:0px 5px 15px #ccc;
+	border-radius:15px;
+}
+.join-form{
+	width:100%;
+	border-collapse: collapse;
+}
+.join-form tr{
+	border-top:1px solid #ccc;
+}
+.join-form th{
+	background-color:#f7f7f7;
+	width:15%;
+	max-width:150px;
+}
+.join-form td{
+	padding:12px;
+}
+.join-form input[type="text"],
+.join-form input[type="password"],
+.join-form input[type="tel"],
+.join-form input[type="email"]{
+	width:250px;
+	padding: 6px;
+	border:1px solid #aaa;
+}
+.join-form input[type="radio"],
+.join-form input[type="checkbox"]{
+	cursor:pointer;
+	border:1px solid #aaa;
+}
+.join-form label{
+	margin-right:15px;
+	cursor:pointer;
+}
+.join-form label:last-child{
+	margin-right:0px;
+}
+.join-form button{
+	padding: 7px;
+	border:none;
+	background:#837ab9;
+	color:#fff;
+	border-radius:5px;
+	cursor:pointer;
+}
+.join-form .msg{
+	margin-left:5px;
+	font-size:0.9em;
+}
+.join-form .msg.imp{
+	color:#DC143C;
+}
+.join-form .msg.imp i{
+	color:#DC143C;
+}
+
+.join-form h4{
+	text-align:center;
+	font-size:1.3em;
+	margin-bottom:5px;
+}
+.join-form .terms-wrap{
+	text-align:center;
+}
+.join-form  .terms_necessary{
+	color:#DC143C;
+	font-size:0.9em;
+}
+.join-form .btn-join{
+	margin-top:30px;
+	text-align:center;
+}
+.join-form .btn-join input[type="submit"]{
+	width:30%;
+	background:linear-gradient(45deg, #000, #1c1350, #000);
+	border-radius:5px;
+	border:none;
+	padding:15px;
+	color:#fff;
+	font-size:1.2em;
+	cursor:pointer;
+	font-weight:bold;
+}
+
+/* result */
+
+.join-con .greeting-msg{
+	text-align:center;
+	font-size:1.5em;
+	line-height:1.8;
+}
+
+.join-con .greeting-msg i{
+	display:block;
+	font-size:5em;
+	margin-bottom:10px;
+	background: linear-gradient(to right, #ffbbba, #8fb9fb);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.join-con .btn-back-login{
+	display:block;
+	width:30%;
+	margin:30px auto 0;
+	text-align:center;
+	background:linear-gradient(45deg, #000, #1c1350, #000);
+	border-radius:5px;
+	border:none;
+	padding:15px;
+	color:#fff;
+	font-size:1.2em;
+	cursor:pointer;
+	font-weight:bold;
+}

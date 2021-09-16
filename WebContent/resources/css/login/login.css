@@ -1,0 +1,158 @@
+@charset "UTF-8";
+/* 2021-09-14 SEO.WOOKYUNG */
+
+.login-wrap{
+	max-width: 500px;
+	margin: 0 auto;
+	padding: 10px 30px 70px;
+}
+
+.login-wrap h2{
+	padding-top:50px;
+	padding-bottom:20px;
+	font-size:2.3em;
+	text-align:center;
+}
+.login-wrap h2 i{
+	color:#483D8B;
+	font-size:0.9em;
+}
+.login-con{
+	background-color:#ffffff;
+	padding: 50px;
+	box-shadow:0px 5px 15px #ccc;
+	border-radius:15px;
+}
+.login-form{
+	padding:0 20px;
+	width:100%;
+	border-collapse: collapse;
+}
+.login-form tr{
+	border:1px solid #aaa;
+}
+.login-form tr.no-border{
+	border:none;
+}
+.login-form tr.no-border td{
+	height:15px;
+}
+.login-form th{
+	width:50px;
+	max-width:50px;
+}
+.login-form th i{
+	color:#837ab9;
+}
+.login-form td{
+	margin-bottom:10px;
+}
+.login-form input[type="text"],
+.login-form input[type="password"]{
+	padding:12px;
+	border:none;
+}
+.login-form .btn-login input[type="submit"]{
+	width:100%;
+	background:linear-gradient(45deg, #000, #1c1350, #000);
+	border-radius:5px;
+	border:none;
+	padding:15px;
+	color:#fff;
+	font-size:1.2em;
+	cursor:pointer;
+	font-weight:bold;
+}
+.login-info{
+	margin-top:20px;
+	text-align:center;
+}
+.login-info a{
+	display:inline-block;
+	width:100%;
+}
+.login-info a.btn-search-id,
+.login-info a.btn-search-pw{
+	width:40%;
+}
+.login-info a.btn-search-pw{
+	border-left:1px solid #ccc;
+}
+.login-info a.btn-kakao-login,
+.login-info a.btn-join{
+	border-radius:5px;
+	padding:15px;
+	margin-top:20px;
+}
+.login-info a.btn-kakao-login{
+	background-color:rgb(246, 230, 33);
+}
+.login-info a.btn-join{
+	background-color:#999;
+	margin-top:10px;
+	color:#fff;
+}
+
+.btn-inquiry{
+	margin-top:20px;
+}
+.btn-inquiry a{
+	display:inline;
+	text-decoration:underline;
+}
+
+/* login check */
+
+.login-wrap.search-page{
+	max-width: 600px;
+}
+
+.login-wrap.search-page p{
+	text-align:center;
+	margin-bottom:20px;
+}
+
+.login-search-form{
+	width:100%;
+	border-collapse: collapse;
+}
+.login-search-form tr{
+	border-top:1px solid #ccc;
+}
+.login-search-form th{
+	background-color:#f7f7f7;
+	width:25%;
+	min-width:110px;
+}
+.login-search-form td{
+	padding:12px;
+}
+.login-search-form input[type="text"],
+.login-search-form input[type="email"]{
+	width:100%;
+	padding: 6px;
+	border:1px solid #aaa;
+}
+
+.login-search-form .msg{
+	margin-left:5px;
+	font-size:0.9em;
+}
+.login-search-form .msg.imp{
+	color:#DC143C;
+}
+.login-search-form .msg.imp i{
+	color:#DC143C;
+}
+
+.login-search-form .btn-search input[type="submit"]{
+	width:100%;
+	background:linear-gradient(45deg, #000, #1c1350, #000);
+	border-radius:5px;
+	border:none;
+	padding:15px;
+	color:#fff;
+	font-size:1.2em;
+	cursor:pointer;
+	font-weight:bold;
+}

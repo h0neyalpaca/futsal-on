@@ -1,0 +1,147 @@
+@charset "UTF-8";
+/* 2021-09-15 SEO.WOOKYUNG */
+
+/* team create & modify */
+
+.team-create-form{
+	width:100%;
+	border-collapse: collapse;
+}
+.team-create-form tr{
+	border-top:1px solid #ccc;
+}
+.team-create-form th{
+	background-color:#f7f7f7;
+	width:15%;
+	max-width:150px;
+}
+.team-create-form td{
+	padding:12px;
+}
+.team-create-form input[type="text"],
+.team-create-form input[type="file"],
+.team-create-form textarea
+{
+	width:250px;
+	padding: 6px;
+	border:1px solid #aaa;
+}
+.team-create-form input[type="radio"],
+.team-create-form input[type="checkbox"],
+.team-create-form input[type="file"]{
+	cursor:pointer;
+	border:1px solid #aaa;
+}
+.team-create-form textarea{
+	width:100%;
+	min-height:80px;
+}
+.team-create-form .txt-counter{
+	display:block;
+	text-align:right;
+	font-size:0.8em;
+}
+.team-create-form label{
+	margin-right:15px;
+	cursor:pointer;
+}
+.team-create-form label:last-child{
+	margin-right:0px;
+}
+.team-create-form button{
+	padding: 7px;
+	border:none;
+	background:#837ab9;
+	color:#fff;
+	border-radius:5px;
+	cursor:pointer;
+}
+.team-create-form .msg{
+	margin-left:5px;
+	font-size:0.9em;
+}
+.team-create-form .msg.imp{
+	color:#DC143C;
+}
+.team-create-form .msg.imp i{
+	color:#DC143C;
+}
+.team-create-form .team-file{
+	display:block;
+}
+.team-create-form .team-file.leader{
+	margin-top:5px;
+}
+.team-create-form .team-file a{
+	font-size:0.8em;
+}
+.team-create-form .team-file a.del-file{
+	margin-left:10px;
+}
+.team-create-form .btn-team-create{
+	text-align:center;
+}
+
+.team-create-form .btn-team-create input[type="submit"]{
+	width:30%;
+	margin-top:10px;
+	background:linear-gradient(45deg, #000, #1c1350, #000);
+	border-radius:5px;
+	border:none;
+	padding:15px;
+	color:#fff;
+	font-size:1.2em;
+	cursor:pointer;
+	font-weight:bold;
+}
+
+/* team member*/
+
+.team-member-form{
+	width:100%;
+	border-collapse: collapse;
+}
+.team-member-form tr{
+	border-top:1px solid #ccc;
+}
+.team-member-form th{
+	background-color:#f7f7f7;
+	padding:12px;
+}
+.team-member-form td{
+	text-align:center;
+	padding:12px;
+}
+.team-member-form .selectbox
+{
+	display:inline-block;
+	width:100%;
+	max-width:100px;
+	padding: 6px;
+	border:1px solid #aaa;
+}
+.team-member-form select{
+	width:100%;
+	padding-right:10px;
+	border:none;
+}
+.team-member-form .btn-change-grade{
+	width:50px;
+	padding: 10px;
+	border:none;
+	background-color:#837ab9;
+	cursor:pointer;
+	border-radius:5px;
+	color:#fff;
+	margin-left:5px;
+}
+.team-member-form .btn-out-member{
+	width:100%;
+	max-width:100px;
+	padding: 10px;
+	border:none;
+	background-color:#837ab9;
+	cursor:pointer;
+	border-radius:5px;
+	color:#fff;
+}

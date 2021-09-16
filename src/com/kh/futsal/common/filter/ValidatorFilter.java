@@ -85,16 +85,11 @@ public class ValidatorFilter implements Filter {
 		
 		String redirectURI = null;
 		
-		switch (uriArr[2]) {
-		case "join-form":
-			JoinForm joinForm = new JoinForm(httpRequest);
-			if(!joinForm.test()) {
-				redirectURI = "/member/join-form?err=1";
-			}
-			break;
-		default:
-			break;
-		}
+		/*
+		 * switch (uriArr[2]) { case "join-form": JoinForm joinForm = new
+		 * JoinForm(httpRequest); if(!joinForm.test()) { redirectURI =
+		 * "/member/join-form?err=1"; } break; default: break; }
+		 */
 		
 		return redirectURI;
 	}
