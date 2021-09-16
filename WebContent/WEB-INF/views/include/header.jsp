@@ -6,11 +6,11 @@
 	<header>
 		<div class="header">
 			<ul class="util-wrap">
-				<li>· 로그인</li>
-				<li>· 회원가입</li>
+				<li><a href="/member/login/login-form">· 로그인</a></li>
+				<li><a href="/member/join-form">· 회원가입</a></li>
 			</ul>
 			<div class=nav-wrap>
-				<h1><img src="/resources/img/common/logo_pc.png"></h1>
+				<h1><img onclick="location.href='/index';" src="/resources/img/common/logo_pc.png"></h1>
 				<nav>
 					<ul>
 						<li>공지사항</li>

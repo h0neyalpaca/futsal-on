@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,9 +43,9 @@
 						</dl>
 						<input type="submit" value="검색">
 					</form>
-				</div> <!-- End search wrap -->
+				</div>
 				<h2>새로 모집중인 매치</h2>
-				<!-- 하나의 매치 박스 -->
+				
 				<div class="match-box">
 					<div class="tit-area">
 						<div class="tit-info">
@@ -74,8 +75,8 @@
 						</ul>
 						<div class="txt">내용이 들어갑니다.</div>
 					</div>
-				</div><!-- End 매치 박스 -->
-				<!-- 하나의 매치 박스 -->
+				</div>
+				
 				<div class="match-box">
 					<div class="tit-area">
 						<div class="tit-info">
@@ -105,7 +106,7 @@
 						</ul>
 						<div class="txt">내용이 들어갑니다.</div>
 					</div>
-				</div><!-- End 매치 박스 -->
+				</div>
 			</div>
 		</div>
 	</section>
