@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>c_toyProject</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+  <filter>
+  	<filter-name>encodingFilter</filter-name>
+  	<filter-class>com.kh.toy.common.filter.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>encodingFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+  	<filter-name>wrapperFilter</filter-name>
+  	<filter-class>com.kh.toy.common.filter.WrapperFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>wrapperFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+  	<filter-name>validatorFilter</filter-name>
+  	<filter-class>com.kh.toy.common.filter.ValidatorFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>validatorFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+  	<filter-name>authorizationFilter</filter-name>
+  	<filter-class>com.kh.toy.common.filter.AuthorizationFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>authorizationFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+   <filter>
+  	<filter-name>fileFilter</filter-name>
+  	<filter-class>com.kh.toy.common.filter.FileFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>fileFilter</filter-name>
+  	<url-pattern>/file/*</url-pattern>
+  </filter-mapping>
+  
+  
+  <!-- 시스템에서 발생한 예외의 종류나, 응답 상태코드에 따라 원하는 에러페이지를 지정 
+  		ex) 404 상태코드일 경우 사용자에게 보여줄 페이지 지정
+  		DataAccessException이 발생했을 때 사용자에게 보여줄 페이지 지정 -->
+  <error-page>
+  	<error-code>404</error-code>
+  	<location>/WEB-INF/views/error/404.jsp</location>
+  </error-page>
+  
+  <error-page>
+  	<exception-type>com.kh.toy.common.exception.PageNotFoundException</exception-type>
+  	<location>/WEB-INF/views/error/404.jsp</location>
+  </error-page>
+  
+  <error-page>
+  	<exception-type>com.kh.toy.common.exception.HandlableException</exception-type>
+  	<location>/exception-handler</location>
+  </error-page>
+  
+</web-app>
