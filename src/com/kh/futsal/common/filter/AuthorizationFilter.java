@@ -168,12 +168,30 @@ public class AuthorizationFilter implements Filter {
 			if(!adminGrade.ROLE.equals("team")) {
 				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
 			}
+			leaderAuthorize(httpRequest,httpResponse,uriArr,adminGrade);
 			break;
 		
 		default: break;
 		}
 	}
 
+	private void leaderAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr,MemberGrade adminGrade) {
+		
+		switch (uriArr[3]) {
+		case "modify":
+			if(!adminGrade.DESC.equals("leader")) {
+				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
+			}
+			break;
+		case "team-board":
+			if(!adminGrade.DESC.equals("leader")) {
+				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
+			}
+			break;
+		default:
+			break;
+		}
+	}
 
 
 	private void matchingAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) throws ServletException, IOException {

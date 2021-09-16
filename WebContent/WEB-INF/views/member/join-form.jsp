@@ -14,7 +14,7 @@
 			<div class="join-wrap">
 				<h2><i class="fas fa-user-edit"></i> 회원가입</h2>
 				<div class="join-con">
-					<form action="/member/join" method="post">
+					<form action="/join/join" method="post">
 						<table class="join-form">
 							<tr>
 								<th>아이디</th>
