@@ -5,6 +5,8 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="${contextPath}/resources/css/all.css">
+<title>풋살ON 풋살매칭 웹사이트</title>
+<link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/common/all.css" />
+<link rel="stylesheet" type="text/css" href="${contextPath}/resources/css/common/common.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <script type="text/javascript" src="${contextPath}/resources/js/webUtil.js"></script>

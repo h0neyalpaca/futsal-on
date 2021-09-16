@@ -1,0 +1,126 @@
+@charset "UTF-8";
+/* 2021-09-15 SEO.WOOKYUNG */
+
+.myteam-wrap{
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 10px 30px 70px;
+}
+
+.myteam-wrap h2{
+	padding-top:50px;
+	padding-bottom:20px;
+	font-size:2.3em;
+	text-align:center;
+}
+.myteam-wrap h2 i{
+	color:#483D8B;
+	font-size:0.9em;
+}
+.myteam-wrap .myteam-con{
+	background-color:#ffffff;
+	padding: 50px;
+	box-shadow:0px 5px 15px #ccc;
+	border-radius:15px;
+}
+
+.myteam-con > p{
+	text-align:center;
+	line-height:2;
+}
+
+.myteam-con > p strong{
+	color:#DC143C;
+}
+
+.myteam-con .btn-team-area{
+	margin-top:30px;
+	display:flex;
+	justify-content:center;
+}
+.btn-team{
+	width:42%;
+	border:1px solid #333;
+	border-radius:15px;
+	padding:40px 30px;
+	text-align:center;
+	display:flex;
+	flex-direction:column;
+	margin:0 10px;
+	font-size:1.2em;
+	font-weight:bold;
+}
+
+.btn-team i{
+	font-size:2em;
+	margin-bottom:5px;
+}
+
+.btn-team button{
+	width:80%;
+	margin:30px auto 0;
+	background:linear-gradient(45deg, #000, #1c1350, #000);
+	border-radius:5px;
+	border:none;
+	padding:15px 10px;
+	color:#fff;
+	font-size:1.2em;
+	cursor:pointer;
+	font-weight:bold;
+}
+
+/* join team*/
+
+.team-join-form{
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+}
+.team-join-form input[type="text"]{
+	margin-top:30px;
+	width:50%;
+	padding: 15px;
+	font-size:1.2em;
+	border:2px solid #1c1350;
+}
+.team-join-form input[type="submit"]{
+	width:50%;
+	margin-top:10px;
+	background:linear-gradient(45deg, #000, #1c1350, #000);
+	border-radius:5px;
+	border:none;
+	padding:15px;
+	color:#fff;
+	font-size:1.2em;
+	cursor:pointer;
+	font-weight:bold;
+}
+
+/* tab */
+.team-tab-wrap{
+	display:flex;
+	margin-bottom:40px;
+}
+
+.team-tab-wrap > li{
+	width:20%;
+}
+.team-tab-wrap > li a{
+	width:100%;
+	display:block;
+	text-align:center;
+	background-color:#eee;
+	padding:20px 0;
+	border-top:2px solid #eee;
+	border-bottom:2px solid #483D8B;
+}
+
+.team-tab-wrap > li a.selected{
+	border-top:2px solid #483D8B;
+	border-right:2px solid #483D8B;
+	border-left:2px solid #483D8B;
+	border-bottom:2px solid #fff;
+	color:#483d8b;
+	font-weight:bold;
+	background-color:#fff;
+}

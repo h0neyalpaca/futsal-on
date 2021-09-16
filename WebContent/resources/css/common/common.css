@@ -1,0 +1,85 @@
+@charset "UTF-8";
+/* 2021-09-13 SEO.WOOKYUNG */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap');
+/* 2021-09-16 SEO.WOOKYUNG */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+*{
+	font-family: 'Noto Sans KR', sans-serif;
+	color:#333;
+}
+input::placeholder,
+textarea::placeholder
+{
+	color:#aaa;
+}
+
+/* 공통 css*/
+
+header {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 10px 30px 20px;
+}
+
+.header .util-wrap{
+	display:flex;
+	justify-content:flex-end;
+}
+.header .util-wrap > li{
+	margin-left:10px;
+	font-size:0.9em;
+	cursor:pointer;
+}
+
+.header .nav-wrap{
+	display:flex;
+	justify-content:space-between;
+	align-items:flex-end;
+}
+
+.header h1 > img{
+	cursor:pointer;
+	width:150px;
+}
+
+nav > ul{
+	display:flex;
+	justify-content: flex-end;
+}
+
+nav > ul > li{
+	cursor:pointer;
+	font-size:1.2em;
+	font-weight:bold;
+	padding:6px 13px;
+	margin-left:10px;
+}
+nav > ul > li:last-child{
+	padding-right:0px;
+}
+section{
+	border-top:1px solid #aaaaaa;
+}
+
+section{
+	background-color:#eee;
+}
+.section .main-visual{
+	background:url(../../img/main/main.jpg) 50% 60% no-repeat;
+	background-size:cover;
+	position:relative;
+	text-align:center;
+	color:#ffffff;
+	height:200px;
+	line-height:200px;
+	background-color:gray;
+}
+
+footer{
+	color:#aaa;
+	font-size:0.8em;
+	padding:30px;
+	text-align:center;
+}

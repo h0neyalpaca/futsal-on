@@ -1,0 +1,234 @@
+@charset "UTF-8";
+/* 2021-09-15 SEO.WOOKYUNG */
+
+.join-wrap{
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 10px 30px 70px;
+}
+
+.join-wrap h2{
+	padding-top:50px;
+	padding-bottom:20px;
+	font-size:2.3em;
+	text-align:center;
+}
+.join-wrap h2 i{
+	color:#483D8B;
+	font-size:0.9em;
+}
+.join-wrap .join-con{
+	background-color:#ffffff;
+	padding: 50px;
+	box-shadow:0px 5px 15px #ccc;
+	border-radius:15px;
+}
+.join-form{
+	width:100%;
+	border-collapse: collapse;
+}
+.join-form tr{
+	border-top:1px solid #ccc;
+}
+
+.notice tr:last-child {
+	border-bottom:1px solid #ccc;
+}
+
+.join-form th{
+	background-color:#f7f7f7;
+	max-width:150px;
+	height: 35px;
+}
+.join-form td{
+	padding:10px;
+}
+
+
+.join-form input[type="text"],
+.join-form input[type="password"],
+.join-form input[type="tel"],
+.join-form input[type="email"]{
+	width:250px;
+	padding: 6px;
+	border:1px solid #aaa;
+}
+.join-form input[type="radio"],
+.join-form input[type="checkbox"]{
+	cursor:pointer;
+	border:1px solid #aaa;
+}
+.join-form label{
+	margin-right:15px;
+	cursor:pointer;
+}
+.join-form label:last-child{
+	margin-right:0px;
+}
+.join-form button{
+	padding: 7px;
+	border:none;
+	background:#837ab9;
+	color:#fff;
+	border-radius:5px;
+	cursor:pointer;
+}
+.join-form .msg{
+	margin-left:5px;
+	font-size:0.9em;
+}
+.join-form .msg.imp{
+	color:#DC143C;
+}
+.join-form .msg.imp i{
+	color:#DC143C;
+}
+
+.join-form h4{
+	text-align:center;
+	font-size:1.3em;
+	margin-bottom:5px;
+}
+.join-form .terms-wrap{
+	text-align:center;
+}
+.join-form  .terms_necessary{
+	color:#DC143C;
+	font-size:0.9em;
+}
+.join-form .btn-join{
+	margin-top:30px;
+	text-align:center;
+}
+.join-form .btn-join input[type="submit"]{
+	width:30%;
+	background:linear-gradient(45deg, #000, #1c1350, #000);
+	border-radius:5px;
+	border:none;
+	padding:15px;
+	color:#fff;
+	font-size:1.2em;
+	cursor:pointer;
+	font-weight:bold;
+}
+
+/* 2021-09-16 jungjik */
+.search {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+	
+}
+
+.search-inner {
+	display: flex;
+	justify-content: center;
+	width: 300px;
+	border-bottom: 1px solid #837ab9;
+	padding-bottom: 7px;
+}
+
+.search-input {
+	
+}
+
+.search-input input {
+	width: 260px;
+	text-align: center;
+	border: none;
+	font-size: 16px;
+}
+
+.search-button button {
+	border: none;
+	outline: none;
+	background: none;
+}
+
+.search-button button i {
+	color: #837ab9;
+	font-size: 16px;
+}
+
+
+/* ------------------테이블 */
+
+.th-view {
+	padding: 0 10px;
+}
+
+.board-wrap {
+	display: flex;	
+}
+
+.board-tag {
+	width: 56px;
+	background-color: #837ab9;
+	border-radius: 3px;
+	text-align: center;
+	padding-bottom: 2px;
+}
+
+.board-list {
+	margin-left: 20px;
+}
+
+.inner {
+	font-size: 15px;
+	font-weight: normal;
+	color: #fff;
+}
+
+.num {
+	text-align: center;
+}
+
+.td-date {
+	text-align: center;
+	padding: 0 10px;
+}
+
+.td-view {
+	text-align: center;
+	width: 100px;
+}
+
+.td_article {
+}
+
+.top-notice {
+	background-color: #f3f1ff;
+}
+
+.top-notice-list {
+	font-weight: bold;
+	
+}
+
+.top-notice-list a {
+	color: #483D8B;
+}
+/* ------------------테이블 */
+/* -------------------페이지버튼 */
+
+.page-button {
+	margin-top: 30px;
+	display: flex;
+	justify-content: center;
+	font-size: 16px;
+	text-align: center;
+}
+
+.page-num {
+	border: 1px solid #837ab9;
+	border-radius: 50%;
+}
+
+.page-button span {
+	display: inline-block;
+	width: 27px;
+	height: 27px;
+	line-height: 27px;
+}
+
+/* -------------------페이지버튼 */
