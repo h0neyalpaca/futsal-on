@@ -40,19 +40,22 @@ public class AuthorizationFilter implements Filter {
 		if(uriArr.length != 0) {
 			switch (uriArr[1]) {
 				case "mypage":
-					//mypageAuthorize(httpRequest,httpResponse,uriArr);
+					if(httpRequest.getSession().getAttribute("authentication") == null) {
+						throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
+					}
+					mypageAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "team":
-					//myteamAuthorize(httpRequest,httpResponse,uriArr);
+					myteamAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "matching":
-					//matchingAuthorize(httpRequest,httpResponse,uriArr);
+					matchingAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "member":
 					memberAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "notice":
-					//noticeAuthorize(httpRequest,httpResponse,uriArr);
+					noticeAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				default:
 					break;
@@ -84,52 +87,82 @@ public class AuthorizationFilter implements Filter {
 
 	private void memberAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
 		
+		String serverToken = (String) httpRequest.getSession().getAttribute("persist-token");
+		String clientToken = httpRequest.getParameter("persist-token");
+		
 		switch (uriArr[2]) {
-		case "join-impl":
-			String serverToken = (String) httpRequest.getSession().getAttribute("persist-token");
-			String clientToken = httpRequest.getParameter("persist-token");
-			
-			if(serverToken == null || !serverToken.equals(clientToken)) {
-				throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
-			}
-			break;
-		default:
-			break;
+			case "join-impl":
+				if(serverToken == null || !serverToken.equals(clientToken)) {
+					throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
+				}
+				break;
+			default:
+				break;
 		}
 		
 	}
+	
+	private void matchingAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) throws ServletException, IOException {
 
-
-	private void mypageAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
-		
 		switch (uriArr[2]) {
-		case "personal-notice":
-			if(httpRequest.getSession().getAttribute("authentication") == null) {
-				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
-			}
-			break;
-		case "support":
-			if(httpRequest.getSession().getAttribute("authentication") == null) {
-				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
-			}
-			break;
-		case "myApplication":
-			if(httpRequest.getSession().getAttribute("authentication") == null) {
-				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
-			}
-			break;
-		case "modify":
-			if(httpRequest.getSession().getAttribute("authentication") == null) {
-				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
-			}
-			break;
-		case "leave-id":
-			if(httpRequest.getSession().getAttribute("authentication") == null) {
-				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
-			}
-			break;
-		default:
-			break;
+			case "list-up":
+				Member member = (Member) httpRequest.getSession().getAttribute("authentication");
+				
+				MemberGrade adminGrade = MemberGrade.valueOf(member.getGrade());
+				
+				if(!adminGrade.DESC.equals("leader")) {
+					throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
+				}
+				break;
+			default:matchingDetailAuthorize(httpRequest,httpResponse,uriArr);
+				break;
+		}
+	}
+
+
+	private void matchingDetailAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse,String[] uriArr) {
+		
+		switch (uriArr[3]) {
+			case "mercenary-list":
+				break;
+			case "team-list":
+				break;
+			default:matchingOnlyLeaderAuthorize(httpRequest,httpResponse,uriArr);
+				break;
+		}
+	}
+
+
+	private void matchingOnlyLeaderAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse,
+			String[] uriArr) {
+		
+		Member member = (Member) httpRequest.getSession().getAttribute("authentication");
+		MemberGrade adminGrade = MemberGrade.valueOf(member.getGrade());
+		
+		switch (uriArr[3]) {
+			
+			case "mercenary-match-form":
+				if(!adminGrade.DESC.equals("leader")) {
+					throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
+				}
+				break;
+			case "mercenary-modify":
+				if(!adminGrade.DESC.equals("leader")) {
+					throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
+				}
+				break;
+			case "team-match-form":
+				if(!adminGrade.DESC.equals("leader")) {
+					throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
+				}
+				break;
+			case "team-modify":
+				if(!adminGrade.DESC.equals("leader")) {
+					throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
+				}
+				break;
+			default:
+				break;
 		}
 		
 	}
@@ -173,43 +206,21 @@ public class AuthorizationFilter implements Filter {
 		}
 	}
 
-
-
-	private void matchingAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) throws ServletException, IOException {
+	private void mypageAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
 		
 		Member member = (Member) httpRequest.getSession().getAttribute("authentication");
-		
 		MemberGrade adminGrade = MemberGrade.valueOf(member.getGrade());
-
-		switch (uriArr[3]) {
-		case "mercenary-match-form":
-			if(!adminGrade.DESC.equals("leader")) {
-				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
-			}
-			break;
-		case "team-match-form":
-			if(!adminGrade.DESC.equals("leader")) {
-				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
-			}
-			break;
-		case "mercenary-modify":
-			if(!adminGrade.DESC.equals("leader")) {
-				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
-			}
-			break;
-		case "team-modify":
-			if(!adminGrade.DESC.equals("leader")) {
-				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
-			}
-			break;
-		case "matching-list":
-			if(!adminGrade.DESC.equals("leader")) {
-				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
+		
+		switch (uriArr[2]) {
+		case "support":
+			if(member == null || !adminGrade.ROLE.equals("admin")) {
+				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
 			}
 			break;
 		default:
 			break;
 		}
+		
 	}
 	
 	public void init(FilterConfig fConfig) throws ServletException {
