@@ -28,15 +28,6 @@ public class MypageController extends HttpServlet {
 		case "my-application":
 			myApplication(request,response);
 			break;
-		case "support-list":
-			supportList(request,response);
-			break;
-		case "support-detail":
-			supportDetail(request,response);
-			break;
-		case "support-modify":
-			supportModify(request,response);
-			break;
 		case "modify":
 			mypageModify(request,response);
 			break;
@@ -53,18 +44,6 @@ public class MypageController extends HttpServlet {
 	}
 	private void mypageModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/modify").forward(request, response);
-		
-	}
-	private void supportDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/mypage/support/support-detail").forward(request, response);
-		
-	}
-	private void supportModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/mypage/support/support-modify").forward(request, response);
-		
-	}
-	private void supportList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/mypage/support/support-list").forward(request, response);
 		
 	}
 	private void myApplication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
