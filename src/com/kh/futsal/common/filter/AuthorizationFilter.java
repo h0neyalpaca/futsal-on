@@ -40,10 +40,10 @@ public class AuthorizationFilter implements Filter {
 		if(uriArr.length != 0) {
 			switch (uriArr[1]) {
 				case "mypage":
-					if(httpRequest.getSession().getAttribute("authentication") == null) {
-						throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
-					}
-					mypageAuthorize(httpRequest,httpResponse,uriArr);
+					  if(httpRequest.getSession().getAttribute("authentication") == null) { 
+						  throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE); 
+					  }
+					  mypageAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "team":
 					myteamAuthorize(httpRequest,httpResponse,uriArr);
@@ -69,11 +69,12 @@ public class AuthorizationFilter implements Filter {
 
 	private void noticeAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
 		
-		Member member = (Member) httpRequest.getSession().getAttribute("authentication");
-		MemberGrade adminGrade = MemberGrade.valueOf(member.getGrade());
-		
 		switch (uriArr[2]) {
 		case "notice-posting":
+			
+			Member member = (Member) httpRequest.getSession().getAttribute("authentication");
+			MemberGrade adminGrade = MemberGrade.valueOf(member.getGrade());
+			
 			if(!adminGrade.ROLE.equals("admin")) {
 				throw new HandlableException(ErrorCode.AUTHENTICATION_FAILED_ERROR);
 			}
