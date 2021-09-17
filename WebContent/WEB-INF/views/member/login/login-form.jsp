@@ -38,7 +38,6 @@
 						<a class="btn-search-pw" href="/member/login/lost-password">비밀번호 찾기</a>
 						<a class="btn-kakao-login"><i class="fas fa-comment"></i> 카카오 로그인</a>
 						<a class="btn-join" href="/member/join-form">회원가입</a>
-						<p class="btn-inquiry">로그인에 문제가 생겼나요? <a>문의하기</a></p>
 						
 					</div>
 				</div>

@@ -19,7 +19,7 @@ public class MemberController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String[] uriArr = request.getRequestURI().split("/");
-		System.out.println(uriArr[uriArr.length-1]);
+
 		switch (uriArr[uriArr.length-1]) {
 		case "login-form":
 			loginForm(request,response);

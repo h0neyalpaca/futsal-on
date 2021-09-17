@@ -5,8 +5,8 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
-<link rel="stylesheet" type="text/css" href="../../resources/css/mypage/mypage.css" />
-<link rel="stylesheet" type="text/css" href="../../resources/css/mypage/mypage-form.css" />
+<link rel="stylesheet" type="text/css" href="${request.contextPath}/resources/css/mypage/mypage.css" />
+<link rel="stylesheet" type="text/css" href="${request.contextPath}/resources/css/mypage/mypage-form.css" />
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -15,12 +15,7 @@
 		<div class="mypage-wrap">
 				<h2><i class="fas fa-user-cog"></i> 마이페이지</h2>
 				<div class="mypage-con">
-					<ul class="mypage-tab-wrap">
-						<li><a class="selected" href="/myteam/team-info">알림내역</a></li>
-						<li><a href="/myteam/team-member">용병신청내역</a></li>
-						<li><a href="/myteam/team-score">문의내역</a></li>
-						<li><a href="/myteam/team-board">회원정보수정</a></li>
-					</ul>
+					<%@ include file="/WEB-INF/views/mypage/mypage_tab.jsp" %>
 					<table class="mypage-notice-form">
 						<tr>
 							<th>상태</th>

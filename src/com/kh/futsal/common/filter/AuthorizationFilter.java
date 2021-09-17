@@ -40,19 +40,19 @@ public class AuthorizationFilter implements Filter {
 		if(uriArr.length != 0) {
 			switch (uriArr[1]) {
 				case "mypage":
-					mypageAuthorize(httpRequest,httpResponse,uriArr);
+					//mypageAuthorize(httpRequest,httpResponse,uriArr);
 					break;
-				case "myteam":
-					myteamAuthorize(httpRequest,httpResponse,uriArr);
+				case "team":
+					//myteamAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "matching":
-					matchingAuthorize(httpRequest,httpResponse,uriArr);
+					//matchingAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "member":
 					memberAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "notice":
-					noticeAuthorize(httpRequest,httpResponse,uriArr);
+					//noticeAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				default:
 					break;
@@ -67,7 +67,6 @@ public class AuthorizationFilter implements Filter {
 	private void noticeAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
 		
 		Member member = (Member) httpRequest.getSession().getAttribute("authentication");
-		
 		MemberGrade adminGrade = MemberGrade.valueOf(member.getGrade());
 		
 		switch (uriArr[2]) {

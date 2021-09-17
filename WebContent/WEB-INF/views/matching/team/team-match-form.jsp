@@ -5,7 +5,7 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
-<link rel="stylesheet" type="text/css" href="${request.contextPath}/resources/css/matching/matching-mercenary-modify.css" />
+<link rel="stylesheet" type="text/css" href="${request.contextPath}/resources/css/matching/matching-team-input.css" />
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -14,7 +14,7 @@
 			<div class="new-match-wrap">
 				<div class="sub-nav-wrap">
 					<div class="sub-nav">
-						<a href=""><i class="fas fa-users"></i>용병매칭수정</a>
+						<i class="fas fa-users"></i>팀매칭등록
 					</div>
 				</div>
 				<div class="search-wrap">
@@ -51,7 +51,7 @@
 						</dl>
 						<dl>
 							<dt>구장비</dt>
-							<dd><input type="number" step="1000"/></dd>
+							<dd><input type="number" step="1000" /></dd>
 						</dl>
 						<dl>
 							<dt>상대팀 실력</dt>
@@ -64,10 +64,7 @@
 						<div class="textarea-wrap">
 							<textarea name="opinion" cols="100" rows="20" placeholder="내용을 입력해주세요." style="resize: none;"></textarea>
 						</div>
-						<div class="submit-wrap">
-							<input type="submit" value="수정">
-							<input type="submit" value="삭제">
-						</div>
+						<input type="submit" value="등록">
 					</form>
 				</div> 
 				<!-- End search wrap -->
@@ -77,8 +74,18 @@
 		</div>
 	</section>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<script>
+	let popup = document.querySelectorAll(".profile-name");
 
+	popup.forEach(element => {
+		element.addEventListener('click', () => {
+			document.querySelector(".popup-teaminfo-wrap").style.display = 'block';
+		})
+	});
+
+	document.querySelector(".popup-close").addEventListener('click',() =>{
+		document.querySelector(".popup-teaminfo-wrap").style.display = 'none';
+	})
+</script>
 </body>
-
-
 </html>

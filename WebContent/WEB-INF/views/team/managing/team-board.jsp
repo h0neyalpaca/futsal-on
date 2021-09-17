@@ -5,9 +5,9 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
-<link rel="stylesheet" type="text/css" href="../../resources/css/myteam/myteam.css" />
-<link rel="stylesheet" type="text/css" href="../../resources/css/myteam/myteam-form.css" />
-<link rel="stylesheet" type="text/css" href="../../resources/css/matching/matching-team.css" />
+<link rel="stylesheet" type="text/css" href="${request.contextPath}/resources/css/myteam/myteam.css" />
+<link rel="stylesheet" type="text/css" href="${request.contextPath}/resources/css/myteam/myteam-form.css" />
+<link rel="stylesheet" type="text/css" href="${request.contextPath}/resources/css/matching/matching-team.css" />
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -17,14 +17,7 @@
 			<div class="myteam-wrap">
 				<h2><i class="far fa-futbol"></i> 나의 팀</h2>
 				<div class="myteam-con">
-					<!-- 리더 화면 -->
-					<ul class="team-tab-wrap">
-						<li><a href="/myteam/team-info">팀 정보</a></li>
-						<li><a href="/myteam/team-member">팀원 관리</a></li>
-						<li><a href="/myteam/team-score">팀 전적</a></li>
-						<li><a class="selected" href="/myteam/team-board">작성글 관리</a></li>
-						<li><a href="/myteam/delete-team">팀 해체</a></li>
-					</ul>
+					<%@ include file="/WEB-INF/views/team/managing/team_tab.jsp" %>
 					<div class="match-box use-myteam">
 						<div class="tit-area">
 							<div class="tit-info">
@@ -40,6 +33,7 @@
 									<div class="profile-name">다인다색<span><i class="fas fa-search"></i>정보보기</span></div>
 								</div>
 								<div class="btn-appli">수정하기</div>
+								<div class="btn-appli">삭제하기</div>
 							</div>
 						</div>
 						<div class="match-detail">
@@ -91,13 +85,6 @@
 					</form>
 					
 					<!-- 멤버 화면 -->
-					<ul class="team-tab-wrap">
-						<li><a href="/myteam/team-info">팀 정보</a></li>
-						<li><a href="/myteam/team-member">팀원 보기</a></li>
-						<li><a href="/myteam/team-score">팀 전적</a></li>
-						<li><a class="selected" href="/myteam/team-board">작성 게시글</a></li>
-						<li><a href="/myteam/leave-team">팀 탈퇴</a></li>
-					</ul>
 					<div class="match-box use-myteam">
 						<div class="tit-area">
 							<div class="tit-info">

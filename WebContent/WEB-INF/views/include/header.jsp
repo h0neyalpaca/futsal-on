@@ -8,15 +8,16 @@
 			<ul class="util-wrap">
 				<li><a href="/member/login/login-form">· 로그인</a></li>
 				<li><a href="/member/join-form">· 회원가입</a></li>
+				<li><a href="/mypage/support/support-form">· 문의하기</a></li>
 			</ul>
 			<div class=nav-wrap>
 				<h1><img onclick="location.href='/index';" src="/resources/img/common/logo_pc.png"></h1>
 				<nav>
 					<ul>
-						<li>공지사항</li>
-						<li>매칭하기</li>
-						<li>나의 팀관리</li>
-						<li>마이페이지</li>
+						<li><a href="/notice/notice-list">공지사항</a></li>
+						<li><a href="/matching/team/team-list">매칭하기</a></li>
+						<li><a href="/team/main">나의 팀관리</a></li>
+						<li><a href="/mypage/personal-notice">마이페이지</a></li>
 					</ul>
 				</nav>
 			</div>
