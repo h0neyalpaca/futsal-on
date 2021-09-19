@@ -1,6 +1,12 @@
 @charset "UTF-8";
 /* 2021-09-16 SEO.WOOKYUNG */
 
+
+.btn-leave-member{
+	background-color: red;
+	color: red;
+}
+
 .mypage-wrap{
 	max-width: 1200px;
 	margin: 0 auto;
@@ -52,3 +58,4 @@
 	font-weight:bold;
 	background-color:#fff;
 }
+

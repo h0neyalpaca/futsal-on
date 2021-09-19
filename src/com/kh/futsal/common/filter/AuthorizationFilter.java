@@ -40,10 +40,10 @@ public class AuthorizationFilter implements Filter {
 		if(uriArr.length != 0) {
 			switch (uriArr[1]) {
 				case "mypage":
-					  if(httpRequest.getSession().getAttribute("authentication") == null) { 
-						  throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE); 
-					  }
-					  mypageAuthorize(httpRequest,httpResponse,uriArr);
+					  //if(httpRequest.getSession().getAttribute("authentication") == null) { 
+						  //throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE); 
+					  //}
+					  //mypageAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "team":
 					myteamAuthorize(httpRequest,httpResponse,uriArr);
