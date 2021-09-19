@@ -5,8 +5,8 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/head.jsp" %>
-<link rel="stylesheet" type="text/css" href="../../resources/css/myteam/myteam.css" />
-<link rel="stylesheet" type="text/css" href="../../resources/css/myteam/myteam-form.css" />
+<link rel="stylesheet" type="text/css" href="${request.contextPath}/resources/css/myteam/myteam.css" />
+<link rel="stylesheet" type="text/css" href="${request.contextPath}/resources/css/myteam/myteam-form.css" />
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
@@ -17,9 +17,9 @@
 				<h2><i class="far fa-futbol"></i> 팀 참가하기</h2>
 				<div class="myteam-con">
 					<p>전달받으신 <strong>팀 참가 코드</strong>를 입력하세요.</p>
-					<form action="/myteam/join-team" method="post">
+					<form action="/team/join-func" method="post">
 						<div class="team-join-form">
-							<input type="text" name="teamCode" id="teamCode" placeholder="팀 참가코드를 입력하세요." required />
+							<input type="text" name="tmCode" id="tmCode" placeholder="팀 참가코드를 입력하세요." required />
 							<input type="submit" value="팀 참가하기" />
 						</div>
 					</form>
