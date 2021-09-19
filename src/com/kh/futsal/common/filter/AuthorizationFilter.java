@@ -46,7 +46,7 @@ public class AuthorizationFilter implements Filter {
 					  mypageAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "team":
-					myteamAuthorize(httpRequest,httpResponse,uriArr);
+					//myteamAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "matching":
 					matchingAuthorize(httpRequest,httpResponse,uriArr);
