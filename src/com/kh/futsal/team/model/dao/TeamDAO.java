@@ -24,9 +24,9 @@ public class TeamDAO {
 		int res = 0;
 		
 		PreparedStatement pstm = null;
-		String sql = "insert into TEAM"+
+		String sql = "INSERT INTO TEAM"+
 				"(TM_CODE,LOCAL_CODE,MANAGER_ID,TM_NAME,TM_GRADE,TM_INFO) "+
-				"values(?,?,?,?,?,?) ";
+				"VALUSE(?,?,?,?,?,?) ";
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, team.getTmCode());
@@ -47,7 +47,7 @@ public class TeamDAO {
 	public int updateByTmCode(Member member, String tmCode, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
-		String sql = "update MEMBER set TM_CODE = ?, GRADE = ? where USER_ID = ? ";
+		String sql = "UPDATE MEMBER SET TM_CODE = ?, GRADE = ? WHERE USER_ID = ? ";
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, tmCode);			
@@ -62,11 +62,31 @@ public class TeamDAO {
 		return res;
 	}
 	
+	public Team selectTeamByUserId(String userId, Connection conn) {
+		Team team = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		String sql = "SELECT * FROM TEAM WHERE TM_CODE = (SELECT TM_CODE FROM MEMBER WHERE USER_ID=?) ";
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, userId);
+			rset = pstm.executeQuery();
+			if(rset.next()) {
+				team = convertRowToTeam(rset);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			template.close(rset,pstm);
+		}
+		return team;
+	}
+	
 	public Team selectTeamByTmCode(String tmCode, Connection conn) {
 		Team team = null;
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
-		String sql = "select * from TEAM where TM_CODE = ? ";
+		String sql = "SELECT * FROM TEAM WHERE TM_CODE = ? ";
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, tmCode);
