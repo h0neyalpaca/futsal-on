@@ -31,18 +31,16 @@ public class TeamService {
 	}
 	
 	//팀 가입하기
-	public void updateByTmCode(Member member, String tmCode) {
+	public boolean updateByTmCode(Member member, String tmCode) {
 		Connection conn = template.getConnection();
 		Team team = null;
+		boolean flag = false;
 		try {
 			team = selectTeamByTmCode(tmCode);
 			if(team != null) {
 				td.updateByTmCode(member, tmCode, conn);
 				template.commit(conn);
-			} else {
-				//팀코드로 검색한 팀이 없을 경우
-				System.out.println("팀코드로 가입할 수 있는 팀이 없다.");
-				template.rollback(conn);
+				flag = true;
 			}
 		} catch (Exception e) {
 			template.rollback(conn);
@@ -50,6 +48,7 @@ public class TeamService {
 		} finally {
 			template.close(conn);
 		}
+		return flag;
 	}
 	
 	//유저 ID로 가입한 팀이 있는지 찾기

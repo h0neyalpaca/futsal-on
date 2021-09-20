@@ -71,6 +71,20 @@
 
 /* join team*/
 
+.myteam-con .join-team-msg{
+	text-align:center;
+	font-size:1.5em;
+	line-height:1.8;
+}
+.myteam-con .join-team-msg i{
+	display:block;
+	font-size:5em;
+	margin-bottom:10px;
+	background: linear-gradient(to right, #ffbbba, #8fb9fb);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
 .team-join-form{
 	display:flex;
 	flex-direction:column;
@@ -85,11 +99,11 @@
 }
 .team-join-form input[type="submit"]{
 	width:50%;
-	margin-top:10px;
+	margin-top:15px;
 	background:linear-gradient(45deg, #000, #1c1350, #000);
 	border-radius:5px;
 	border:none;
-	padding:15px;
+	padding:17px;
 	color:#fff;
 	font-size:1.2em;
 	cursor:pointer;

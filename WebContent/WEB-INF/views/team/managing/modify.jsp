@@ -120,5 +120,19 @@
 	</section>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<c:if test="${not empty param.result}">
+	<div class="pop-msg-wrap">
+		<div class="pop-msg">
+			<p><i class="fas fa-check-circle"></i><br>팀 가입이 성공적으로 완료되었습니다.<br>${teamInfo.tmName} 팀의 팀원이 되신 것을 축하드립니다.</p>
+			<button onclick="btnClose();">확인</button>
+		</div>
+	</div>
+	<script type="text/javascript">
+		let btnClose = () => {
+			let msgWrap = document.querySelector('.pop-msg-wrap');
+			msgWrap.style.display='none';
+		}
+	</script>
+</c:if>
 </body>
 </html>

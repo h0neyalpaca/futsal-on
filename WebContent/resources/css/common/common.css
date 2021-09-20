@@ -142,3 +142,45 @@ footer{
 	padding:3px 10px;
 	margin-right:10px;
 }
+
+/* pop msg wrap 21.09.20 SEO */
+.pop-msg-wrap{
+	position:fixed;
+	top:0;
+	left:0;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	width:100vw;
+	height:100vh;
+	z-index:999;
+	background-color:rgba(0,0,0,0.3);
+}
+.pop-msg{
+	box-shadow:0px 5px 15px #888;
+	min-width:400px;
+	padding:40px;
+	border-radius:15px;
+	background-color:#fff;
+	margin-top:-10%;
+}
+.pop-msg p{
+	text-align:center;
+	margin-bottom:20px;
+	line-height:1.8;
+}
+.pop-msg p i{
+	color:#DC143C;
+	font-size:1.8em;
+}
+.pop-msg button{
+	display:block;
+	margin:0 auto;
+	width:100%;
+	padding:15px;
+	border:none;
+	border-radius:5px;
+	background-color:#483D8B;
+	color:#fff;
+	cursor:pointer;
+}

@@ -87,8 +87,17 @@ public class TeamController extends HttpServlet {
 		
 	}
 	private void teamModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/team/managing/modify").forward(request, response);
+		//*** 로그인 기능구현 안됨 ***
+		//Member member = (Member) request.getSession().getAttribute("authentication");
+
+		//*** 테스트용 아이디 강제로 입력함 ***
+		Member member = new Member();
+		member.setUserId("alpaca_m");
 		
+		Team team = ts.selectTeamByUserId(member.getUserId());
+		request.setAttribute("teamInfo", team);
+		
+		request.getRequestDispatcher("/team/managing/modify").forward(request, response);
 	}
 	
 	//팀 생성 기능
@@ -129,14 +138,31 @@ public class TeamController extends HttpServlet {
 
 		//*** 테스트용 아이디 강제로 입력함 ***
 		Member member = new Member();
-		member.setUserId("nomal");
+		member.setUserId("alpaca_n");
 		
 		String tmCode = request.getParameter("tmCode");
-		ts.updateByTmCode(member, tmCode);
-		
-		request.getRequestDispatcher("/team/main").forward(request, response);
+		boolean flag = ts.updateByTmCode(member, tmCode);
+		//팀코드가 존재하지 않으면 에러메시지를 반환
+		if(flag == false) {
+			response.sendRedirect("/team/join-team?err=1");
+			return;
+		}
+		response.sendRedirect("/team/managing/modify?result=1");
 	}
 	private void joinTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//*** 로그인 기능구현 안됨 ***
+		//Member member = (Member) request.getSession().getAttribute("authentication");
+		
+		//*** 테스트용 아이디 강제로 입력함 ***
+		Member member = new Member();
+		member.setUserId("alpaca_n");
+		//member.setUserId("alpaca_m");
+		
+		//팀이 있는 회원은 팀관리 화면으로, 없는 회원은 팀참가 폼으로 보내기
+		Team team = ts.selectTeamByUserId(member.getUserId());
+		if(team != null) {
+			request.getRequestDispatcher("/team/managing/modify").forward(request, response);
+		}
 		request.getRequestDispatcher("/team/join-team").forward(request, response);
 	}
 	
@@ -146,8 +172,8 @@ public class TeamController extends HttpServlet {
 		
 		//*** 테스트용 아이디 강제로 입력함 ***
 		Member member = new Member();
-		//member.setUserId("alpaca_n");
-		member.setUserId("alpaca_m");
+		member.setUserId("alpaca_n");
+		//member.setUserId("alpaca_m");
 		
 		//팀이 있는 회원은 팀관리 화면으로, 없는 회원은 메인으로 보내기
 		Team team = ts.selectTeamByUserId(member.getUserId());
