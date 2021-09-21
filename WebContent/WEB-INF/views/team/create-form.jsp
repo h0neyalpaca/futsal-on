@@ -35,21 +35,21 @@
 							<tr>
 								<th>실력</th>
 								<td>
-									<label><input type="radio" name="tmGrade" id="teamGrade" value="상" /> 상</label>
-									<label><input type="radio" name="tmGrade" id="teamGrade" value="중" /> 중</label>
-									<label><input type="radio" name="tmGrade" id="teamGrade" value="하" /> 하</label>
+									<label><input type="radio" name="tmGrade" value="상" /> 상</label>
+									<label><input type="radio" name="tmGrade" value="중" /> 중</label>
+									<label><input type="radio" name="tmGrade" value="하" /> 하</label>
 								</td>
 							</tr>
 							<tr>
 								<th>활동지역</th>
 								<td>
-									<label><input type="radio" name="localCode"> 서울</label>
-									<label><input type="radio" name="localCode"> 경기</label>
-									<label><input type="radio" name="localCode"> 강원</label>
-									<label><input type="radio" name="localCode"> 충청</label>
-									<label><input type="radio" name="localCode"> 전라</label>
-									<label><input type="radio" name="localCode"> 제주</label>
-									<label><input type="radio" name="localCode"> 경상</label>
+									<label><input type="radio" name="localCode" value="LC11" /> 서울</label>
+									<label><input type="radio" name="localCode" value="LC31" /> 경기</label>
+									<label><input type="radio" name="localCode" value="LC32" /> 강원</label>
+									<label><input type="radio" name="localCode" value="LC33" /> 충청</label>
+									<label><input type="radio" name="localCode" value="LC35" /> 전라</label>
+									<label><input type="radio" name="localCode" value="LC39" /> 제주</label>
+									<label><input type="radio" name="localCode" value="LC37" /> 경상</label>
 								</td>
 							</tr>
 							<tr>

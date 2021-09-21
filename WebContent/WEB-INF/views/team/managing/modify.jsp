@@ -53,13 +53,13 @@
 							<th>활동지역</th>
 							<td>
 								<c:if test="${authentication.grade=='ME03'}">
-									<label><input type="radio" name="localCode" value="11" ${team.localCode eq 'LC11'?'checked':''} /> 서울</label>
-									<label><input type="radio" name="localCode" value="31" ${team.localCode eq 'LC31'?'checked':''} /> 경기</label>
-									<label><input type="radio" name="localCode" value="32" ${team.localCode eq 'LC32'?'checked':''} /> 강원</label>
-									<label><input type="radio" name="localCode" value="33" ${team.localCode eq 'LC33'?'checked':''} /> 충청</label>
-									<label><input type="radio" name="localCode" value="35" ${team.localCode eq 'LC35'?'checked':''} /> 전라</label>
-									<label><input type="radio" name="localCode" value="39" ${team.localCode eq 'LC39'?'checked':''} /> 제주</label>
-									<label><input type="radio" name="localCode" value="37" ${team.localCode eq 'LC37'?'checked':''} /> 경상</label>
+									<label><input type="radio" name="localCode" value="LC11" ${team.localCode eq 'LC11'?'checked':''} /> 서울</label>
+									<label><input type="radio" name="localCode" value="LC31" ${team.localCode eq 'LC31'?'checked':''} /> 경기</label>
+									<label><input type="radio" name="localCode" value="LC32" ${team.localCode eq 'LC32'?'checked':''} /> 강원</label>
+									<label><input type="radio" name="localCode" value="LC33" ${team.localCode eq 'LC33'?'checked':''} /> 충청</label>
+									<label><input type="radio" name="localCode" value="LC35" ${team.localCode eq 'LC35'?'checked':''} /> 전라</label>
+									<label><input type="radio" name="localCode" value="LC39" ${team.localCode eq 'LC39'?'checked':''} /> 제주</label>
+									<label><input type="radio" name="localCode" value="LC37" ${team.localCode eq 'LC37'?'checked':''} /> 경상</label>
 								</c:if>
 								<c:if test="${authentication.grade!='ME03'}">
 									${team.localCode}
@@ -96,18 +96,22 @@
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <c:if test="${not empty param.result}">
-	<div class="pop-msg-wrap">
-		<div class="pop-msg">
-			<p><i class="fas fa-check-circle"></i><br>팀 가입이 성공적으로 완료되었습니다.<br>${team.tmName} 팀의 팀원이 되신 것을 축하드립니다.</p>
-			<button onclick="btnClose();">확인</button>
-		</div>
+<div class="pop-msg-wrap">
+	<div class="pop-msg">
+		<p>
+			<i class="fas fa-check-circle"></i><br>
+			<c:if test="${param.result==1}">팀 가입이 성공적으로 완료되었습니다.<br>${team.tmName} 팀의 팀원이 되신 것을 축하드립니다!</c:if>
+			<c:if test="${param.result==2}">팀이 성공적으로 생성되었습니다.<br>${team.tmName} 팀에서 많은 활동 부탁드릴게요!</c:if>
+		</p>
+		<button onclick="btnClose();">확인</button>
 	</div>
-	<script type="text/javascript">
-		let btnClose = () => {
-			let msgWrap = document.querySelector('.pop-msg-wrap');
-			msgWrap.style.display='none';
-		}
-	</script>
+</div>
+<script type="text/javascript">
+	let btnClose = () => {
+		let msgWrap = document.querySelector('.pop-msg-wrap');
+		msgWrap.style.display='none';
+	}
+</script>
 </c:if>
 </body>
 </html>

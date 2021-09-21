@@ -13,6 +13,7 @@ public class Team {
 	private int tmScore; //평점
 	private int tmWin; //승리횟수
 	private Date regDate; //팀생성일
+	private Date delDate; //팀삭제일
 	
 	public String getTmCode() {
 		return tmCode;
@@ -74,10 +75,17 @@ public class Team {
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
 	}
+	public Date getDelDate() {
+		return delDate;
+	}
+	public void setDelDate(Date delDate) {
+		this.delDate = delDate;
+	}
 	
 	@Override
 	public String toString() {
-		return "Team [tmCode=" + tmCode + ", localCode=" + localCode + ", managerId=" + managerId
-				+ ", tmName=" + tmName + ", tmGrade=" + tmGrade + ", tmInfo=" + tmInfo + ", tmImage=" + gameCnt + ", tmScore=" + tmScore + ", tmWin=" + tmWin + ", regDate=" + regDate + "]";
+		return "Team [tmCode=" + tmCode + ", localCode=" + localCode + ", managerId=" + managerId + ", tmName=" + tmName
+				+ ", tmGrade=" + tmGrade + ", tmInfo=" + tmInfo + ", gameCnt=" + gameCnt + ", tmScore=" + tmScore
+				+ ", tmWin=" + tmWin + ", regDate=" + regDate + ", delDate=" + delDate + "]";
 	}
 }

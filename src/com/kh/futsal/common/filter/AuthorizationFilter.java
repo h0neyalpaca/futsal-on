@@ -175,8 +175,8 @@ public class AuthorizationFilter implements Filter {
 
 		/* 테스트용 아이디 */
 		Member member = new Member();
-		member.setUserId("alpaca_l");
-		member.setGrade("ME03");
+		member.setUserId("alpaca_n");
+		member.setGrade("ME00");
 		httpRequest.setAttribute("authentication", member);
 		
 		/* 테스트용 팀 */
