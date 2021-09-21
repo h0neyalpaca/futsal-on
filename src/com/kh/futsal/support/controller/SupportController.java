@@ -1,11 +1,16 @@
 package com.kh.futsal.support.controller;
 
 import java.io.IOException;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.kh.futsal.support.model.dto.Support;
+import com.kh.futsal.support.model.service.SupportService;
 
 /**
  * Servlet implementation class SupportController
@@ -14,9 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 public class SupportController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+	private SupportService supportService = new SupportService();
+	
     public SupportController() {
         super();
         // TODO Auto-generated constructor stub
@@ -53,8 +57,13 @@ public class SupportController extends HttpServlet {
 	}
 	
 	private void supportDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/mypage/support/support-detail").forward(request, response);
 		
+		String bdIdx = "100000";
+		
+		Support support = supportService.selectBoardDetail(bdIdx);
+		
+		request.setAttribute("support", support);
+		request.getRequestDispatcher("/mypage/support/support-detail").forward(request, response);
 	}
 	private void supportModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/support/support-modify").forward(request, response);

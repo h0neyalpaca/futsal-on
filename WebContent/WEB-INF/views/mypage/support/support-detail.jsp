@@ -20,12 +20,23 @@
 				<div class="search-wrap">
 					
 					    <div class="type_wrapper">문의 유형 : 
-					    	<span>불편사항</span>
-							</select>
+					    <c:choose>
+							<c:when test="${support.type == 1}">
+								<span>불편사항</span>
+							</c:when>
+							<c:when test="${support.type == 2}">
+								<span>신고</span>
+							</c:when>
+							<c:when test="${support.type == 3}">
+								<span>기타</span>
+							</c:when>
+						
+						</c:choose>
+							
 						</div>
-						<div class="tit_wraper"> 제목 : <span>사이트 건의사항 입니다</span></div>
+						<div class="tit_wraper"> 제목 : <span><c:out value="${support.title}"/></span></div>
 						<div class="content-wraper">
-							<p>매칭 되었을 때 알림이 안와요 해결 부탁드립니다</p>
+							<p><c:out value="${support.content}"/></p>
 						</div>
 						
 						<div class="button_wrapper">
