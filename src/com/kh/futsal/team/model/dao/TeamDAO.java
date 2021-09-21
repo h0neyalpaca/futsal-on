@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.kh.futsal.common.code.member.MemberGrade;
 import com.kh.futsal.common.db.JDBCTemplate;
@@ -83,7 +85,7 @@ public class TeamDAO {
 	}
 	
 	public Team selectTeamByTmCode(String tmCode, Connection conn) {
-		Team team = null;
+		Team team = new Team();
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		String sql = "SELECT * FROM TEAM WHERE TM_CODE = ? ";
@@ -102,6 +104,34 @@ public class TeamDAO {
 		return team;
 	}
 	
+	public List<Member> selectTmMembersByTeamCode(String tmCode, Connection conn) {
+		List<Member> tmMembers = new ArrayList<Member>();
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		String sql = "SELECT USER_ID,GRADE FROM MEMBER WHERE TM_CODE = ? ORDER BY GRADE DESC ";
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, tmCode);
+			rset = pstm.executeQuery();
+			while(rset.next()) {
+				tmMembers.add(convertRowToMember(rset));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			template.close(rset,pstm);
+		}
+		return tmMembers;
+	}
+	
+	private Member convertRowToMember(ResultSet rset) throws SQLException {
+		Member member = new Member();
+		member.setUserId(rset.getString("USER_ID"));
+		member.setGrade(rset.getString("GRADE"));
+		return member;
+		
+	}
 	private Team convertRowToTeam(ResultSet rset) throws SQLException {
 		Team team = new Team();
 		team.setTmCode(rset.getString("TM_CODE"));
@@ -116,7 +146,4 @@ public class TeamDAO {
 		team.setRegDate(rset.getDate("REG_DATE"));
 		return team;
 	}
-
-	
-
 }

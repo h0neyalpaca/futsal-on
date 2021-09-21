@@ -15,6 +15,8 @@ import com.kh.futsal.common.code.ErrorCode;
 import com.kh.futsal.common.code.member.MemberGrade;
 import com.kh.futsal.common.exception.HandlableException;
 import com.kh.futsal.member.model.dto.Member;
+import com.kh.futsal.team.model.dto.Team;
+import com.kh.futsal.team.model.service.TeamService;
 
 
 
@@ -46,7 +48,7 @@ public class AuthorizationFilter implements Filter {
 					  //mypageAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "team":
-					//myteamAuthorize(httpRequest,httpResponse,uriArr);
+					teamAuthorize(httpRequest,httpResponse,uriArr);
 					break;
 				case "matching":
 					matchingAuthorize(httpRequest,httpResponse,uriArr);
@@ -169,40 +171,43 @@ public class AuthorizationFilter implements Filter {
 	}
 
 
-	private void myteamAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
+	private void teamAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
 
-		Member member = (Member) httpRequest.getSession().getAttribute("authentication");
+		/* 테스트용 아이디 */
+		Member member = new Member();
+		member.setUserId("alpaca_l");
+		member.setGrade("ME03");
+		httpRequest.setAttribute("authentication", member);
+		
+		/* 테스트용 팀 */
+		TeamService ts = new TeamService();
+		Team team = ts.selectTeamByUserId(member.getUserId());
+		httpRequest.setAttribute("team", team);
+		
+		//member = (Member) httpRequest.getSession().getAttribute("authentication");
+		//team = (Team) httpRequest.getSession().getAttribute("teamInfo");
 		
 		if(member == null) {
 			throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
 		}
 		
-		MemberGrade adminGrade = MemberGrade.valueOf(member.getGrade());
-
+		MemberGrade grade = MemberGrade.valueOf(member.getGrade());
 		switch (uriArr[2]) {
-		case "main":
-			if(!adminGrade.DESC.equals("nomal")) {
+		case "managing":
+			if(!grade.ROLE.equals("team")) {
 				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
 			}
 			break;
 		case "create-form":
-			
-			if(!adminGrade.DESC.equals("nomal")) {
+			if(!grade.ROLE.equals("user")) {
 				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
 			}
 			break;
 		case "join-team":
-			
-			if(!adminGrade.DESC.equals("nomal")) {
+			if(!grade.ROLE.equals("user")) {
 				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
 			}
 			break;
-		case "managing":
-			if(!adminGrade.ROLE.equals("team")) {
-				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
-			}
-			break;
-		
 		default: break;
 		}
 	}

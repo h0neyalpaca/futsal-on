@@ -10,147 +10,58 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-
+<script>
+function updateMember(e, userId) {
+	var frm = document.modfrm;
+	console.log(e.parentNode.childNodes[1].childNodes[1].value);
+	frm.userId.value=userId;
+	frm.grade.value=e.parentNode.childNodes[1].childNodes[1].value;
+	frm.submit();
+}
+</script>
 <section>
 		<div class="section">
 			<div class="myteam-wrap">
 				<h2><i class="far fa-futbol"></i> 나의 팀</h2>
 				<div class="myteam-con">
 					<%@ include file="/WEB-INF/views/team/managing/team_tab.jsp" %>
-					<!-- 리더화면 -->
 					<table class="team-member-form">
 						<tr>
 							<th>NO</th>
 							<th>이름</th>
 							<th>팀원 등급</th>
-							<th>팀원 추방</th>
+							<c:if test="${authentication.grade=='ME03'}"><th>팀원 추방</th></c:if>
 						</tr>
+						<c:forEach items="${tmMembers}" var="tmMembers" varStatus="status">
 						<tr>
-							<td>1</td>
-							<td>손흥민</td>
+							<td>${status.count}</td>
+							<td>${tmMembers.userId}</td>
 							<td>
-								<div class="selectbox">
-									<select>
-										<option value="" selected>회장</option>
-										<option value="">매니저</option>
-										<option value="">팀원</option>
-									</select>
-								</div>
-								<button class="btn-change-grade">변경</button>
+								<c:if test="${authentication.grade=='ME03'}">
+									<div class="selectbox">
+										<select name="grdOpt">
+											<option value="ME03" ${tmMembers.grade eq 'ME03'?'selected':''}>회장</option>
+											<option value="ME02" ${tmMembers.grade eq 'ME02'?'selected':''}>매니저</option>
+											<option value="ME01" ${tmMembers.grade eq 'ME01'?'selected':''}>팀원</option>
+										</select>
+									</div>
+									<button class="btn-change-grade" onclick="updateMember(this, '${tmMembers.userId}');return false;">변경</button>
+								</c:if>
+								<c:if test="${authentication.grade!='ME03'}">
+									${authentication.grade}
+								</c:if>
 							</td>
-							<td></td>
+							<c:if test="${authentication.grade=='ME03'}">
+								<td><button class="btn-out-member">추방</button></td>
+							</c:if>
 						</tr>
-						<tr>
-							<td>2</td>
-							<td>박지성</td>
-							<td>
-								<div class="selectbox">
-									<select>
-										<option value="">회장</option>
-										<option value="" selected>매니저</option>
-										<option value="">팀원</option>
-									</select>
-								</div>
-								<button class="btn-change-grade">변경</button>
-							</td>
-							<td><button class="btn-out-member">추방</button></td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>조현우</td>
-							<td>
-								<div class="selectbox">
-									<select>
-										<option value="">회장</option>
-										<option value="">매니저</option>
-										<option value="" selected>팀원</option>
-									</select>
-								</div>
-								<button class="btn-change-grade">변경</button>
-							</td>
-							<td><button class="btn-out-member">추방</button></td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td>황의조</td>
-							<td>
-								<div class="selectbox">
-									<select>
-										<option value="">회장</option>
-										<option value="">매니저</option>
-										<option value="" selected>팀원</option>
-									</select>
-								</div>
-								<button class="btn-change-grade">변경</button>
-							</td>
-							<td><button class="btn-out-member">추방</button></td>
-						</tr>
-						<tr>
-							<td>5</td>
-							<td>정우영</td>
-							<td>
-								<div class="selectbox">
-									<select>
-										<option value="">회장</option>
-										<option value="">매니저</option>
-										<option value="" selected>팀원</option>
-									</select>
-								</div>
-								<button class="btn-change-grade">변경</button>
-							</td>
-							<td><button class="btn-out-member">추방</button></td>
-						</tr>
-						
+						</c:forEach>
 					</table>
 					
-					<form action="/myteam/modify-member" method="post">
-						
+					<form name="modfrm" action="/team/manage-func" method="post">
+						<input type="hidden" name="userId">
+						<input type="hidden" name="grade">
 					</form>
-
-					<!-- 멤버 화면 -->
-					<table class="team-member-form">
-						<tr>
-							<th>NO</th>
-							<th>이름</th>
-							<th>팀원 등급</th>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>손흥민</td>
-							<td>
-								회장
-							</td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>박지성</td>
-							<td>
-								매니저
-							</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>조현우</td>
-							<td>
-								회원
-							</td>
-						</tr>
-						<tr>
-							<td>4</td>
-							<td>황의조</td>
-							<td>
-								회원
-							</td>
-						</tr>
-						<tr>
-							<td>5</td>
-							<td>정우영</td>
-							<td>
-								회원
-							</td>
-						</tr>
-						
-					</table>
 				</div>
 			</div>
 		</div>

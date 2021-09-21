@@ -1,6 +1,8 @@
 package com.kh.futsal.team.model.service;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.kh.futsal.common.db.JDBCTemplate;
@@ -66,7 +68,6 @@ public class TeamService {
 	//팀 코드로 팀 찾기
 	public Team selectTeamByTmCode(String tmCode) {
 		Connection conn = template.getConnection();
-		
 		Team team = null;
 		try {
 			team = td.selectTeamByTmCode(tmCode, conn);
@@ -74,6 +75,18 @@ public class TeamService {
 			template.close(conn);
 		}
 		return team;
+	}
+	
+	//팀 코드로 팀 멤버 찾기
+	public List<Member> selectTmMembers(String tmCode) {
+		Connection conn = template.getConnection();
+		List<Member> tmMembers = null;
+		try {
+			tmMembers = td.selectTmMembersByTeamCode(tmCode, conn);
+		} finally {
+			template.close(conn);
+		}
+		return tmMembers;
 	}
 	
 	//팀코드 랜덤 생성

@@ -1,16 +1,14 @@
 package com.kh.futsal.team.model.dto;
 
-import java.util.Arrays;
 import java.util.Date;
 
 public class Team {
 	private String tmCode; //팀코드
-	private String localCode; //활동지역(복수)
+	private String localCode; //활동지역
 	private String managerId; //팀장아이디
 	private String tmName; //팀이름
 	private String tmGrade; //팀실력
 	private String tmInfo; //소개글
-	private String tmImage; //팀사진
 	private int gameCnt; //총게임횟수
 	private int tmScore; //평점
 	private int tmWin; //승리횟수
@@ -52,12 +50,6 @@ public class Team {
 	public void setTmInfo(String tmInfo) {
 		this.tmInfo = tmInfo;
 	}
-	public String getTmImage() {
-		return tmImage;
-	}
-	public void setTmImage(String tmImage) {
-		this.tmImage = tmImage;
-	}
 	public int getGameCnt() {
 		return gameCnt;
 	}
@@ -86,7 +78,6 @@ public class Team {
 	@Override
 	public String toString() {
 		return "Team [tmCode=" + tmCode + ", localCode=" + localCode + ", managerId=" + managerId
-				+ ", tmName=" + tmName + ", tmGrade=" + tmGrade + ", tmInfo=" + tmInfo + ", tmImage=" + tmImage
-				+ ", gameCnt=" + gameCnt + ", tmScore=" + tmScore + ", tmWin=" + tmWin + ", regDate=" + regDate + "]";
+				+ ", tmName=" + tmName + ", tmGrade=" + tmGrade + ", tmInfo=" + tmInfo + ", tmImage=" + gameCnt + ", tmScore=" + tmScore + ", tmWin=" + tmWin + ", regDate=" + regDate + "]";
 	}
 }

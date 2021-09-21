@@ -13,10 +13,8 @@ import com.kh.futsal.common.file.FileUtil;
 import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.team.model.dto.Team;
 import com.kh.futsal.team.model.service.TeamService;
+import com.oreilly.servlet.MultipartRequest;
 
-/**
- * Servlet implementation class TeamController
- */
 @WebServlet("/team/*")
 public class TeamController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -56,6 +54,9 @@ public class TeamController extends HttpServlet {
 		case "manage":
 			teamManage(request,response);
 			break;
+		case "manage-func":
+			manageFunc(request,response);
+			break;
 		case "total-score":
 			totalScore(request,response);
 			break;
@@ -68,6 +69,11 @@ public class TeamController extends HttpServlet {
 
 		default:
 		}
+	}
+
+	private void manageFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void deleteTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -83,28 +89,18 @@ public class TeamController extends HttpServlet {
 		
 	}
 	private void teamManage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Team team = (Team) request.getAttribute("team");
+		request.setAttribute("tmMembers", ts.selectTmMembers(team.getTmCode()));
 		request.getRequestDispatcher("/team/managing/manage").forward(request, response);
-		
 	}
+	
 	private void teamModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//*** 로그인 기능구현 안됨 ***
-		//Member member = (Member) request.getSession().getAttribute("authentication");
-
-		//*** 테스트용 아이디 강제로 입력함 ***
-		Member member = new Member();
-		member.setUserId("alpaca_m");
-		
-		Team team = ts.selectTeamByUserId(member.getUserId());
-		request.setAttribute("teamInfo", team);
-		
 		request.getRequestDispatcher("/team/managing/modify").forward(request, response);
 	}
 	
-	//팀 생성 기능
 	private void createFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		Member member = (Member) request.getSession().getAttribute("authentication");
-		
 		String tmCode = ts.createTmCode();
 		String localCode = request.getParameter("localCode");
 		//String managerId = member.getUserId();
@@ -131,16 +127,10 @@ public class TeamController extends HttpServlet {
 		request.getRequestDispatcher("/team/create-form").forward(request, response);
 	}
 	
-	//팀 참가 기능
 	private void joinFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//*** 로그인 기능구현 안됨 ***
-		//Member member = (Member) request.getSession().getAttribute("authentication");
-
-		//*** 테스트용 아이디 강제로 입력함 ***
-		Member member = new Member();
-		member.setUserId("alpaca_n");
-		
+		Member member = (Member) request.getAttribute("authentication");
 		String tmCode = request.getParameter("tmCode");
+		
 		boolean flag = ts.updateByTmCode(member, tmCode);
 		//팀코드가 존재하지 않으면 에러메시지를 반환
 		if(flag == false) {
@@ -149,36 +139,17 @@ public class TeamController extends HttpServlet {
 		}
 		response.sendRedirect("/team/managing/modify?result=1");
 	}
+	
 	private void joinTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//*** 로그인 기능구현 안됨 ***
-		//Member member = (Member) request.getSession().getAttribute("authentication");
-		
-		//*** 테스트용 아이디 강제로 입력함 ***
-		Member member = new Member();
-		member.setUserId("alpaca_n");
-		//member.setUserId("alpaca_m");
-		
-		//팀이 있는 회원은 팀관리 화면으로, 없는 회원은 팀참가 폼으로 보내기
-		Team team = ts.selectTeamByUserId(member.getUserId());
-		if(team != null) {
-			request.getRequestDispatcher("/team/managing/modify").forward(request, response);
-		}
 		request.getRequestDispatcher("/team/join-team").forward(request, response);
 	}
 	
 	private void teamMain(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//*** 로그인 기능구현 안됨 ***
-		//Member member = (Member) request.getSession().getAttribute("authentication");
-		
-		//*** 테스트용 아이디 강제로 입력함 ***
-		Member member = new Member();
-		member.setUserId("alpaca_n");
-		//member.setUserId("alpaca_m");
-		
+		Team team = (Team) request.getAttribute("team");
 		//팀이 있는 회원은 팀관리 화면으로, 없는 회원은 메인으로 보내기
-		Team team = ts.selectTeamByUserId(member.getUserId());
 		if(team != null) {
 			request.getRequestDispatcher("/team/managing/modify").forward(request, response);
+			return;
 		}
 		request.getRequestDispatcher("/team/main").forward(request, response);
 	}
