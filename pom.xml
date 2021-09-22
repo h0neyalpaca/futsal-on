@@ -46,11 +46,11 @@
       <version>1.2.5</version>
     </dependency>
    
-    <dependency>
+<!--     <dependency>
 	    <groupId>oracle</groupId>
 	    <artifactId>ojdbc6</artifactId>
 	    <version>11.2.0.3</version>
-	</dependency>
+	</dependency> -->
 
 	<dependency>
 	    <groupId>com.oracle.database.jdbc</groupId>
@@ -96,6 +96,41 @@
 	    <groupId>servlets.com</groupId>
 	    <artifactId>cos</artifactId>
 	    <version>05Nov2002</version>
+	</dependency>
+	
+		<!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8 -->
+	<dependency>
+	    <groupId>com.oracle.database.jdbc</groupId>
+	    <artifactId>ojdbc8</artifactId>
+	    <version>19.8.0.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ucp -->
+	<dependency>
+	    <groupId>com.oracle.database.jdbc</groupId>
+	    <artifactId>ucp</artifactId>
+	    <version>19.8.0.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/com.oracle.database.security/oraclepki -->
+	<dependency>
+	    <groupId>com.oracle.database.security</groupId>
+	    <artifactId>oraclepki</artifactId>
+	    <version>19.8.0.0</version>
+	</dependency>
+		
+	<!-- https://mvnrepository.com/artifact/com.oracle.database.security/osdt_cert -->
+	<dependency>
+	    <groupId>com.oracle.database.security</groupId>
+	    <artifactId>osdt_cert</artifactId>
+	    <version>19.8.0.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/com.oracle.database.security/osdt_core -->
+	<dependency>
+	    <groupId>com.oracle.database.security</groupId>
+	    <artifactId>osdt_core</artifactId>
+	    <version>19.8.0.0</version>
 	</dependency>
 		
 	

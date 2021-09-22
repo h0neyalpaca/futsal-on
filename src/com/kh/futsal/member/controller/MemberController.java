@@ -1,15 +1,21 @@
 package com.kh.futsal.member.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.futsal.member.model.dto.Member;
+import com.kh.futsal.member.model.service.MemberService;
+
 @WebServlet("/member/*")
 public class MemberController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private MemberService memberService = new MemberService();
        
     public MemberController() {
         super();
@@ -23,6 +29,12 @@ public class MemberController extends HttpServlet {
 		switch (uriArr[uriArr.length-1]) {
 		case "login-form":
 			loginForm(request,response);
+			break;
+		case "login":
+			login(request,response);
+			break;
+		case "logout":
+			  logout(request,response);
 			break;
 		case "lost-id":
 			lostId(request,response);
@@ -38,6 +50,27 @@ public class MemberController extends HttpServlet {
 			break;
 		default:
 		}
+	}
+
+	private void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getSession().removeAttribute("authentication");
+		response.sendRedirect("/");
+	}
+
+	private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String userId = request.getParameter("userId");
+		String password = request.getParameter("password");
+		
+		System.out.println(userId + password);
+		Member member = memberService.memberAuthenticate(userId,password);
+		
+		if(member == null) {
+			response.sendRedirect("/member/login-form?err=1");
+			return;
+		}
+		
+		request.getSession().setAttribute("authentication", member);
+		response.sendRedirect("/index");
 	}
 
 	private void resultPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

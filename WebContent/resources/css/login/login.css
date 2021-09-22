@@ -156,3 +156,18 @@
 	cursor:pointer;
 	font-weight:bold;
 }
+
+/* 2021-09-22 jung */
+.error_message { 
+	padding-left: 15px;
+	margin-top: 10px;
+	display: inline-block;
+    font-size: 0.9rem;
+    line-height: 20px;
+    color: #ff003e;
+    vertical-align: middle;
+}
+
+.error_message strong {
+	color: #ff003e;
+}

@@ -14,7 +14,7 @@
 			<div class="login-wrap">
 				<h2><i class="fas fa-user-check"></i> 로그인</h2>
 				<div class="login-con">
-					<form action="/login/login" method="post">
+					<form action="/member/login" method="post">
 						<table class="login-form">
 							<tr>
 								<th><i class="fas fa-user-alt"></i></th>
@@ -33,6 +33,12 @@
 							</tr>
 						</table>
 					</form>
+					<c:if test="${not empty param.err}">
+							<div class="error_message" style="padding-left:15px; ">
+                                                  아이디 또는 비밀번호가 잘못 입력 되었습니다.<br>
+                            <strong>아이디</strong>와 <strong>비밀번호</strong>를 정확히 입력해 주세요.
+                            </div>
+                            </c:if>
 					<div class="login-info">
 						<a class="btn-search-id" href="/member/login/lost-id">아이디 찾기</a>
 						<a class="btn-search-pw" href="/member/login/lost-password">비밀번호 찾기</a>
