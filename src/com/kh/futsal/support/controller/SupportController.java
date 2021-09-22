@@ -58,7 +58,7 @@ public class SupportController extends HttpServlet {
 	
 	private void supportDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String bdIdx = "100000";
+		String bdIdx = "100020";
 		
 		Support support = supportService.selectBoardDetail(bdIdx);
 		

@@ -15,10 +15,9 @@ public class SupportService {
 		
 		 Connection conn = template.getConnection();
 		 Support support = null;
-		 
+
 		try {
-			support = supportDao.selectBoardDetail(bdIdx, conn);
-			
+			 support = supportDao.selectBoardDetail(bdIdx, conn);
 		} finally {
 			template.close(conn);
 		}

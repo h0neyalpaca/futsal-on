@@ -30,7 +30,6 @@
 							<c:when test="${support.type == 3}">
 								<span>기타</span>
 							</c:when>
-						
 						</c:choose>
 							
 						</div>
@@ -51,4 +50,4 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 </body>
-</html>html>
+</html>

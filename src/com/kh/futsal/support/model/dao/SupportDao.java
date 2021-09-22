@@ -15,18 +15,18 @@ public class SupportDao {
 	
 	public Support selectBoardDetail(String bdIdx, Connection conn) {
 		
+		String sql = "select bd_idx, user_id, reg_date, title, content , type from board where bd_idx = ? ";
+		System.out.println(sql);
+		
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		Support support = null;
 		
-		String sql = "select bd_idx, user_id, reg_date, title, content , type "
-				+ " from board where bd_idx = ?";
-		
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, bdIdx);
+			pstm.setString(1,bdIdx);
 			rset = pstm.executeQuery();
-		
+
 			if(rset.next()) {
 				support = new Support();
 				support.setDbIdx(rset.getString("bd_idx"));
@@ -35,9 +35,8 @@ public class SupportDao {
 				support.setTitle(rset.getString("title"));
 				support.setContent(rset.getString("content"));
 				support.setType(rset.getInt("type"));
-				
 			}
-			System.out.println(support);
+			
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
 		}finally {
