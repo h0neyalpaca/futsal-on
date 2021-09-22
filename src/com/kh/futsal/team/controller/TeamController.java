@@ -31,7 +31,6 @@ public class TeamController extends HttpServlet {
 		String[] uriArr = request.getRequestURI().split("/");
 
 		switch (uriArr[uriArr.length-1]) {
-		
 		case "main":
 			teamMain(request,response);
 			break;
@@ -47,7 +46,6 @@ public class TeamController extends HttpServlet {
 		case "create-func":
 			createFunc(request,response);
 			break;
-			
 		case "modify":
 			teamModify(request,response);
 			break;
@@ -99,28 +97,28 @@ public class TeamController extends HttpServlet {
 	}
 	
 	private void createFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Member member = (Member) request.getSession().getAttribute("authentication");
+		Member member = (Member) request.getAttribute("authentication");
 		
-		Member member = (Member) request.getSession().getAttribute("authentication");
-		String tmCode = ts.createTmCode();
-		String localCode = request.getParameter("localCode");
-		//String managerId = member.getUserId();
 		String tmName = request.getParameter("tmName");
 		String tmGrade = request.getParameter("tmGrade");
+		String localCode = request.getParameter("localCode");
 		String tmInfo = request.getParameter("tmInfo");
-		//String tmImage = request.getAttribute("");
 		
+		//random code
+		String tmCode = ts.createRandomCode(member.getUserId());
+
 		Team team = new Team();
 		team.setTmCode(tmCode);
 		team.setLocalCode(localCode);
-		//team.setManagerId(managerId);
-		team.setManagerId("leader");
+		team.setManagerId(member.getUserId());
 		team.setTmName(tmName);
 		team.setTmGrade(tmGrade);
 		team.setTmInfo(tmInfo);
-		
-		//기능구현중 .... 오류남 2021-09-19
-		//ts.createTeam(team);
-		request.getRequestDispatcher("/team/create-form").forward(request, response);
+
+		ts.insertTeam(team);
+		ts.updateMember(member, team);
+		response.sendRedirect("/team/managing/modify?result=2");
 	}
 	
 	private void createForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -128,15 +126,17 @@ public class TeamController extends HttpServlet {
 	}
 	
 	private void joinFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Member member = (Member) request.getSession().getAttribute("authentication");
 		Member member = (Member) request.getAttribute("authentication");
-		String tmCode = request.getParameter("tmCode");
 		
-		boolean flag = ts.updateByTmCode(member, tmCode);
-		//팀코드가 존재하지 않으면 에러메시지를 반환
-		if(flag == false) {
+		String tmCode = request.getParameter("tmCode");
+		Team team = ts.selectTeamByTmCode(tmCode);
+		if(team.getTmCode()==null || team.getDelDate()!=null) {
 			response.sendRedirect("/team/join-team?err=1");
 			return;
 		}
+		
+		ts.updateMember(member, team);
 		response.sendRedirect("/team/managing/modify?result=1");
 	}
 	

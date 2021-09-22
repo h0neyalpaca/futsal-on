@@ -21,18 +21,16 @@ public class TeamDAO {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public int createTeam(Team team, Connection conn) {
-		
+	public int insertTeam(Team team, Connection conn) {
 		int res = 0;
-		
 		PreparedStatement pstm = null;
 		String sql = "INSERT INTO TEAM"+
 				"(TM_CODE,LOCAL_CODE,MANAGER_ID,TM_NAME,TM_GRADE,TM_INFO) "+
-				"VALUSE(?,?,?,?,?,?) ";
+				"VALUES(?,?,?,?,?,?) ";
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, team.getTmCode());
-			pstm.setString(2, team.getLocalCode().toString());
+			pstm.setString(2, team.getLocalCode());
 			pstm.setString(3, team.getManagerId());
 			pstm.setString(4, team.getTmName());
 			pstm.setString(5, team.getTmGrade());
@@ -46,14 +44,18 @@ public class TeamDAO {
 		return res;
 	}
 
-	public int updateByTmCode(Member member, String tmCode, Connection conn) {
+	public int updateMember(Member member, Team team, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
 		String sql = "UPDATE MEMBER SET TM_CODE = ?, GRADE = ? WHERE USER_ID = ? ";
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, tmCode);			
-			pstm.setString(2, "ME01");
+			pstm.setString(1, team.getTmCode());
+			if(member.getUserId().equals(team.getManagerId())) {
+				pstm.setString(2, "ME03");
+			} else {
+				pstm.setString(2, "ME01");
+			};
 			pstm.setString(3, member.getUserId());
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
@@ -64,14 +66,14 @@ public class TeamDAO {
 		return res;
 	}
 	
-	public Team selectTeamByUserId(String userId, Connection conn) {
-		Team team = null;
+	public Team selectTeamByTmCode(String tmCode, Connection conn) {
+		Team team = new Team();
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
-		String sql = "SELECT * FROM TEAM WHERE TM_CODE = (SELECT TM_CODE FROM MEMBER WHERE USER_ID=?) ";
+		String sql = "SELECT * FROM TEAM WHERE TM_CODE = ? ";
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, userId);
+			pstm.setString(1, tmCode);
 			rset = pstm.executeQuery();
 			if(rset.next()) {
 				team = convertRowToTeam(rset);
@@ -84,14 +86,15 @@ public class TeamDAO {
 		return team;
 	}
 	
-	public Team selectTeamByTmCode(String tmCode, Connection conn) {
-		Team team = new Team();
+	//--------------------
+	public Team selectTeamByUserId(String userId, Connection conn) {
+		Team team = null;
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
-		String sql = "SELECT * FROM TEAM WHERE TM_CODE = ? ";
+		String sql = "SELECT * FROM TEAM WHERE TM_CODE = (SELECT TM_CODE FROM MEMBER WHERE USER_ID=?) ";
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, tmCode);
+			pstm.setString(1, userId);
 			rset = pstm.executeQuery();
 			if(rset.next()) {
 				team = convertRowToTeam(rset);
@@ -144,6 +147,7 @@ public class TeamDAO {
 		team.setTmScore(rset.getInt("TM_SCORE"));
 		team.setTmWin(rset.getInt("TM_WIN"));
 		team.setRegDate(rset.getDate("REG_DATE"));
+		team.setDelDate(rset.getDate("DEL_DATE"));
 		return team;
 	}
 }
