@@ -21,7 +21,7 @@
 							<tr>
 								<th>아이디</th>
 								<td>
-									honeyalpaca
+									<c:out value="${member.userId}"/>
 								</td>
 							</tr>
 							<tr>
@@ -52,7 +52,7 @@
 							<tr>
 								<th>닉네임</th>
 								<td>
-									<input type="text" name="nickName" id="nickName" value="알파카" size="6" required />
+									<input type="text" name="nickName" id="nickName" size="6" required />
 									<button type="button" id="btnNickCheck">중복확인</button>
 									<span class="msg">2~6자의 한글,영문</span>
 								</td>
@@ -60,14 +60,14 @@
 							<tr>
 								<th>연락처</th>
 								<td>
-									<input id="tell" type="tel" name="tell" value="01012345678" required />
+									<input id="tell" type="tel" name="tell" value="${member.tell}" required />
 									<span class="msg">숫자만 입력</span>
 								</td>
 							</tr>
 							<tr>
 								<th>이메일</th>
 								<td>
-									alpaca@naver.com
+									<c:out value="${member.email}"/>
 								</td>
 							</tr>
 							<tr>

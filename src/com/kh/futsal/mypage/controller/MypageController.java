@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.futsal.member.model.dto.Member;
+
 @WebServlet("/mypage/*")
 public class MypageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -43,6 +45,10 @@ public class MypageController extends HttpServlet {
 		
 	}
 	private void mypageModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		request.setAttribute("member", member);
+		
 		request.getRequestDispatcher("/mypage/modify").forward(request, response);
 		
 	}
