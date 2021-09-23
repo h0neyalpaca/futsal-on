@@ -36,20 +36,28 @@ public class MemberController extends HttpServlet {
 		case "logout":
 			  logout(request,response);
 			break;
+		case "join-form":
+			joinForm(request,response);
+			break;
+		case "join":
+			join(request,response);
+			break;
 		case "lost-id":
 			lostId(request,response);
 			break;
 		case "lost-password":
 			lostPw(request,response);
 			break;
-		case "join-form":
-			joinForm(request,response);
-			break;
 		case "result":
 			resultPage(request,response);
 			break;
 		default:
 		}
+	}
+
+	private void join(HttpServletRequest request, HttpServletResponse response) {
+		
+		
 	}
 
 	private void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -61,7 +69,7 @@ public class MemberController extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String password = request.getParameter("password");
 		
-		System.out.println(userId + password);
+//		System.out.println(userId + password);
 		Member member = memberService.memberAuthenticate(userId,password);
 		
 		if(member == null) {

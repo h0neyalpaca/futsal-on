@@ -35,7 +35,9 @@ public class MemberDao {
 			pstm.setString(2, password);
 			rset = pstm.executeQuery();
 				
-			String[] fieldArr = {"user_id","password","email","grade","is_leave","reg_date","rentable_Date","tell"};
+			String[] fieldArr = {"user_id","tm_code","password","user_name","grade","user_nick","email"
+								,"tell","capacity","reg_date","is_leave"};
+			
 			if(rset.next()) {
 				member =  convertRowToMember(rset,fieldArr);
 			}
@@ -54,14 +56,17 @@ public class MemberDao {
 	// 데이타베이스에서 받아온 resultset을 member에 담는 method
 	private Member convertRowToMember(ResultSet rset) throws SQLException {
 		Member member = new Member();
-		member.setUserId(rset.getString("user_id"));
+		member.setUserId(rset.getString("user_id")); 
+		member.setTmCode(rset.getString("tm_code")); 
 		member.setPassword(rset.getString("password"));
-		member.setEmail(rset.getString("email"));
+		member.setUserId(rset.getString("user_name"));
 		member.setGrade(rset.getString("grade"));
-		member.setIsLeave(rset.getInt("is_leave"));
-		member.setRegDate(rset.getDate("reg_date"));
-		member.setRentableDate(rset.getDate("rentable_Date"));
+		member.setUserNick(rset.getString("user_nick"));
+		member.setEmail(rset.getString("email"));
 		member.setTell(rset.getString("tell"));
+		member.setCapacity(rset.getString("capacity"));
+		member.setRegDate(rset.getDate("reg_date"));
+		member.setIsLeave(rset.getInt("is_leave"));
 		return member;
 	}
 	
@@ -72,13 +77,16 @@ public class MemberDao {
 			String field = fieldArr[i].toLowerCase();
 			switch (field) {
 			case "user_id":member.setUserId(rset.getString("user_id")); break;
+			case "tm_Code":member.setTmCode(rset.getString("tm_code")); break;
 			case "password":member.setPassword(rset.getString("password"));break;
+			case "user_name":member.setUserId(rset.getString("user_name")); break;
+			case "grade":member.setGrade(rset.getString("grade")); break;
+			case "user_nick":member.setUserNick(rset.getString("user_nick"));break;
 			case "email":member.setEmail(rset.getString("email"));break;
-			case "grade":member.setGrade(rset.getString("grade"));break;
-			case "is_leave":member.setIsLeave(rset.getInt("is_leave"));break;
+			case "tell":member.setTell(rset.getString("tell"));break;
+			case "capacity":member.setCapacity(rset.getString("capacity"));break;
 			case "reg_date":member.setRegDate(rset.getDate("reg_date"));break;
-			case "rentable_Date":member.setRentableDate(rset.getDate("rentable_Date"));break;
-			case "tell":member.setTell(rset.getString("tell"));
+			case "is_leave":member.setIsLeave(rset.getInt("is_leave"));break;
 			}
 		}
 		
