@@ -35,7 +35,7 @@
 								</c:if>
 							</td>
 							<td style="text-align:left;">
-								<a href="/mypage/support/support-detail">${supportList[0].title}</a>
+								<a href="/mypage/support/support-detail?bdIdx=${supportList[0].dbIdx}">${supportList[0].title}</a>
 							</td>
 							<td>${supportList[0].regDate}<br>16:30</td>
 							<td class="btn-inq">
@@ -54,7 +54,7 @@
 								</c:if>
 							</td>
 							<td style="text-align:left;">
-								<a href="#">${supportList[1].title}</a>
+								<a href="/mypage/support/support-detail?bdIdx=${supportList[1].dbIdx}">${supportList[1].title}</a>
 							</td>
 							<td>${supportList[1].regDate}<br>16:30</td>
 							<td class="btn-inq">
@@ -73,7 +73,7 @@
 								</c:if>
 							</td>
 							<td style="text-align:left;">
-								<a href="#">${supportList[2].title}</a>
+								<a href="/mypage/support/support-detail?bdIdx=${supportList[2].dbIdx}">${supportList[2].title}</a>
 							</td>
 							<td>${supportList[2].regDate}<br>16:30</td>
 							<td class="btn-inq">

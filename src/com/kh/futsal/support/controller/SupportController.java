@@ -60,7 +60,7 @@ public class SupportController extends HttpServlet {
 	
 	private void supportDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String bdIdx = "100020";
+		String bdIdx = request.getParameter("bdIdx");
 		
 		Support support = supportService.selectBoardDetail(bdIdx);
 		
