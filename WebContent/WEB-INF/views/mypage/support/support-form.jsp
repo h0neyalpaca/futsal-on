@@ -18,7 +18,8 @@
 					</div>
 				</div>
 				<div class="search-wrap">
-					<form>
+					<form action="/support/support-upload" method="post">
+					
 					    <div class="type_wrapper">문의 유형 : 
 					    	<select name="type">
 						    <option value="1" selected="selected">불편사항</option>

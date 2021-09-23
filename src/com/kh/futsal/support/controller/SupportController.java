@@ -49,10 +49,26 @@ public class SupportController extends HttpServlet {
 		case "support-form":
 			supportForm(request,response);
 			break;
+		case "support-upload":
+			supportUpload(request,response);
+			break;
 		default:
 		}
 	}
 
+	private void supportUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		
+		Support support = new Support();
+		support.setUserId(member.getUserId());
+		support.setTitle(request.getParameter("title"));
+		support.setContent(request.getParameter("content"));
+		
+		request.getRequestDispatcher("/mypage/support/support-list").forward(request, response);
+		
+	}
+	
 	private void supportForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/support/support-form").forward(request, response);
 		

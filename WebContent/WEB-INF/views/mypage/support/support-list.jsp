@@ -24,63 +24,28 @@
 							<th>날짜</th>
 							<th>관리</th>
 						</tr>
-						<tr>
-							<td>${supportList[0].type}</td>
-							<td>
-								<c:if test="${supportList[0].isAnswer == 0}">
-									<span>답변대기</span>
-								</c:if>
-								<c:if test="${supportList[0].isAnswer == 1}">
-									<span>답변완료</span>
-								</c:if>
-							</td>
-							<td style="text-align:left;">
-								<a href="/mypage/support/support-detail?bdIdx=${supportList[0].dbIdx}">${supportList[0].title}</a>
-							</td>
-							<td>${supportList[0].regDate}<br>16:30</td>
-							<td class="btn-inq">
-								<button class="modify" onclick="location.href='/mypage/support/support-modify';">수정</button>
-								<button class="delete">삭제</button>
-							</td>
-						</tr>
-						<tr>
-							<td>${supportList[1].type}</td>
-							<td>
-								<c:if test="${supportList[1].isAnswer == 0}">
-									<span>답변대기</span>
-								</c:if>
-								<c:if test="${supportList[1].isAnswer == 1}">
-									<span>답변완료</span>
-								</c:if>
-							</td>
-							<td style="text-align:left;">
-								<a href="/mypage/support/support-detail?bdIdx=${supportList[1].dbIdx}">${supportList[1].title}</a>
-							</td>
-							<td>${supportList[1].regDate}<br>16:30</td>
-							<td class="btn-inq">
-								<button class="modify">수정</button>
-								<button class="delete">삭제</button>
-							</td>
-						</tr>
-						<tr>
-							<td>${supportList[2].type}</td>
-							<td>
-								<c:if test="${supportList[2].isAnswer == 0}">
-									<span>답변대기</span>
-								</c:if>
-								<c:if test="${supportList[2].isAnswer == 1}">
-									<span>답변완료</span>
-								</c:if>
-							</td>
-							<td style="text-align:left;">
-								<a href="/mypage/support/support-detail?bdIdx=${supportList[2].dbIdx}">${supportList[2].title}</a>
-							</td>
-							<td>${supportList[2].regDate}<br>16:30</td>
-							<td class="btn-inq">
-								<button class="modify">수정</button>
-								<button class="delete">삭제</button>
-							</td>
-						</tr>
+						
+						<c:forEach items="${supportList}" var="support">
+							<tr>
+								<td>${support.type}</td>
+								<td>
+									<c:if test="${support.isAnswer == 0}">
+										<span>답변대기</span>
+									</c:if>
+									<c:if test="${support.isAnswer == 1}">
+										<span>답변완료</span>
+									</c:if>
+								</td>
+								<td style="text-align:left;">
+									<a href="/mypage/support/support-detail?bdIdx=${support.dbIdx}">${support.title}</a>
+								</td>
+								<td>${support.regDate}<br>16:30</td>
+								<td class="btn-inq">
+									<button class="modify" onclick="location.href='/mypage/support/support-modify';">수정</button>
+									<button class="delete">삭제</button>
+								</td>
+							</tr>
+						</c:forEach>
 					</table>
 					<ul class="pagenation">
 						<li><i class="far fa-arrow-alt-circle-left"></i></li>
