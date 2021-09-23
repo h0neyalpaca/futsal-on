@@ -12,6 +12,19 @@ public class SupportService {
 	private JDBCTemplate template = JDBCTemplate.getInstance();
 	private SupportDao supportDao = new SupportDao();
 	
+	public void insertBoard(Support support) {
+		
+		Connection conn = template.getConnection();
+		
+		try {
+			supportDao.insertBoard(support,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+	}
+	
 	public Support selectBoardDetail(String bdIdx) {
 		
 		 Connection conn = template.getConnection();

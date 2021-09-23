@@ -18,18 +18,18 @@
 					</div>
 				</div>
 				<div class="search-wrap">
-					<form action="/support/support-upload" method="post">
+					<form action="/mypage/support/support-upload" method="post">
 					
 					    <div class="type_wrapper">문의 유형 : 
-					    	<select name="type">
-						    <option value="1" selected="selected">불편사항</option>
-						    <option value="2">신고</option>						  
-						    <option value="3">기타</option>
+					    	<select name="type" id="type">
+							    <option value="1" selected="selected">불편사항</option>
+							    <option value="2">신고</option>						  
+							    <option value="3">기타</option>
 							</select>
 						</div>
-						<div class="tit_wraper"> 제목 : <input type="text" name="title" required="required"/></div>
+						<div class="tit_wraper"> 제목 : <input type="text" name="title" id="title" required="required"/></div>
 						<div class="textarea-wraper">
-							<textarea name="opinion" cols="100" rows="20" placeholder="내용을 입력해주세요." style="resize: none;"></textarea>
+							<textarea name="content" id="content" cols="100" rows="20" placeholder="내용을 입력해주세요." style="resize: none;"></textarea>
 						</div>
 						<input type="submit" value="등록">
 					</form>

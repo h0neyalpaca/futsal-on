@@ -64,9 +64,11 @@ public class SupportController extends HttpServlet {
 		support.setUserId(member.getUserId());
 		support.setTitle(request.getParameter("title"));
 		support.setContent(request.getParameter("content"));
+		support.setType(Integer.parseInt(request.getParameter("type")));
+
+		supportService.insertBoard(support);
 		
 		request.getRequestDispatcher("/mypage/support/support-list").forward(request, response);
-		
 	}
 	
 	private void supportForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

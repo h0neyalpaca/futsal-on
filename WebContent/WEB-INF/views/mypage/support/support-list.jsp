@@ -27,7 +27,17 @@
 						
 						<c:forEach items="${supportList}" var="support">
 							<tr>
-								<td>${support.type}</td>
+								<c:choose>
+									<c:when test="${support.type == 1}">
+										<td>불편사항</td>
+									</c:when>
+									<c:when test="${support.type == 2}">
+										<td>신고</td>
+									</c:when>
+									<c:when test="${support.type == 3}">
+										<td>기타</td>
+									</c:when>
+								</c:choose>
 								<td>
 									<c:if test="${support.isAnswer == 0}">
 										<span>답변대기</span>
@@ -37,7 +47,7 @@
 									</c:if>
 								</td>
 								<td style="text-align:left;">
-									<a href="/mypage/support/support-detail?bdIdx=${support.dbIdx}">${support.title}</a>
+									<a href="/mypage/support/support-detail?bdIdx=${support.bdIdx}">${support.title}</a>
 								</td>
 								<td>${support.regDate}<br>16:30</td>
 								<td class="btn-inq">

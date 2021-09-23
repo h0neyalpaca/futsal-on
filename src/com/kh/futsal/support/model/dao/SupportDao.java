@@ -15,10 +15,34 @@ public class SupportDao {
 	
 	JDBCTemplate template = JDBCTemplate.getInstance();
 	
+	
+	public void insertBoard(Support support, Connection conn) {
+		// TODO Auto-generated method stub
+		String sql = "insert into board "
+				+ "(bd_idx,user_id,title,content,type) "
+				+ "values(sc_bd_idx.nextval,?,?,?,?)";
+		
+		PreparedStatement pstm = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, support.getUserId());
+			pstm.setString(2, support.getTitle());
+			pstm.setString(3, support.getContent());
+			pstm.setInt(4, support.getType());
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+	}
+	
 	public Support selectBoardDetail(String bdIdx, Connection conn) {
 		
 		String sql = "select bd_idx, user_id, reg_date, title, content , type, is_answer from board where bd_idx = ? ";
-		System.out.println(sql);
 		
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
@@ -31,7 +55,7 @@ public class SupportDao {
 
 			if(rset.next()) {
 				support = new Support();
-				support.setDbIdx(rset.getString("bd_idx"));
+				support.setBdIdx(rset.getString("bd_idx"));
 				support.setUserId(rset.getString("user_id"));
 				support.setRegDate(rset.getDate("reg_date"));
 				support.setTitle(rset.getString("title"));
@@ -64,7 +88,7 @@ public class SupportDao {
 			
 			while(rset.next()) {
 				Support  support = new Support();
-				support.setDbIdx(rset.getString("bd_idx"));
+				support.setBdIdx(rset.getString("bd_idx"));
 				support.setUserId(rset.getString("user_id"));
 				support.setRegDate(rset.getDate("reg_date"));
 				support.setTitle(rset.getString("title"));

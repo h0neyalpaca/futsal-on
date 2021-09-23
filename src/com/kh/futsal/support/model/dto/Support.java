@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class Support {
 	
-	private String dbIdx;
+	private String bdIdx;
 	private String userId;
 	private Date regDate;
 	private String title;
@@ -12,11 +12,11 @@ public class Support {
 	private int type;
 	private int isAnswer;
 	
-	public String getDbIdx() {
-		return dbIdx;
+	public String getBdIdx() {
+		return bdIdx;
 	}
-	public void setDbIdx(String dbIdx) {
-		this.dbIdx = dbIdx;
+	public void setBdIdx(String bdIdx) {
+		this.bdIdx = bdIdx;
 	}
 	public String getUserId() {
 		return userId;
@@ -54,11 +54,13 @@ public class Support {
 	public void setIsAnswer(int isAnswer) {
 		this.isAnswer = isAnswer;
 	}
+	
 	@Override
 	public String toString() {
-		return "Support [dbIdx=" + dbIdx + ", userId=" + userId + ", regDate=" + regDate + ", title=" + title
+		return "Support [bdIdx=" + bdIdx + ", userId=" + userId + ", regDate=" + regDate + ", title=" + title
 				+ ", content=" + content + ", type=" + type + ", isAnswer=" + isAnswer + "]";
 	}
+	
 	
 	
 	
