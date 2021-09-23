@@ -45,8 +45,43 @@ public class MypageController extends HttpServlet {
 		case "leave":
 			leave(request,response);
 			break;
+		case "pw-check":
+			pwCheck(request,response);
+			break;
+		case "nick-check":
+			nickCheck(request,response);
+			break;
 		default:
 		}
+	}
+
+	private void nickCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String nickName = request.getParameter("nickName");
+		System.out.println(nickName);
+		
+		Member member = memberService.selectMemberBynickName(nickName);
+		System.out.println(member);
+		
+		if(member == null) {
+			response.getWriter().print("available");
+		}else {
+			response.getWriter().print("disable");
+		}
+		
+	}
+
+	private void pwCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		String password = member.getPassword();
+		String checkPw = request.getParameter(password);
+		
+		if(password == checkPw) {
+			response.getWriter().print("available");
+		}else {
+			response.getWriter().print("disable");
+		}
+		
 	}
 
 	private void leave(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

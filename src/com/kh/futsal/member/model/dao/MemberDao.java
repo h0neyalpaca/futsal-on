@@ -70,6 +70,57 @@ public class MemberDao {
 		}		
 	}
 	
+	public Member selectMemberBynickName(String nickName, Connection conn) {
+		  
+		  Member member = null;         
+	      PreparedStatement pstm = null;
+	      ResultSet rset = null;
+	      
+	      String query = "select * from member where user_nick = ?";
+	      
+	      try {         
+	         pstm = conn.prepareStatement(query);
+	         pstm.setString(1, nickName);
+	         rset = pstm.executeQuery();
+	         
+	         if(rset.next()) {
+	            member = convertRowToMember(rset);
+	         }
+	      } catch (SQLException e) {
+	         throw new DataAccessException(e);
+	      } finally {
+	         template.close(rset, pstm);
+	      }
+	      
+	      return member;
+	}
+	
+	public Member selectMemberById(String userId, Connection conn){      
+	      
+		  Member member = null;         
+	      PreparedStatement pstm = null;
+	      ResultSet rset = null;
+	      
+	      String query = "select * from member where user_Id = ?";
+	      
+	      try {         
+	         pstm = conn.prepareStatement(query);
+	         pstm.setString(1, userId);
+	         rset = pstm.executeQuery();
+	         
+	         if(rset.next()) {
+	            member = convertRowToMember(rset);
+	         }
+	      } catch (SQLException e) {
+	         throw new DataAccessException(e);
+	      } finally {
+	         template.close(rset, pstm);
+	      }
+	      
+	      return member;
+	   }
+
+	
 	
 	// 데이타베이스에서 받아온 resultset을 member에 담는 method
 	private Member convertRowToMember(ResultSet rset) throws SQLException {
@@ -123,4 +174,5 @@ public class MemberDao {
 		return res;
 	}
 
+	
 }

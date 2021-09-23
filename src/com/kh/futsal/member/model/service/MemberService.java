@@ -37,5 +37,31 @@ public class MemberService {
 			template.close(conn);
 		}
 	}
+
+
+	public Member selectMemberBynickName(String nickName) {
+		Connection conn = template.getConnection();
+	    Member member = null;
+	      
+	      try {
+	         member = memberDao.selectMemberBynickName(nickName, conn);
+	      } finally {
+	         template.close(conn);
+	      }
+	      
+	      return member;
+	}
 	
+	public Member selectMemberById(String userId) {
+	      Connection conn = template.getConnection();
+	      Member member = null;
+	      
+	      try {
+	         member = memberDao.selectMemberById(userId, conn);
+	      } finally {
+	         template.close(conn);
+	      }
+	      
+	      return member;
+	   }
 }

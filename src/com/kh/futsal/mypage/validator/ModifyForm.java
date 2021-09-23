@@ -7,6 +7,9 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import com.kh.futsal.member.model.dto.Member;
+import com.kh.futsal.member.model.service.MemberService;
+
 public class ModifyForm {
 	
 	private String password;
@@ -16,10 +19,12 @@ public class ModifyForm {
 	private String nickName;
 	private HttpServletRequest request;
 	
+	private MemberService memberService = new MemberService();
 	private Map<String,String> faildValidation = new HashMap<String,String>();
 	
 	public ModifyForm(ServletRequest request) {
 		this.request = (HttpServletRequest) request;
+		this.password = request.getParameter("password");
 		this.newPw = request.getParameter("new-password");
 		this.checkPw = request.getParameter("check-new-password");
 		this.tell = request.getParameter("tell");
@@ -30,6 +35,18 @@ public class ModifyForm {
 		
 		boolean isFailed = false;
 		
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		String userId = member.getUserId();
+		
+		if(memberService.selectMemberById(userId).getPassword() != password) {
+			faildValidation.put("password",password); 
+			isFailed = true; 
+		}
+		
+		if(memberService.selectMemberBynickName(nickName) != null || nickName.equals("")) {
+			 faildValidation.put("nickName",nickName); 
+			 isFailed = true; 
+		}
 	
 		//비밀번호가 영어,숫자,특수문자 조합의 8자리 이상의 문자열인지 확인
 		if(!Pattern.matches("(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Zㄱ-힣0-9]).{8,}", newPw)) {
@@ -69,7 +86,10 @@ public class ModifyForm {
 		return newPw;
 	}
 
-	
+	public String getPassword() {
+		return password;
+	}
+
 
 	public String getCheckPw() {
 		return checkPw;

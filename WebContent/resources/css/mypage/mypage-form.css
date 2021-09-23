@@ -107,6 +107,12 @@
 	margin-left:5px;
 	font-size:0.9em;
 }
+
+.mypage-form .valid-msg{
+	margin-left:5px;
+	font-size:0.9em;
+	color: red;
+}
 .mypage-form .msg.imp{
 	color:#DC143C;
 }
