@@ -45,12 +45,7 @@ public class MypageController extends HttpServlet {
 		
 	}
 	private void mypageModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		Member member = (Member) request.getSession().getAttribute("authentication");
-		request.setAttribute("member", member);
-		
 		request.getRequestDispatcher("/mypage/modify").forward(request, response);
-		
 	}
 	private void myApplication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
@@ -58,7 +53,6 @@ public class MypageController extends HttpServlet {
 	}
 	private void personalNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
