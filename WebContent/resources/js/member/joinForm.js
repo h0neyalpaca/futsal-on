@@ -1,17 +1,26 @@
-/**
- * 
- */
+
  (()=>{
 	  let confirmId = "";
+	  let confirmNick = "";
 
 	  document.querySelector('#btnIdCheck').addEventListener('click', function(){
 		  
 		   let userId = document.querySelector('#userId').value;
-		   
+		   let idReg = /^[a-z]+[a-z0-9]{3,19}$/g;	   
+
 		   if(!userId){
-			   document.querySelector('#idCheck').innerHTML = '아이디를 입력하지 않았습니다';
+			   alert("아이디를 입력하지 않았습니다")
+			  /* document.querySelector('#idCheck').innerHTML = '아이디를 입력하지 않았습니다';*/
 			   return;
 		   }
+		   
+		   if(!idReg.test(userId)) {
+		   	   document.querySelector('#idCheck').innerHTML = '<i class="fas fa-exclamation-circle"></i> 아이디는 영문자로 시작하는 4~20자 영문자 또는 숫자이어야 합니다.';
+			   return;
+           } else {
+		   	   document.querySelector('#idCheck').innerHTML = '';
+ 		   }
+		   
 		   
 		   fetch("/member/id-check?userId="+userId)
 		   .then(response =>{
@@ -24,25 +33,36 @@
 		   .then(text => {
 			   if(text == 'available'){
 				   confirmId = userId;
-				   document.querySelector('#idCheck').innerHTML = '사용 가능한 아이디 입니다';
+				   alert("사용 가능한 아이디 입니다")
 			   }else{
-				   document.querySelector('#idCheck').innerHTML = '사용 불가능한 아이디 입니다';
+				   alert("사용 불가능한 아이디 입니다")
 			   }
 		   })
 			.catch(error=>{
 				 document.querySelector('#idCheck').innerHTML ='응답에 실패했습니다  상태코드 : '+error;
 			})
+			
 	   });
 
-	document.querySelector('#btnNickNameCheck').addEventListener('click', function(){
+	document.querySelector('#btnNickCheck').addEventListener('click', function(){
 		  
-		   let userId = document.querySelector('#nickName').value;
-		   
-		   if(!userId){
-			   document.querySelector('#nickNameCheck').innerHTML = '닉네임을 입력하지 않았습니다';
+		   let userNick = document.querySelector('#userNick').value;
+		   let idReg = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/
+
+		   if(!userNick){
+ 			   alert("닉네임을 입력하지 않았습니다")
+			   /*document.querySelector('#nickNameCheck').innerHTML = '닉네임을 입력하지 않았습니다';*/
 			   return;
 		   }
-		   fetch("/member/nickName-check?nickName="+nickName)
+
+		   if(!idReg.test(userNick)) {
+		   	   document.querySelector('#nickCheck').innerHTML = '<i class="fas fa-exclamation-circle"></i> 닉네임은 4~10자로 설정해야합니다.';
+			   return;
+           } else {
+		   	   document.querySelector('#nickCheck').innerHTML = '';
+ 		   }		   
+
+		   fetch("/member/userNick-check?userNick="+userNick)
 		   .then(response =>{
 				if(response.ok){
 					return response.text()
@@ -51,11 +71,11 @@
 				}
 			})
 		   .then(text => {
-			   if(text == 'available'){
-				   confirmId = userId;
-				   document.querySelector('#nickNameCheck').innerHTML = '사용 가능한 닉네임 입니다';
+				if(text == 'available'){
+				   confirmNick = userNick;
+				   alert("사용 가능한 닉네임 입니다")
 			   }else{
-				   document.querySelector('#nickNameCheck').innerHTML = '사용 불가능한 닉네임 입니다';
+				   alert("사용 불가능한 아이디 입니다") 
 			   }
 		   })
 			.catch(error=>{
@@ -65,26 +85,57 @@
 	   
 	   document.querySelector('#frm_join').addEventListener('submit',e=>{
 		   let userId = document.querySelector('#userId').value;
+		   let userNick = document.querySelector('#userNick').value;
 		   let password = document.querySelector('#password').value;
+		   let passwordCheck = document.querySelector('#passwordCheck').value;
 		   let tell = document.querySelector('#tell').value;
-		  
+		   let serviceCheck = document.querySelector('#serviceCheck');
+		   let privacyCheck = document.querySelector('#privacyCheck');
+
 		   let pwReg = /(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Zㄱ-힣0-9])(?=.{8,})/;
 		   let tellReg = /^\d{9,11}$/;
-		   
+		  
+		   if(!(serviceCheck.checked && privacyCheck.checked)){
+			  alert('필수약관에 동의하지 않았습니다');
+	 		  e.preventDefault();
+		   }
+
+		   if(!pwReg.test(password)){
+			  document.querySelector('#passwordReg').innerHTML = '<i class="fas fa-exclamation-circle"></i> 비밀번호는 숫자,영문,특수문자 조합의 8글자 이상인 문자열입니다'; 
+		      document.querySelector('#password').focus();
+			  e.preventDefault();
+		   } else {
+			  document.querySelector('#passwordReg').innerHTML = '';
+		   }
+
+		   if(password != passwordCheck) {
+			  document.querySelector('#passwordDif').innerHTML = '<i class="fas fa-exclamation-circle"></i> 비밀번호가 일치하지 않습니다.';
+			  document.querySelector('#passwordCheck').focus();
+			  e.preventDefault();
+		   } else {
+			  document.querySelector('#passwordDif').innerHTML = '';
+		   }
+
+		   if(!tellReg.test(tell)){
+			   document.querySelector('#tellReg').innerHTML = '<i class="fas fa-exclamation-circle"></i> 전화번호는 9~11자리의 숫자입니다';
+			   e.preventDefault();
+		   } else {
+			  document.querySelector('#tellReg').innerHTML = '';
+		   }
+
 		   if(confirmId != userId){
-			   document.querySelector('#idCheck').innerHTML = '아이디 중복 검사를 하지 않았습니다';
+			   alert('아이디 중복 검사를 하지 않았습니다');
+			   /*document.querySelector('#passwordDif').innerHTML = '아이디 중복 검사를 하지 않았습니다';*/
 			   document.querySelector('#userId').focus();
 			   e.preventDefault();
 		   }
-		   /*
-		   if(!pwReg.test(password)){
-			   document.querySelector('#pwCheck').innerHTML = '비밀번호는 숫자,영문,특수문자 조합의 8글자 이상인 문자열입니다'; 
+
+ 		   if(confirmNick != userNick){
+			   alert('닉네임 중복 검사를 하지 않았습니다');
+			   /*document.querySelector('#passwordDif').innerHTML = '아이디 중복 검사를 하지 않았습니다';*/
+			   document.querySelector('#userId').focus();
 			   e.preventDefault();
 		   }
-		   
-		   if(!tellReg.test(tell)){
-			   document.querySelector('#tellCheck').innerHTML = '전화번호는 9~11자리의 숫자입니다';
-			   e.preventDefault();
-		   }  */
+
 	   })
   })();

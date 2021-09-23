@@ -50,8 +50,78 @@ public class MemberDao {
 		  return member;
 	}
 	
+	public int insertMember(Member member, Connection conn) {
+		int res = 0;		
+		PreparedStatement pstm = null;
+		
+		String query = "insert into member(user_id, password,user_name,user_nick,email,tell,capacity)"
+					 + " values(?,?,?,?,?,?,?) ";
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, member.getUserId());
+			pstm.setString(2, member.getPassword());
+			pstm.setString(3, member.getUserName());
+			pstm.setString(4, member.getUserNick());
+			pstm.setString(5, member.getEmail());
+			pstm.setString(6, member.getTell());
+			pstm.setString(7, member.getCapacity());
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		
+		return res;
+	}
 	
+	public Member selectMemberById(String userId, Connection conn) {
+		Member member = null;			
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		String query = "select * from member where user_Id = ?";
+		
+		try {			
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, userId);
+			rset = pstm.executeQuery();
+			
+			if(rset.next()) {
+				member = convertRowToMember(rset);
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(rset, pstm);
+		}
+		
+		return member;
+	}
 	
+	public Member selectMemberByNick(String userNick, Connection conn) {
+		Member member = null;			
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		String query = "select * from member where user_nick = ?";
+		
+		try {			
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, userNick);
+			rset = pstm.executeQuery();
+			
+			if(rset.next()) {
+				member = convertRowToMember(rset);
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(rset, pstm);
+		}
+		
+		return member;
+	}
 	
 	// 데이타베이스에서 받아온 resultset을 member에 담는 method
 	private Member convertRowToMember(ResultSet rset) throws SQLException {
@@ -104,5 +174,9 @@ public class MemberDao {
 		
 		return res;
 	}
+
+	
+
+
 
 }
