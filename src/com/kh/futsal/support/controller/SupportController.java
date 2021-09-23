@@ -52,8 +52,22 @@ public class SupportController extends HttpServlet {
 		case "support-upload":
 			supportUpload(request,response);
 			break;
+		case "support-update":
+			supportUpdate(request,response);
+			break;
 		default:
 		}
+	}
+	
+	private void supportUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String bdIdx = request.getParameter("bdIdx");
+		String content = request.getParameter("content");
+		
+		System.out.println(bdIdx +  content);
+		supportService.updateBoard(bdIdx,content);
+		
+		request.getRequestDispatcher("/mypage/support/support-list").forward(request, response);
 	}
 
 	private void supportUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -73,7 +87,6 @@ public class SupportController extends HttpServlet {
 	
 	private void supportForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/support/support-form").forward(request, response);
-		
 	}
 	
 	private void supportDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -85,10 +98,17 @@ public class SupportController extends HttpServlet {
 		request.setAttribute("support", support);
 		request.getRequestDispatcher("/mypage/support/support-detail").forward(request, response);
 	}
+	
 	private void supportModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/mypage/support/support-modify").forward(request, response);
 		
+		String bdIdx = request.getParameter("bdIdx");
+		
+		Support support = supportService.selectBoardDetail(bdIdx);
+		
+		request.setAttribute("support", support);
+		request.getRequestDispatcher("/mypage/support/support-modify").forward(request, response);
 	}
+	
 	private void supportList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		Member member = (Member) request.getSession().getAttribute("authentication");

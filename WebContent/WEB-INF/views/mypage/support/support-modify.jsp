@@ -18,17 +18,23 @@
 					</div>
 				</div>
 				<div class="search-wrap">
-					<form>
-					    <div class="type_wrapper">문의 유형 : 
-					    	<select name="type">
-						    <option value="1" selected="selected">불편사항</option>
-						    <option value="2">신고</option>						  
-						    <option value="3">기타</option>
-							</select>
+					<form action="/mypage/support/support-update?bdIdx=${support.bdIdx}" method="post">
+					     <div class="type_wrapper">문의 유형 : 
+						    <c:choose>
+								<c:when test="${support.type == 1}">
+									<span>불편사항</span>
+								</c:when>
+								<c:when test="${support.type == 2}">
+									<span>신고</span>
+								</c:when>
+								<c:when test="${support.type == 3}">
+									<span>기타</span>
+								</c:when>
+							</c:choose>
 						</div>
-						<div class="tit_wraper"> 제목 : <input type="text" name="title" required="required"/></div>
+						<div class="tit_wraper"> 제목 : <span><c:out value="${support.title}"/></span></div>
 						<div class="textarea-wraper">
-							<textarea name="opinion" cols="100" rows="20" placeholder="내용을 입력해주세요." style="resize: none;"></textarea>
+							<textarea name="content" id = "content" cols="100" rows="20" style="resize: none;">${support.content}</textarea>
 						</div>
 						<input type="submit" value="수정완료"> 
 					</form>
@@ -40,4 +46,4 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 </body>
-</html>html>
+</html>

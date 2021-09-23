@@ -51,7 +51,7 @@
 								</td>
 								<td>${support.regDate}<br>16:30</td>
 								<td class="btn-inq">
-									<button class="modify" onclick="location.href='/mypage/support/support-modify';">수정</button>
+									<button class="modify" onclick="location.href='/mypage/support/support-modify?bdIdx=${support.bdIdx}';">수정</button>
 									<button class="delete">삭제</button>
 								</td>
 							</tr>

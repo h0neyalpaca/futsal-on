@@ -104,5 +104,27 @@ public class SupportDao {
 		}
 		return supports;
 	}
+
+	public void updateBoard(String bdIdx, String content,Connection conn) {
+		
+		String sql = "update board set content = ? where bd_idx = ? ";
+		
+		PreparedStatement pstm = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, content);
+			pstm.setString(2, bdIdx);
+			
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
+	}
 	
 }

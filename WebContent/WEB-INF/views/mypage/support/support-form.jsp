@@ -22,7 +22,7 @@
 					
 					    <div class="type_wrapper">문의 유형 : 
 					    	<select name="type" id="type">
-							    <option value="1" selected="selected">불편사항</option>
+							    <option value="1" selected>불편사항</option>
 							    <option value="2">신고</option>						  
 							    <option value="3">기타</option>
 							</select>

@@ -50,5 +50,19 @@ public class SupportService {
 		}
 		return supports;
 	}
+
+	public void updateBoard(String bdIdx,String content) {
+		
+		Connection conn = template.getConnection();
+		
+		try {
+			supportDao.updateBoard(bdIdx,content,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+		
+	}
 	
 }
