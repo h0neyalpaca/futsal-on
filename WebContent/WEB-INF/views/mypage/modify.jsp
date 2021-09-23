@@ -21,7 +21,7 @@
 							<tr>
 								<th>아이디</th>
 								<td>
-									honeyalpaca
+									<c:out value="${authentication.userId}"/>
 								</td>
 							</tr>
 							<tr>
@@ -47,12 +47,14 @@
 							</tr>
 							<tr>
 								<th>이름</th>
-								<td>알파카</td>
+								<td>
+									<c:out value="${authentication.userName}"/>
+								</td>
 							</tr>
 							<tr>
 								<th>닉네임</th>
 								<td>
-									<input type="text" name="nickName" id="nickName" value="알파카" size="6" required />
+									<input type="text" name="nickName" id="nickName" size="6" value="${authentication.userNick}"  required />
 									<button type="button" id="btnNickCheck">중복확인</button>
 									<span class="msg">2~6자의 한글,영문</span>
 								</td>
@@ -60,22 +62,22 @@
 							<tr>
 								<th>연락처</th>
 								<td>
-									<input id="tell" type="tel" name="tell" value="01012345678" required />
+									<input id="tell" type="tel" name="tell" value="${authentication.tell}" required />
 									<span class="msg">숫자만 입력</span>
 								</td>
 							</tr>
 							<tr>
 								<th>이메일</th>
 								<td>
-									alpaca@naver.com
+									<c:out value="${authentication.email}"/>
 								</td>
 							</tr>
 							<tr>
 								<th>실력</th>
 								<td>
-									<label><input type="radio" name="grade" id="grade" value="" checked/> 상</label>
-									<label><input type="radio" name="grade" id="grade" value="" /> 중</label>
-									<label><input type="radio" name="grade" id="grade" value="" /> 하</label>
+									<label><input type="radio" name="grade" id="grade" value="상" ${authentication.capacity eq "상 "?"checked":""}/> 상</label>
+									<label><input type="radio" name="grade" id="grade" value="중" ${authentication.capacity eq "중 "?"checked":""}/> 중</label>
+									<label><input type="radio" name="grade" id="grade" value="하" ${authentication.capacity eq "하 "?"checked":""}/> 하</label>
 								</td>
 							</tr>
 							<tr>
@@ -92,6 +94,10 @@
 		</div>
 	</section>
 
+<script type="text/javascript">
+	
+</script>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+
 </body>
 </html>

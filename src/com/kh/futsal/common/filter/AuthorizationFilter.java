@@ -212,7 +212,7 @@ public class AuthorizationFilter implements Filter {
 		
 		switch (uriArr[2]) {
 		case "support":
-			if(member == null || !adminGrade.ROLE.equals("admin")) {
+			if(member == null) {
 				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
 			}
 			break;

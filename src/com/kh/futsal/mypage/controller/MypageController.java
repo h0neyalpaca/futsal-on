@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.futsal.member.model.dto.Member;
+
 @WebServlet("/mypage/*")
 public class MypageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -44,7 +46,6 @@ public class MypageController extends HttpServlet {
 	}
 	private void mypageModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/modify").forward(request, response);
-		
 	}
 	private void myApplication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
@@ -52,7 +53,6 @@ public class MypageController extends HttpServlet {
 	}
 	private void personalNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

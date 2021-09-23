@@ -20,18 +20,17 @@
 				<div class="search-wrap">
 					
 					    <div class="type_wrapper">문의 유형 : 
-					    <c:choose>
-							<c:when test="${support.type == 1}">
-								<span>불편사항</span>
-							</c:when>
-							<c:when test="${support.type == 2}">
-								<span>신고</span>
-							</c:when>
-							<c:when test="${support.type == 3}">
-								<span>기타</span>
-							</c:when>
-						</c:choose>
-							
+						    <c:choose>
+								<c:when test="${support.type == 1}">
+									<span>불편사항</span>
+								</c:when>
+								<c:when test="${support.type == 2}">
+									<span>신고</span>
+								</c:when>
+								<c:when test="${support.type == 3}">
+									<span>기타</span>
+								</c:when>
+							</c:choose>
 						</div>
 						<div class="tit_wraper"> 제목 : <span><c:out value="${support.title}"/></span></div>
 						<div class="content-wraper">
@@ -39,7 +38,7 @@
 						</div>
 						
 						<div class="button_wrapper">
-							<input type="submit" onclick="location.href='/mypage/support/support-modify'" value="수정"> <input type="submit" value="삭제">
+							<input type="submit" onclick="location.href='/mypage/support/support-modify?bdIdx=${support.bdIdx}'" value="수정"> <input type="submit" value="삭제">
 						</div>
 					
 				</div> 
