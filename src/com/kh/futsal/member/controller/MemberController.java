@@ -63,6 +63,7 @@ public class MemberController extends HttpServlet {
 	private void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getSession().removeAttribute("authentication");
 		response.sendRedirect("/");
+		System.out.println("test");
 	}
 
 	private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
