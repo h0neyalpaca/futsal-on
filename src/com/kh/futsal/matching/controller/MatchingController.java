@@ -33,6 +33,9 @@ public class MatchingController extends HttpServlet {
 		case "team-match-form":
 			teamMathForm(request,response);
 			break;
+		case "team-match-register":
+			teamMatchRegister(request,response);
+			break;
 		case "team-modify":
 			teamModify(request,response);
 			break;
@@ -49,6 +52,11 @@ public class MatchingController extends HttpServlet {
 
 		default:
 		}
+		
+	}
+
+
+	private void teamMatchRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 	}
 
