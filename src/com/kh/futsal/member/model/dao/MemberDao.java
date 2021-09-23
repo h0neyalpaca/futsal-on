@@ -50,7 +50,25 @@ public class MemberDao {
 		  return member;
 	}
 	
-	
+	public void leaveId(String userId, Connection conn) {
+		
+		String sql = "update member set is_leave = 1 where user_id = ? ";
+			
+		PreparedStatement pstm = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, userId);
+			
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}		
+	}
 	
 	
 	// 데이타베이스에서 받아온 resultset을 member에 담는 method

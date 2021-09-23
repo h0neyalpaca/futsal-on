@@ -8,10 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kh.futsal.member.model.dto.Member;
+import com.kh.futsal.member.model.service.MemberService;
 
 @WebServlet("/mypage/*")
 public class MypageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private MemberService memberService = new MemberService();
+
        
     public MypageController() {
         super();
@@ -39,10 +42,20 @@ public class MypageController extends HttpServlet {
 		case "leave-id":
 			leaveId(request,response);
 			break;
+		case "leave":
+			leave(request,response);
+			break;
 		default:
 		}
 	}
 
+	private void leave(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String userId = request.getParameter("userId");
+		memberService.leaveID(userId);
+		
+		request.getRequestDispatcher("/index").forward(request, response);
+	}
 	private void leaveId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/leave-id").forward(request, response);
 		
