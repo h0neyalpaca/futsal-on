@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kh.futsal.member.validator.JoinForm;
+import com.kh.futsal.mypage.validator.ModifyForm;
 import com.kh.futsal.team.validator.CreateForm;
 
 
@@ -51,6 +52,9 @@ public class ValidatorFilter implements Filter {
 			case "myteam":
 				redirectURI = myteamValidation(httpRequest,httpResponse,uriArr);
 				break;
+			case "mypage":
+				redirectURI = mypageValidation(httpRequest,httpResponse,uriArr);
+				break;
 			default:
 				break;
 			}
@@ -61,6 +65,24 @@ public class ValidatorFilter implements Filter {
 			}
 		}
 		chain.doFilter(request, response);
+	}
+
+	private String mypageValidation(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
+
+		String redirectURI = null;
+		
+		switch (uriArr[2]) {
+		case "modify":
+			ModifyForm modifyForm = new ModifyForm(httpRequest);
+			if(!modifyForm.test()) {
+				redirectURI = "/mypage/modify-form?err=1";
+			}
+			break;
+		default:
+			break;
+		}
+		
+		return redirectURI;
 	}
 
 	private String myteamValidation(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {

@@ -30,6 +30,9 @@ public class MypageController extends HttpServlet {
 		case "my-application":
 			myApplication(request,response);
 			break;
+		case "modify-form":
+			mypageModifyForm(request,response);
+			break;
 		case "modify":
 			mypageModify(request,response);
 			break;
@@ -44,8 +47,13 @@ public class MypageController extends HttpServlet {
 		request.getRequestDispatcher("/mypage/leave-id").forward(request, response);
 		
 	}
+	
 	private void mypageModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/mypage/modify").forward(request, response);
+		
+		request.getRequestDispatcher("/mypage/modify-form").forward(request, response);
+	}
+	private void mypageModifyForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/mypage/modify-form").forward(request, response);
 	}
 	private void myApplication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
