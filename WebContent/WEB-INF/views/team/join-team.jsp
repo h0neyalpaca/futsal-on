@@ -20,7 +20,7 @@
 					<i class="fas fa-user-lock"></i>
 					전달받으신 <strong>팀 참가 코드</strong>를 입력하세요.
 				</p>
-				<form action="/team/join-func" method="post">
+				<form action="${request.contextPath}/team/join" method="post">
 					<div class="team-join-form">
 						<input type="text" name="tmCode" id="tmCode" placeholder="팀 참가코드를 입력하세요." required />
 						<input type="submit" value="팀 참가하기" />

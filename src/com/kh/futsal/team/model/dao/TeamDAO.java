@@ -24,10 +24,10 @@ public class TeamDAO {
 	public int insertTeam(Team team, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
-		String sql = "INSERT INTO TEAM"+
-				"(TM_CODE,LOCAL_CODE,MANAGER_ID,TM_NAME,TM_GRADE,TM_INFO) "+
-				"VALUES(?,?,?,?,?,?) ";
 		try {
+			String sql = "INSERT INTO TEAM"+
+					"(TM_CODE,LOCAL_CODE,MANAGER_ID,TM_NAME,TM_GRADE,TM_INFO) "+
+					"VALUES(?,?,?,?,?,?) ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, team.getTmCode());
 			pstm.setString(2, team.getLocalCode());
@@ -47,8 +47,8 @@ public class TeamDAO {
 	public int updateMember(Member member, Team team, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
-		String sql = "UPDATE MEMBER SET TM_CODE = ?, GRADE = ? WHERE USER_ID = ? ";
 		try {
+			String sql = "UPDATE MEMBER SET TM_CODE = ?, GRADE = ? WHERE USER_ID = ? ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, team.getTmCode());
 			if(member.getUserId().equals(team.getManagerId())) {
@@ -66,12 +66,52 @@ public class TeamDAO {
 		return res;
 	}
 	
+	public int updateGrade(String userId, String managerId, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "UPDATE MEMBER SET GRADE = ? WHERE USER_ID = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, "ME01");
+			pstm.setString(2, managerId);
+			res = pstm.executeUpdate();
+			if(res < 1) {
+				return res;
+			}
+			pstm.setString(1, "ME03");
+			pstm.setString(2, userId);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+
+	public int updateTmManager(String userId, String tmCode, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "UPDATE TEAM SET MANAGER_ID = ? WHERE TM_CODE = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, userId);
+			pstm.setString(2, tmCode);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+	
 	public Team selectTeamByTmCode(String tmCode, Connection conn) {
 		Team team = new Team();
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
-		String sql = "SELECT * FROM TEAM WHERE TM_CODE = ? ";
 		try {
+			String sql = "SELECT * FROM TEAM WHERE TM_CODE = ? ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, tmCode);
 			rset = pstm.executeQuery();
@@ -86,13 +126,12 @@ public class TeamDAO {
 		return team;
 	}
 	
-	//--------------------
 	public Team selectTeamByUserId(String userId, Connection conn) {
 		Team team = null;
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
-		String sql = "SELECT * FROM TEAM WHERE TM_CODE = (SELECT TM_CODE FROM MEMBER WHERE USER_ID=?) ";
 		try {
+			String sql = "SELECT * FROM TEAM WHERE TM_CODE = (SELECT TM_CODE FROM MEMBER WHERE USER_ID=?) ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, userId);
 			rset = pstm.executeQuery();
@@ -107,13 +146,15 @@ public class TeamDAO {
 		return team;
 	}
 	
+	
+	//
 	public List<Member> selectTmMembersByTeamCode(String tmCode, Connection conn) {
 		List<Member> tmMembers = new ArrayList<Member>();
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
-		String sql = "SELECT USER_ID,GRADE FROM MEMBER WHERE TM_CODE = ? ORDER BY GRADE DESC ";
 		
 		try {
+			String sql = "SELECT USER_ID,GRADE FROM MEMBER WHERE TM_CODE = ? ORDER BY GRADE DESC ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, tmCode);
 			rset = pstm.executeQuery();
@@ -150,4 +191,5 @@ public class TeamDAO {
 		team.setDelDate(rset.getDate("DEL_DATE"));
 		return team;
 	}
+
 }

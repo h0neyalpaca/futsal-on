@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.team.model.dao.TeamDAO;
@@ -42,6 +44,32 @@ public class TeamService {
 		}
 	}
 	
+	public void updateGrade(String userId, String managerId) {
+		Connection conn = template.getConnection();
+		try {
+			td.updateGrade(userId,managerId,conn);
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		} finally {
+			template.close(conn);
+		}
+	}
+	
+	public void updateTmManager(String userId, String tmCode) {
+		Connection conn = template.getConnection();
+		try {
+			td.updateTmManager(userId,tmCode,conn);
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		} finally {
+			template.close(conn);
+		}
+	}
+	
 	public Team selectTeamByTmCode(String tmCode) {
 		Connection conn = template.getConnection();
 		Team team = null;
@@ -53,8 +81,6 @@ public class TeamService {
 		return team;
 	}
 	
-	//--------------------------윗줄완료
-	//유저 ID로 가입한 팀이 있는지 찾기
 	public Team selectTeamByUserId(String userId) {
 		Connection conn = template.getConnection();
 		Team team = null;
@@ -66,7 +92,6 @@ public class TeamService {
 		return team;
 	}
 	
-	//팀 코드로 팀 멤버 찾기
 	public List<Member> selectTmMembers(String tmCode) {
 		Connection conn = template.getConnection();
 		List<Member> tmMembers = null;
@@ -77,11 +102,12 @@ public class TeamService {
 		}
 		return tmMembers;
 	}
+
 	
 	//팀코드 랜덤 생성
 	public String createRandomCode(String keyword) {
 		String result = "";
-		keyword += new SimpleDateFormat("yyyyMMdd").format(new Date());
+		keyword += new SimpleDateFormat("yyMMdd").format(new Date());
 		for(int i=0; i<keyword.length(); i++) {
 			String s = keyword.substring(i,i+1);
 			switch(s) {
@@ -121,12 +147,11 @@ public class TeamService {
 				case "x":s="7";break;
 				case "y":s="8";break;
 				case "z":s="9";break;
-				case "-":s="_";break;
-				case "_":s="-";break;
 				default:s="!";break;
 			}
 			result += s;
 		}
 		return result;
 	}
+
 }
