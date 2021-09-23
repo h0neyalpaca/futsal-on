@@ -25,36 +25,36 @@
 							<th>관리</th>
 						</tr>
 						<tr>
-							<td>불편사항</td>
+							<td>${supportList[0].type}</td>
 							<td>답변대기</td>
 							<td style="text-align:left;">
-								<a href="/mypage/support/support-detail">사이트 건의</a>
+								<a href="/mypage/support/support-detail">${supportList[0].title}</a>
 							</td>
-							<td>2021-08-25<br>16:30</td>
+							<td>${supportList[0].regdate}<br>16:30</td>
 							<td class="btn-inq">
 								<button class="modify" onclick="location.href='/mypage/support/support-modify';">수정</button>
 								<button class="delete">삭제</button>
 							</td>
 						</tr>
 						<tr>
-							<td>불편사항</td>
+							<td>${supportList[1].type}</td>
 							<td>답변대기</td>
 							<td style="text-align:left;">
-								<a href="#">사이트 건의</a>
+								<a href="#">${supportList[1].title}</a>
 							</td>
-							<td>2021-08-25<br>16:30</td>
+							<td>${supportList[1].regdate}<br>16:30</td>
 							<td class="btn-inq">
 								<button class="modify">수정</button>
 								<button class="delete">삭제</button>
 							</td>
 						</tr>
 						<tr>
-							<td>불편사항</td>
+							<td>${supportList[2].type}</td>
 							<td>답변대기</td>
 							<td style="text-align:left;">
-								<a href="#">사이트 건의</a>
+								<a href="#">${supportList[2].title}</a>
 							</td>
-							<td>2021-08-25<br>16:30</td>
+							<td>${supportList[2].regdate}<br>16:30</td>
 							<td class="btn-inq">
 								<button class="modify">수정</button>
 								<button class="delete">삭제</button>

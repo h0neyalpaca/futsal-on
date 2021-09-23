@@ -73,9 +73,9 @@
 							<tr>
 								<th>실력</th>
 								<td>
-									<label><input type="radio" name="grade" id="grade" value="" checked/> 상</label>
-									<label><input type="radio" name="grade" id="grade" value="" /> 중</label>
-									<label><input type="radio" name="grade" id="grade" value="" /> 하</label>
+									<label><input type="radio" name="grade" id="grade" value="상" checked/> 상</label>
+									<label><input type="radio" name="grade" id="grade" value="중" /> 중</label>
+									<label><input type="radio" name="grade" id="grade" value="하" /> 하</label>
 								</td>
 							</tr>
 							<tr>
