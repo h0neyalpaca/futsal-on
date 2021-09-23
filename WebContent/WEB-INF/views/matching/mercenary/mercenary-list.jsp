@@ -19,7 +19,7 @@
 					</div>
 				</div>
 				<div class="matching-write">
-					<a href="#"><i class="fas fa-pencil-alt"></i>글쓰기</a>
+					<a href="mercenary-match-form"><i class="fas fa-pencil-alt"></i>글쓰기</a>
 				</div>
 				<div class="search-wrap">
 					<form>
