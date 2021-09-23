@@ -31,29 +31,37 @@ public class TeamController extends HttpServlet {
 		String[] uriArr = request.getRequestURI().split("/");
 
 		switch (uriArr[uriArr.length-1]) {
+		//아무나
 		case "main":
 			teamMain(request,response);
 			break;
 		case "join-team":
 			joinTeam(request,response);
 			break;
-		case "join-func":
+		case "join":
 			joinFunc(request,response);
 			break;
 		case "create-form":
 			createForm(request,response);
 			break;
-		case "create-func":
+		case "create":
 			createFunc(request,response);
 			break;
+		//팀 소속된 사람만
 		case "modify":
 			teamModify(request,response);
 			break;
 		case "manage":
 			teamManage(request,response);
 			break;
-		case "manage-func":
-			manageFunc(request,response);
+		case "manage-delegation":
+			manageDelegation(request,response);
+			break;
+		case "manage-expulsion":
+			manageExpulsion(request,response);
+			break;
+		case "manage-grade":
+			manageGrade(request,response);
 			break;
 		case "total-score":
 			totalScore(request,response);
@@ -69,11 +77,6 @@ public class TeamController extends HttpServlet {
 		}
 	}
 
-	private void manageFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
-	}
-
 	private void deleteTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/team/managing/delete-team").forward(request, response);
 		
@@ -84,10 +87,29 @@ public class TeamController extends HttpServlet {
 	}
 	private void totalScore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/team/managing/total-score").forward(request, response);
-		
 	}
+	
+	private void manageGrade(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect("/team/managing/manage");
+	}
+	
+	private void manageExpulsion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect("/team/managing/manage");
+	}
+	
+	private void manageDelegation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Team team = (Team) request.getSession().getAttribute("team");
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		
+		ts.updateGrade(request.getParameter("userId"),team.getManagerId());
+		ts.updateTmManager(request.getParameter("userId"),team.getTmCode());
+		
+		member.setGrade("ME01");
+		response.sendRedirect("/team/managing/manage?result=1");
+	}
+	
 	private void teamManage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Team team = (Team) request.getAttribute("team");
+		Team team = (Team) request.getSession().getAttribute("team");
 		request.setAttribute("tmMembers", ts.selectTmMembers(team.getTmCode()));
 		request.getRequestDispatcher("/team/managing/manage").forward(request, response);
 	}
@@ -97,24 +119,18 @@ public class TeamController extends HttpServlet {
 	}
 	
 	private void createFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Member member = (Member) request.getSession().getAttribute("authentication");
-		Member member = (Member) request.getAttribute("authentication");
-		
-		String tmName = request.getParameter("tmName");
-		String tmGrade = request.getParameter("tmGrade");
-		String localCode = request.getParameter("localCode");
-		String tmInfo = request.getParameter("tmInfo");
+		Member member = (Member) request.getSession().getAttribute("authentication");
 		
 		//random code
 		String tmCode = ts.createRandomCode(member.getUserId());
-
+		
 		Team team = new Team();
 		team.setTmCode(tmCode);
-		team.setLocalCode(localCode);
+		team.setLocalCode(request.getParameter("localCode"));
 		team.setManagerId(member.getUserId());
-		team.setTmName(tmName);
-		team.setTmGrade(tmGrade);
-		team.setTmInfo(tmInfo);
+		team.setTmName(request.getParameter("tmName"));
+		team.setTmGrade(request.getParameter("tmGrade"));
+		team.setTmInfo(request.getParameter("tmInfo"));
 
 		ts.insertTeam(team);
 		ts.updateMember(member, team);
@@ -126,16 +142,13 @@ public class TeamController extends HttpServlet {
 	}
 	
 	private void joinFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Member member = (Member) request.getSession().getAttribute("authentication");
-		Member member = (Member) request.getAttribute("authentication");
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		Team team = ts.selectTeamByTmCode(request.getParameter("tmCode"));
 		
-		String tmCode = request.getParameter("tmCode");
-		Team team = ts.selectTeamByTmCode(tmCode);
 		if(team.getTmCode()==null || team.getDelDate()!=null) {
 			response.sendRedirect("/team/join-team?err=1");
 			return;
 		}
-		
 		ts.updateMember(member, team);
 		response.sendRedirect("/team/managing/modify?result=1");
 	}
@@ -145,7 +158,7 @@ public class TeamController extends HttpServlet {
 	}
 	
 	private void teamMain(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Team team = (Team) request.getAttribute("team");
+		Team team = (Team) request.getSession().getAttribute("team");
 		//팀이 있는 회원은 팀관리 화면으로, 없는 회원은 메인으로 보내기
 		if(team != null) {
 			request.getRequestDispatcher("/team/managing/modify").forward(request, response);

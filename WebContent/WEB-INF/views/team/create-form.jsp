@@ -15,7 +15,7 @@
 			<div class="myteam-wrap">
 				<h2><i class="far fa-futbol"></i> 나의 팀 생성</h2>
 				<div class="myteam-con">
-					<form action="/team/create-func" method="post">
+					<form action="${request.contextPath}/team/create" method="post">
 						<table class="team-create-form">
 							<tr>
 								<th>팀 이름</th>

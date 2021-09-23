@@ -21,12 +21,12 @@
 						<div class="btn-team create">
 							<i class="far fa-plus-square"></i>
 							나만의 팀을 만듭니다.
-							<button onclick="location.href='/team/create-form';">팀 생성</button>
+							<button onclick="location.href='${request.contextPath}/team/create-form';">팀 생성</button>
 						</div>
 						<div class="btn-team join">
 							<i class="fas fa-sign-in-alt"></i>
 							기존 팀에 참가합니다.
-							<button onclick="location.href='/team/join-team';">팀 참가</button>
+							<button onclick="location.href='${request.contextPath}/team/join-team';">팀 참가</button>
 						</div>
 					</div>
 				</div>

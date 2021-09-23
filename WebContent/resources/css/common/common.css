@@ -148,7 +148,7 @@ footer{
 	position:fixed;
 	top:0;
 	left:0;
-	display:flex;
+	display:none;
 	align-items:center;
 	justify-content:center;
 	width:100vw;
@@ -174,6 +174,7 @@ footer{
 	font-size:1.8em;
 }
 .pop-msg button{
+	font-size:0.9em;
 	display:block;
 	margin:0 auto;
 	width:100%;
@@ -183,4 +184,8 @@ footer{
 	background-color:#483D8B;
 	color:#fff;
 	cursor:pointer;
+}
+.pop-msg button.cancel{
+	background-color:#bbb;
+	margin-top:5px;
 }

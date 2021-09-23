@@ -126,17 +126,7 @@
 	padding-right:10px;
 	border:none;
 }
-.team-member-form .btn-change-grade{
-	width:50px;
-	padding: 10px;
-	border:none;
-	background-color:#837ab9;
-	cursor:pointer;
-	border-radius:5px;
-	color:#fff;
-	margin-left:5px;
-}
-.team-member-form .btn-out-member{
+.team-member-form button{
 	width:100%;
 	max-width:100px;
 	padding: 10px;
@@ -145,6 +135,10 @@
 	cursor:pointer;
 	border-radius:5px;
 	color:#fff;
+}
+.team-member-form .btn-change-grade{
+	width:50px;
+	margin-left:5px;
 }
 
 /* team score */
