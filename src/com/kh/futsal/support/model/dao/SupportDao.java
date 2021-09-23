@@ -17,7 +17,7 @@ public class SupportDao {
 	
 	public Support selectBoardDetail(String bdIdx, Connection conn) {
 		
-		String sql = "select bd_idx, user_id, reg_date, title, content , type from board where bd_idx = ? ";
+		String sql = "select bd_idx, user_id, reg_date, title, content , type, is_answer from board where bd_idx = ? ";
 		System.out.println(sql);
 		
 		PreparedStatement pstm = null;
@@ -37,6 +37,7 @@ public class SupportDao {
 				support.setTitle(rset.getString("title"));
 				support.setContent(rset.getString("content"));
 				support.setType(rset.getInt("type"));
+				support.setIsAnswer(rset.getInt("is_answer"));
 			}
 			
 		} catch (SQLException e) {
@@ -50,7 +51,7 @@ public class SupportDao {
 	
 	public List<Support> selectSupportList (String userId, Connection conn){
 		
-		String sql = "select bd_idx, user_id, reg_date, title, content , type from board where user_id = ?";
+		String sql = "select bd_idx, user_id, reg_date, title, content , type, is_answer  from board where user_id = ?";
 		
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
@@ -69,6 +70,7 @@ public class SupportDao {
 				support.setTitle(rset.getString("title"));
 				support.setContent(rset.getString("content"));
 				support.setType(rset.getInt("type"));
+				support.setIsAnswer(rset.getInt("is_answer"));
 				supports.add(support);
 			}
 		} catch (SQLException e) {

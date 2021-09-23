@@ -73,7 +73,8 @@ public class SupportController extends HttpServlet {
 	}
 	private void supportList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String userId = "nomal";
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		String userId = member.getUserId();
 		
 		List<Support> supportList = supportService.selectSupportList(userId);
 		

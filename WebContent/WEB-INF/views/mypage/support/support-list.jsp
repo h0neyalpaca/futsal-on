@@ -26,11 +26,18 @@
 						</tr>
 						<tr>
 							<td>${supportList[0].type}</td>
-							<td>답변대기</td>
+							<td>
+								<c:if test="${supportList[0].isAnswer == 0}">
+									<span>답변대기</span>
+								</c:if>
+								<c:if test="${supportList[0].isAnswer == 1}">
+									<span>답변완료</span>
+								</c:if>
+							</td>
 							<td style="text-align:left;">
 								<a href="/mypage/support/support-detail">${supportList[0].title}</a>
 							</td>
-							<td>${supportList[0].regdate}<br>16:30</td>
+							<td>${supportList[0].regDate}<br>16:30</td>
 							<td class="btn-inq">
 								<button class="modify" onclick="location.href='/mypage/support/support-modify';">수정</button>
 								<button class="delete">삭제</button>
@@ -38,11 +45,18 @@
 						</tr>
 						<tr>
 							<td>${supportList[1].type}</td>
-							<td>답변대기</td>
+							<td>
+								<c:if test="${supportList[1].isAnswer == 0}">
+									<span>답변대기</span>
+								</c:if>
+								<c:if test="${supportList[1].isAnswer == 1}">
+									<span>답변완료</span>
+								</c:if>
+							</td>
 							<td style="text-align:left;">
 								<a href="#">${supportList[1].title}</a>
 							</td>
-							<td>${supportList[1].regdate}<br>16:30</td>
+							<td>${supportList[1].regDate}<br>16:30</td>
 							<td class="btn-inq">
 								<button class="modify">수정</button>
 								<button class="delete">삭제</button>
@@ -50,11 +64,18 @@
 						</tr>
 						<tr>
 							<td>${supportList[2].type}</td>
-							<td>답변대기</td>
+							<td>
+								<c:if test="${supportList[2].isAnswer == 0}">
+									<span>답변대기</span>
+								</c:if>
+								<c:if test="${supportList[2].isAnswer == 1}">
+									<span>답변완료</span>
+								</c:if>
+							</td>
 							<td style="text-align:left;">
 								<a href="#">${supportList[2].title}</a>
 							</td>
-							<td>${supportList[2].regdate}<br>16:30</td>
+							<td>${supportList[2].regDate}<br>16:30</td>
 							<td class="btn-inq">
 								<button class="modify">수정</button>
 								<button class="delete">삭제</button>

@@ -10,6 +10,7 @@ public class Support {
 	private String title;
 	private String content;
 	private int type;
+	private int isAnswer;
 	
 	public String getDbIdx() {
 		return dbIdx;
@@ -47,11 +48,18 @@ public class Support {
 	public void setType(int type) {
 		this.type = type;
 	}
+	public int getIsAnswer() {
+		return isAnswer;
+	}
+	public void setIsAnswer(int isAnswer) {
+		this.isAnswer = isAnswer;
+	}
 	@Override
 	public String toString() {
 		return "Support [dbIdx=" + dbIdx + ", userId=" + userId + ", regDate=" + regDate + ", title=" + title
-				+ ", content=" + content + ", type=" + type + "]";
-	} 
+				+ ", content=" + content + ", type=" + type + ", isAnswer=" + isAnswer + "]";
+	}
+	
 	
 	
 }
