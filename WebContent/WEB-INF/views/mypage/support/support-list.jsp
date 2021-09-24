@@ -49,7 +49,7 @@
 								<td style="text-align:left;">
 									<a href="/mypage/support/support-detail?bdIdx=${support.bdIdx}">${support.title}</a>
 								</td>
-								<td>${support.regDate}<br>16:30</td>
+								<td>${support.regDate}</td>
 								<td class="btn-inq">
 									<button class="modify" onclick="location.href='/mypage/support/support-modify?bdIdx=${support.bdIdx}';">수정</button>
 									<button class="delete" onclick="location.href='/mypage/support/support-delete?bdIdx=${support.bdIdx}';">삭제</button>

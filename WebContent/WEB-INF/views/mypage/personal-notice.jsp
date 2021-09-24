@@ -19,33 +19,29 @@
 					<table class="mypage-notice-form">
 						<tr>
 							<th>상태</th>
-							<th>구분</th>
 							<th style="width:60%">알림내용</th>
 							<th>날짜</th>
 						</tr>
 						<tr>
 							<td>읽음</td>
-							<td>용병</td>
-							<td style="text-align:left;">
+							<td style="text-align:center;">
 								<a href="#">작성하신 용병 게시글에 신청자가 있습니다.</a>
 							</td>
-							<td>2021-08-25<br>16:30</td>
+							<td>2021-08-25</td>
 						</tr>
 						<tr>
 							<td>읽음</td>
-							<td>용병</td>
-							<td style="text-align:left;">
+							<td style="text-align:center;">
 								<a href="#">작성하신 용병 게시글에 신청자가 있습니다.</a>
 							</td>
-							<td>2021-08-25<br>16:30</td>
+							<td>2021-08-25</td>
 						</tr>
 						<tr>
 							<td>읽음</td>
-							<td>용병</td>
-							<td style="text-align:left;">
+							<td style="text-align:center;">
 								<a href="#">작성하신 용병 게시글에 신청자가 있습니다.</a>
 							</td>
-							<td>2021-08-25<br>16:30</td>
+							<td>2021-08-25</td>
 						</tr>
 					</table>
 					<ul class="pagenation">
