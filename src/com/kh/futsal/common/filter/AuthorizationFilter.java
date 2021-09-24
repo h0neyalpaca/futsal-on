@@ -170,27 +170,20 @@ public class AuthorizationFilter implements Filter {
 		
 	}
 
-
 	private void teamAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
 
-		/* 테스트용 아이디 */
-		Member member = new Member();
-		member.setUserId("alpaca_n");
-		member.setGrade("ME00");
-		httpRequest.setAttribute("authentication", member);
-		
-		/* 테스트용 팀 */
-		TeamService ts = new TeamService();
-		Team team = ts.selectTeamByUserId(member.getUserId());
-		httpRequest.setAttribute("team", team);
-		
-		//member = (Member) httpRequest.getSession().getAttribute("authentication");
-		//team = (Team) httpRequest.getSession().getAttribute("teamInfo");
+		Member member = (Member) httpRequest.getSession().getAttribute("authentication");
+		member.setUserId("alpaca3");
+		member.setTmCode("ALPACATEAM");
 		
 		if(member == null) {
 			throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
 		}
 		
+		TeamService ts = new TeamService();
+		Team team = ts.selectTeamByUserId(member.getUserId());
+		httpRequest.getSession().setAttribute("team", team);
+
 		MemberGrade grade = MemberGrade.valueOf(member.getGrade());
 		switch (uriArr[2]) {
 		case "managing":
@@ -219,7 +212,7 @@ public class AuthorizationFilter implements Filter {
 		
 		switch (uriArr[2]) {
 		case "support":
-			if(member == null || !adminGrade.ROLE.equals("admin")) {
+			if(member == null) {
 				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
 			}
 			break;

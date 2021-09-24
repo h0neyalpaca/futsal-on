@@ -7,9 +7,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.futsal.member.model.dto.Member;
+import com.kh.futsal.member.model.service.MemberService;
+
 @WebServlet("/mypage/*")
 public class MypageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private MemberService memberService = new MemberService();
+
        
     public MypageController() {
         super();
@@ -28,23 +33,40 @@ public class MypageController extends HttpServlet {
 		case "my-application":
 			myApplication(request,response);
 			break;
+		case "modify-form":
+			mypageModifyForm(request,response);
+			break;
 		case "modify":
 			mypageModify(request,response);
 			break;
 		case "leave-id":
 			leaveId(request,response);
 			break;
+		case "leave":
+			leave(request,response);
+			break;
 		default:
 		}
 	}
 
+	private void leave(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String userId = request.getParameter("userId");
+		memberService.leaveID(userId);
+		
+		request.getRequestDispatcher("/index").forward(request, response);
+	}
 	private void leaveId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/leave-id").forward(request, response);
 		
 	}
+	
 	private void mypageModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/mypage/modify").forward(request, response);
 		
+		request.getRequestDispatcher("/mypage/modify-form").forward(request, response);
+	}
+	private void mypageModifyForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/mypage/modify-form").forward(request, response);
 	}
 	private void myApplication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
@@ -52,7 +74,6 @@ public class MypageController extends HttpServlet {
 	}
 	private void personalNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

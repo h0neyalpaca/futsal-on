@@ -1,6 +1,7 @@
 package com.kh.futsal.support.model.service;
 
 import java.sql.Connection;
+import java.util.List;
 
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.support.model.dao.SupportDao;
@@ -10,6 +11,19 @@ public class SupportService {
 
 	private JDBCTemplate template = JDBCTemplate.getInstance();
 	private SupportDao supportDao = new SupportDao();
+	
+	public void insertBoard(Support support) {
+		
+		Connection conn = template.getConnection();
+		
+		try {
+			supportDao.insertBoard(support,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+	}
 	
 	public Support selectBoardDetail(String bdIdx) {
 		
@@ -22,6 +36,33 @@ public class SupportService {
 			template.close(conn);
 		}
 		return support;
+	}
+	
+	public List<Support> selectSupportList(String userId) {
+		
+		 Connection conn = template.getConnection();
+		 List<Support> supports = null;
+
+		try {
+			supports = supportDao.selectSupportList(userId, conn);
+		} finally {
+			template.close(conn);
+		}
+		return supports;
+	}
+
+	public void updateBoard(String bdIdx,String content) {
+		
+		Connection conn = template.getConnection();
+		
+		try {
+			supportDao.updateBoard(bdIdx,content,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+		
 	}
 	
 }

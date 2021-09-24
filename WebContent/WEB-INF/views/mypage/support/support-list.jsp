@@ -24,42 +24,38 @@
 							<th>날짜</th>
 							<th>관리</th>
 						</tr>
-						<tr>
-							<td>불편사항</td>
-							<td>답변대기</td>
-							<td style="text-align:left;">
-								<a href="/mypage/support/support-detail">사이트 건의</a>
-							</td>
-							<td>2021-08-25<br>16:30</td>
-							<td class="btn-inq">
-								<button class="modify" onclick="location.href='/mypage/support/support-modify';">수정</button>
-								<button class="delete">삭제</button>
-							</td>
-						</tr>
-						<tr>
-							<td>불편사항</td>
-							<td>답변대기</td>
-							<td style="text-align:left;">
-								<a href="#">사이트 건의</a>
-							</td>
-							<td>2021-08-25<br>16:30</td>
-							<td class="btn-inq">
-								<button class="modify">수정</button>
-								<button class="delete">삭제</button>
-							</td>
-						</tr>
-						<tr>
-							<td>불편사항</td>
-							<td>답변대기</td>
-							<td style="text-align:left;">
-								<a href="#">사이트 건의</a>
-							</td>
-							<td>2021-08-25<br>16:30</td>
-							<td class="btn-inq">
-								<button class="modify">수정</button>
-								<button class="delete">삭제</button>
-							</td>
-						</tr>
+						
+						<c:forEach items="${supportList}" var="support">
+							<tr>
+								<c:choose>
+									<c:when test="${support.type == 1}">
+										<td>불편사항</td>
+									</c:when>
+									<c:when test="${support.type == 2}">
+										<td>신고</td>
+									</c:when>
+									<c:when test="${support.type == 3}">
+										<td>기타</td>
+									</c:when>
+								</c:choose>
+								<td>
+									<c:if test="${support.isAnswer == 0}">
+										<span>답변대기</span>
+									</c:if>
+									<c:if test="${support.isAnswer == 1}">
+										<span>답변완료</span>
+									</c:if>
+								</td>
+								<td style="text-align:left;">
+									<a href="/mypage/support/support-detail?bdIdx=${support.bdIdx}">${support.title}</a>
+								</td>
+								<td>${support.regDate}<br>16:30</td>
+								<td class="btn-inq">
+									<button class="modify" onclick="location.href='/mypage/support/support-modify?bdIdx=${support.bdIdx}';">수정</button>
+									<button class="delete">삭제</button>
+								</td>
+							</tr>
+						</c:forEach>
 					</table>
 					<ul class="pagenation">
 						<li><i class="far fa-arrow-alt-circle-left"></i></li>

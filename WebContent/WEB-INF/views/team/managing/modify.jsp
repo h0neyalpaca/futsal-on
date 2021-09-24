@@ -17,7 +17,7 @@
 			<div class="myteam-con">
 				
 				<%@ include file="/WEB-INF/views/team/managing/team_tab.jsp" %>
-				<form action="/team/modify-team" method="post">
+				<form action="${request.contextPath}/team/managing/modify-team" method="post">
 					<table class="team-create-form">
 						<tr>
 							<th>팀 이름</th>

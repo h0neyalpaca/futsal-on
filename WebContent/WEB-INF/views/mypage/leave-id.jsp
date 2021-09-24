@@ -20,7 +20,7 @@
 					<p class="leave-msg">회원 탈퇴를 진행하면 <strong>회원 정보가 소멸되며 다시 시스템을 이용하실 수 없습니다.</strong>
 					<br>탈퇴 후 되돌릴 수 없으니 신중하게 결정해주세요.</p>
 					<br>
-					<button type="submit" class="btn-leave-member" style="color:red">풋살온 탈퇴하기</button>
+					<button type="submit" class="btn-leave-member" style="color:red" onclick="location.href='/mypage/leave?userId=${authentication.userId}'">풋살온 탈퇴하기</button>
 				
 				</div>
 			</div>

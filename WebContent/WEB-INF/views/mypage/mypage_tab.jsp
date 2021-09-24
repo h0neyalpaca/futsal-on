@@ -6,5 +6,5 @@
 	<li><a class="selected" href="/mypage/personal-notice">알림내역</a></li>
 	<li><a href="/mypage/my-application">용병신청내역</a></li>
 	<li><a href="/mypage/support/support-list">문의내역</a></li>
-	<li><a href="/mypage/modify">회원정보수정</a></li>
+	<li><a href="/mypage/modify-form">회원정보수정</a></li>
 </ul>

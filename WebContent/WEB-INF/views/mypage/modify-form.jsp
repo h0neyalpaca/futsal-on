@@ -16,12 +16,12 @@
 				<h2><i class="fas fa-user-cog"></i> 마이페이지</h2>
 				<div class="mypage-con">
 					<%@ include file="/WEB-INF/views/mypage/mypage_tab.jsp" %>
-					<form action="/mypafe/modify" method="post">
+					<form action="/mypage/modify" method="post" id ="frm_modify">
 						<table class="mypage-form">
 							<tr>
 								<th>아이디</th>
 								<td>
-									honeyalpaca
+									<c:out value="${authentication.userId}"/>
 								</td>
 							</tr>
 							<tr>
@@ -34,48 +34,70 @@
 							<tr>
 								<th>새비밀번호</th>
 								<td>
-									<input type="password" name="password" id="password" />
+									<input type="password" name="new-password" id="new-password" />
 									<span class="msg">띄어쓰기 없는 6~15자 영문 대/소문자 포함</span>
+									<span class="valid-msg" id="newPw">
+						                <c:if test="${!empty param.err and not empty modifyValid.password}">
+						                	비밀번호는 영어,숫자,특수문자 조합의 8글자 이상의 문자열입니다.
+						                </c:if>
+					                </span>
 								</td>
 							</tr>
 							<tr>
 								<th>비밀번호확인</th>
 								<td>
-									<input type="password" name="password" id="password" />
+									<input type="password" name="check-new-password" id="check-new-password" />
+									<span class="valid-msg" id="pwCheck">
+						                <c:if test="${!empty param.err and not empty modifyValid.checkPw}">
+						                	비밀번호가 일치하지 않습니다
+						                </c:if>
+					                </span>
 									
 								</td>
 							</tr>
 							<tr>
 								<th>이름</th>
-								<td>알파카</td>
+								<td>
+									<c:out value="${authentication.userName}"/>
+								</td>
 							</tr>
 							<tr>
 								<th>닉네임</th>
 								<td>
-									<input type="text" name="nickName" id="nickName" value="알파카" size="6" required />
+									<input type="text" name="nickName" id="nickName" size="6" value="${authentication.userNick}"  required />
 									<button type="button" id="btnNickCheck">중복확인</button>
 									<span class="msg">2~6자의 한글,영문</span>
+									<span class="valid-msg" id="nickCheck">
+						                <c:if test="${!empty param.err and not empty modifyValid.nickName}">
+						                	이미 존재하는 닉네임 입니다
+						                </c:if>
+					                </span>
 								</td>
 							</tr>
 							<tr>
 								<th>연락처</th>
 								<td>
-									<input id="tell" type="tel" name="tell" value="01012345678" required />
+									<input id="tell" type="tel" name="tell" value="${authentication.tell}" required />
 									<span class="msg">숫자만 입력</span>
+									<span class="valid-msg" id="tellCheck">
+						                <c:if test="${!empty param.err and not empty modifyValid.tell}">
+						                	휴대폰 번호는 9~11자리의 숫자입니다
+						                </c:if>
+					                </span>
 								</td>
 							</tr>
 							<tr>
 								<th>이메일</th>
 								<td>
-									alpaca@naver.com
+									<c:out value="${authentication.email}"/>
 								</td>
 							</tr>
 							<tr>
 								<th>실력</th>
 								<td>
-									<label><input type="radio" name="grade" id="grade" value="" checked/> 상</label>
-									<label><input type="radio" name="grade" id="grade" value="" /> 중</label>
-									<label><input type="radio" name="grade" id="grade" value="" /> 하</label>
+									<label><input type="radio" name="grade" id="grade" value="상" ${authentication.capacity eq "상 "?"checked":""}/> 상</label>
+									<label><input type="radio" name="grade" id="grade" value="중" ${authentication.capacity eq "중 "?"checked":""}/> 중</label>
+									<label><input type="radio" name="grade" id="grade" value="하" ${authentication.capacity eq "하 "?"checked":""}/> 하</label>
 								</td>
 							</tr>
 							<tr>
@@ -92,6 +114,10 @@
 		</div>
 	</section>
 
+<script type="text/javascript">
+	
+</script>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+
 </body>
 </html>
