@@ -55,8 +55,20 @@ public class SupportController extends HttpServlet {
 		case "support-update":
 			supportUpdate(request,response);
 			break;
+		case "support-delete":
+			supportDelete(request,response);
+			break;
 		default:
 		}
+	}
+	
+	private void supportDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String bdIdx = request.getParameter("bdIdx");
+		
+		supportService.deleteBoard(bdIdx);
+		
+		response.sendRedirect("/mypage/support/support-list");
 	}
 	
 	private void supportUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -64,7 +76,6 @@ public class SupportController extends HttpServlet {
 		String bdIdx = request.getParameter("bdIdx");
 		String content = request.getParameter("content");
 		
-		System.out.println(bdIdx +  content);
 		supportService.updateBoard(bdIdx,content);
 		
 		request.getRequestDispatcher("/mypage/support/support-list").forward(request, response);
