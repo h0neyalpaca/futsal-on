@@ -19,52 +19,57 @@
 					</div>
 				</div>
 				<div class="search-wrap">
-					<form action="/matching/team/team-match-register" method="post">
+					<form onsubmit="return formCheck()" action="/matching/team/team-match-register" method="post" >
 						<dl>
 							<dt>경기지역</dt>
 							<dd class="matchRegion">
-								<label><input type="radio" class="bt1" value="seoul" name="region">서울</label>
-								<label><input type="radio" class="bt2" value="gyeonggi" name="region">경기</label>
-								<label><input type="radio" class="bt3" value="gangwon" name="region" >강원</label>
-								<label><input type="radio" class="bt4" value="chungcheong" name="region" />충청</label>
-								<label><input type="radio" class="bt5" value="jeolla" name="region" >전라</label>
-								<label><input type="radio" class="bt6" value="jeju" name="region" >제주</label>
-								<label><input type="radio" class="bt7" value="gyeongsang" name="region" />경상</label>
+								<label><input type="radio" class="bt1" value="LC11" name="localCode">서울</label>
+								<label><input type="radio" class="bt2" value="LC31" name="localCode">경기</label>
+								<label><input type="radio" class="bt3" value="LC32" name="localCode" >강원</label>
+								<label><input type="radio" class="bt4" value="LC33" name="localCode" />충청</label>
+								<label><input type="radio" class="bt5" value="LC35" name="localCode" >전라</label>
+								<label><input type="radio" class="bt6" value="LC39" name="localCode" >제주</label>
+								<label><input type="radio" class="bt7" value="LC37" name="localCode" />경상</label>
 							</dd>
 						</dl>
 						<dl>
 							<dt>상세주소</dt>
 							<dd>
-								<input type="text" class="keyword"/><i class="fas fa-search" id="search"></i>
+								<input type="text" class="keyword" name="detailAddress"/><i class="fas fa-search" id="search"></i>
 								<div id="map" style="width:200px;height:150px;"></div>
 							</dd>
 						</dl>
 						<dl>
 							<dt>매치방식</dt>
 							<dd class="matchStyle">
-								<label><input type="radio" name="size" value="small">5 : 5</label>
-								<label><input type="radio" name="size" value="medium">6 : 6</label>
-								<label><input type="radio" name="size" value="big">7 : 7</label>
+								<label><input type="radio" name="size" value="5">5 : 5</label>
+								<label><input type="radio" name="size" value="6">6 : 6</label>
+								<label><input type="radio" name="size" value="7">7 : 7</label>
 							</dd>
 						</dl>
 						<dl>
 							<dt>매치날짜</dt>
-							<dd><input type="date" /></dd>
+							<dd>
+								<input type="date" name="date" />
+								<input type="time" name="time" min="0" />
+							</dd>
+			
 						</dl>
+						
 						<dl>
 							<dt>구장비</dt>
-							<dd><input type="number" step="1000" min="0"/></dd>
+							<dd><input type="number" step="1000" min="0" name="cost"/></dd>
 						</dl>
 						<dl>
 							<dt>우리팀 실력</dt>
 							<dd class="level-dd" style="padding-left: 10px;">
-								<label><input type="radio" name="level" value="high">상</label>
-								<label><input type="radio" name="level" value="middle">중</label>
-								<label><input type="radio" name="level" value="low">하</label>
+								<label><input type="radio" name="level" value="상">상</label>
+								<label><input type="radio" name="level" value="중">중</label>
+								<label><input type="radio" name="level" value="하">하</label>
 							</dd>
 						</dl>
 						<div class="textarea-wrap">
-							<textarea name="opinion" cols="100" rows="20" placeholder="내용을 입력해주세요." style="resize: none;"></textarea>
+							<textarea name="content" cols="100" rows="20" placeholder="내용을 입력해주세요." style="resize: none;"></textarea>
 						</div>
 						<input type="submit" value="등록">
 					</form>
@@ -82,7 +87,7 @@
 	
 
 	document.querySelector('.matchRegion').addEventListener('click', e => {
-		let region = document.getElementsByName('region');
+		let region = document.getElementsByName('localCode');
 		region.forEach((noCheck) => {
 		
 			if (noCheck.checked == true) {
@@ -196,6 +201,43 @@
 		}
 		
 	}
+	let formCheck = () => {
+		let localCode = document.getElementsByName('localCode');
+		let value = null;
+		localCode.forEach((e) => {
+			if (e.checked) {
+				value = e.value;
+			}
+		})
+		
+		
+		console.dir("동작 확인 : " + value);
+		if (value == null) {
+			document.querySelector('.matchRegion').innerHTML = '지역을 선택해주세요.';
+			return true;
+		}
+		return false;
+		
+	}
+	
+/* 	document.querySelector('#match_reg').addEventListener('submit', function(e){
+		e.preventDefault;
+		let localCode = document.getElementsByName('localCode');
+		let value = null;
+		localCode.forEach((e) => {
+			if (e.checked) {
+				value = e.value;
+			}
+		})
+		
+		
+		console.dir("동작 확인 : " + value);
+		if (value == null) {
+			document.querySelector('.matchRegion').innerHTML = '지역을 선택해주세요.';
+			e.preventDefault;
+		}
+		
+   })  */
 	
 	
 
