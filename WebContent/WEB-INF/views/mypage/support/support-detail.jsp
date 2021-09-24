@@ -36,10 +36,11 @@
 						<div class="content-wraper">
 							<pre><c:out value="${support.content}"/></pre>
 						</div>
-						
-						<div class="ans_wraper" style="margin-top: 3%; font-size: 2vw;">
-							<span>Answer</span>
-						</div>
+						<c:if test="${support.isAnswer == 1}">
+							<div class="ans_wraper" style="margin-top: 3%; font-size: 2vw;">
+								<span>Answer</span>
+							</div>
+						</c:if>
 						
 						<c:if test="${support.isAnswer == 1 && authentication.grade != 'AD00'}">
 								<div class="content-wraper" style="height: 250px;">
