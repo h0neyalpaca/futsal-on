@@ -34,7 +34,7 @@
 						</div>
 						<div class="tit_wraper"> 제목 : <span><c:out value="${support.title}"/></span></div>
 						<div class="content-wraper">
-							<p><c:out value="${support.content}"/></p>
+							<pre><c:out value="${support.content}"/></pre>
 						</div>
 						
 						<div class="button_wrapper">
