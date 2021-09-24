@@ -70,7 +70,34 @@ public class SupportService {
 		Connection conn = template.getConnection();
 		
 		try {
-			supportDao.updateBoard(bdIdx,conn);
+			supportDao.deleteBoard(bdIdx,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+		
+	}
+
+	public List<Support> selectAllSupportList() {
+		
+		Connection conn = template.getConnection();
+		List<Support> supports = null;
+
+		try {
+			supports = supportDao.selectAllSupportList(conn);
+		} finally {
+			template.close(conn);
+		}
+		
+		return supports;
+	}
+
+	public void updateAnswer(String bdIdx, String answer) {
+		Connection conn = template.getConnection();
+		
+		try {
+			supportDao.updateAnswer(bdIdx,answer,conn);
 			
 			template.commit(conn);
 		}finally {

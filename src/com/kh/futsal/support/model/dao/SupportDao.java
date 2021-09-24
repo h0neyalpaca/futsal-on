@@ -42,7 +42,7 @@ public class SupportDao {
 	
 	public Support selectBoardDetail(String bdIdx, Connection conn) {
 		
-		String sql = "select bd_idx, user_id, reg_date, title, content , type, is_answer from board where bd_idx = ? ";
+		String sql = "select * from board where bd_idx = ? ";
 		
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
@@ -62,6 +62,8 @@ public class SupportDao {
 				support.setContent(rset.getString("content"));
 				support.setType(rset.getInt("type"));
 				support.setIsAnswer(rset.getInt("is_answer"));
+				support.setAnswer(rset.getString("answer"));
+
 			}
 			
 		} catch (SQLException e) {
@@ -75,7 +77,7 @@ public class SupportDao {
 	
 	public List<Support> selectSupportList (String userId, Connection conn){
 		
-		String sql = "select bd_idx, user_id, reg_date, title, content , type, is_answer  from board where user_id = ?";
+		String sql = "select * from board where user_id = ?";
 		
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
@@ -95,6 +97,7 @@ public class SupportDao {
 				support.setContent(rset.getString("content"));
 				support.setType(rset.getInt("type"));
 				support.setIsAnswer(rset.getInt("is_answer"));
+				support.setAnswer(rset.getString("answer"));
 				supports.add(support);
 			}
 		} catch (SQLException e) {
@@ -127,7 +130,7 @@ public class SupportDao {
 		
 	}
 
-	public void updateBoard(String bdIdx, Connection conn) {
+	public void deleteBoard(String bdIdx, Connection conn) {
 
 		String sql = "delete from board where bd_idx = ? ";
 		
@@ -145,6 +148,59 @@ public class SupportDao {
 		}finally {
 			template.close(pstm);
 		}
+	}
+
+	public List<Support> selectAllSupportList(Connection conn) {
+		String sql = "select * from board ";
+		
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		List<Support> supports = new ArrayList<Support>();
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			rset = pstm.executeQuery();
+			
+			while(rset.next()) {
+				Support  support = new Support();
+				support.setBdIdx(rset.getString("bd_idx"));
+				support.setUserId(rset.getString("user_id"));
+				support.setRegDate(rset.getDate("reg_date"));
+				support.setTitle(rset.getString("title"));
+				support.setContent(rset.getString("content"));
+				support.setType(rset.getInt("type"));
+				support.setIsAnswer(rset.getInt("is_answer"));
+				support.setAnswer(rset.getString("answer"));
+				supports.add(support);
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		return supports;
+	}
+
+	public void updateAnswer(String bdIdx, String answer, Connection conn) {
+		
+		String sql = "update board set answer = ? , is_answer = 1 where bd_idx = ? ";
+		
+		PreparedStatement pstm = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, answer);
+			pstm.setString(2, bdIdx);
+			
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
 	}
 	
 }
