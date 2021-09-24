@@ -160,6 +160,7 @@ footer{
 	box-shadow:0px 5px 15px #888;
 	min-width:400px;
 	padding:40px;
+	text-align:center;
 	border-radius:15px;
 	background-color:#fff;
 	margin-top:-10%;
@@ -175,9 +176,9 @@ footer{
 }
 .pop-msg button{
 	font-size:0.9em;
-	display:block;
-	margin:0 auto;
-	width:100%;
+	display:inline-block;
+	width:46%;
+	margin:1%;
 	padding:15px;
 	border:none;
 	border-radius:5px;
@@ -185,7 +186,6 @@ footer{
 	color:#fff;
 	cursor:pointer;
 }
-.pop-msg button.cancel{
+.pop-msg button.cancel-btn{
 	background-color:#bbb;
-	margin-top:5px;
 }

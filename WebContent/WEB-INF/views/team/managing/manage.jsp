@@ -28,8 +28,8 @@
 						</tr>
 						<c:forEach items="${tmMembers}" var="tmMembers" varStatus="status">
 						<tr>
-							<td>${status.count}</td>
-							<td>${tmMembers.userId}</td>
+							<td><c:out value="${status.count}" /></td>
+							<td><c:out value="${tmMembers.userId}" /></td>
 							<td>
 								<c:if test="${authentication.grade=='ME03'&&tmMembers.grade!='ME03'}">
 									<div class="selectbox">
@@ -41,12 +41,12 @@
 									<button class="btn-change-grade" onclick="manageGrade(this, '${tmMembers.userId}');return false;">변경</button>
 								</c:if>
 								<c:if test="${authentication.grade!='ME03'||tmMembers.grade=='ME03'}">
-									${tmMembers.grade eq 'ME03'?'팀장':'ME02'?'매니저':'팀원'}
+									<c:out value="${tmMembers.grade eq 'ME03'?'팀장':'ME02'?'매니저':'팀원'}" />
 								</c:if>
 							</td>
 							<c:if test="${authentication.grade=='ME03'}">
 								<td><c:if test="${tmMembers.grade!='ME03'}"><button onclick="manageDelegation('${tmMembers.userId}');">팀장 위임</button></c:if></td>
-								<td><c:if test="${tmMembers.grade!='ME03'}"><button onclick="manageExpulsion(this, '${tmMembers.userId}');return false;">추방</button></c:if></td>
+								<td><c:if test="${tmMembers.grade!='ME03'}"><button onclick="manageExpulsion('${tmMembers.userId}');">추방</button></c:if></td>
 							</c:if>
 						</tr>
 						</c:forEach>
@@ -62,57 +62,103 @@
 	</section>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-<c:if test="${not empty param.result}">
-<div class="pop-msg-wrap" style="display:flex;">
-	<div class="pop-msg">
-		<p><i class="fas fa-check-circle"></i><br>팀장을 위임하였습니다!</p>
-		<button onclick="btnClose();">확인</button>
-	</div>
-</div>
-</c:if>
-<div class="pop-msg-wrap delegation">
-	<div class="pop-msg">
-		<p><i class="fas fa-exclamation-triangle"></i><br>팀장을 위임하시겠습니까?<br>팀에 대한 모든 권한을 잃게 됩니다.</p>
-		<button onclick="delegation();">팀을 위임하겠습니다.</button><button class="cancel" onclick="btnClose();">다시 생각해보겠습니다.</button>
-	</div>
-</div>
 
+<div class="pop-msg-wrap question">
+	<div class="pop-msg">
+		<p></p>
+		<button class="cancel-btn" onclick="btnClose();">취소</button>
+		<button class="submit-btn" onclick=""></button>
+	</div>
+</div>
+<div class="pop-msg-wrap answer">
+	<div class="pop-msg">
+		<p></p>
+		<button class="close-btn" onclick='location.href="${request.contextPath}/team/managing/manage"'>확인</button>
+	</div>
+</div>
 <script type="text/javascript">
-(()=>{
-	let userId = "";
-})();
-
-let manageDelegation = (userId) => {
-	let msgWrap = document.querySelector('.pop-msg-wrap.delegation');
-	msgWrap.style.display='flex';
-	this.userId = userId;
+let manageGrade = (e, userId) => {
+	let grade = e.parentNode.childNodes[1].childNodes[1].value;
+	drawQuestion(userId+'님의 등급을 변경하시겠습니까?','grade("'+userId+'","'+grade+'");');
 }
-let delegation = () => {
-	var frm = document.modfrm;
-	frm.userId.value=userId;
-	frm.action='${request.contextPath}/team/managing/manage-delegation';
-	frm.submit();
+let manageDelegation = (userId) => {
+	drawQuestion(userId+'님에게 팀의 모든 권한을 위임하시겠습니까?','delegation("'+userId+'");');
+}
+let manageExpulsion = (userId) => {
+	drawQuestion(userId+'님을 추방하시겠습니까?','expulsion("'+userId+'");');
+}
+let drawQuestion = (txt,func) => {
+	document.querySelector('.pop-msg-wrap.question').style.display='flex';
+	document.querySelector('.pop-msg-wrap.question p').innerHTML='<i class="fas fa-exclamation-triangle"></i><br>'+txt;
+	document.querySelector('.submit-btn').setAttribute('onClick',func);
+	document.querySelector('.submit-btn').innerHTML='확인';
+}
+
+let grade = (userId, grade) => {
+	let xhr = new XMLHttpRequest();
+	xhr.open('POST','${request.contextPath}/team/managing/manage-grade',true);
+	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xhr.send('userId='+userId+'&grade='+grade);
+	xhr.onreadystatechange = () => {
+		if (xhr.readyState == XMLHttpRequest.DONE) {
+			if (xhr.status == 200) {
+				drawAnswer(userId+'님의 등급을 변경하였습니다.');
+			} else if (xhr.status == 400) {
+				alert('There was an error 400');
+			} else {
+				alert('something else other than 200 was returned');
+			}
+		}
+	};
+}
+let delegation = (userId) => {
+	let xhr = new XMLHttpRequest();
+	xhr = xmlRequest('POST','manage-delegation',userId);
+	xhr.onreadystatechange = () => {
+		if (xhr.readyState == XMLHttpRequest.DONE) {
+			if (xhr.status == 200) {
+				drawAnswer(userId+'님에게 팀장을 위임하였습니다.');
+			} else if (xhr.status == 400) {
+				alert('There was an error 400');
+			} else {
+				alert('something else other than 200 was returned');
+			}
+		}
+	};
+}
+let expulsion = (userId) => {
+	let xhr = new XMLHttpRequest();
+	xhr = xmlRequest('POST','manage-expulsion',userId);
+	xhr.onreadystatechange = () => {
+		if (xhr.readyState == XMLHttpRequest.DONE) {
+			if (xhr.status == 200) {
+				drawAnswer(userId+'님을 추방하였습니다.');
+			} else if (xhr.status == 400) {
+				alert('There was an error 400');
+			} else {
+				alert('something else other than 200 was returned');
+			}
+		}
+	};
+}
+let xmlRequest = (method,url,userId) => {
+	let xhr = new XMLHttpRequest();
+	xhr.open(method,'${request.contextPath}/team/managing/'+url,true);
+	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xhr.send('userId='+userId);
+	return xhr;
+}
+let drawAnswer = (txt) => {
+	document.querySelector('.pop-msg-wrap.question').style.display='none';
+	document.querySelector('.pop-msg-wrap.answer').style.display='flex';
+	document.querySelector('.pop-msg-wrap.answer p').innerHTML='<i class="fas fa-check-circle"></i><br>'+txt;
 }
 let btnClose = () => {
-	let msgWrap = document.querySelector('.pop-msg-wrap');
-	msgWrap.style.display='none';
+	let msgWrap = document.querySelectorAll('.pop-msg-wrap');
+	msgWrap.forEach(e=>{
+		e.style.display='none';		
+	});
 }
-
-
-/* function manageGrade(e, userId) {
-	var frm = document.modfrm;
-	frm.userId.value=userId;
-	frm.grade.value=e.parentNode.childNodes[1].childNodes[1].value;
-	frm.action='${request.contextPath}/team/managing/manage-grade';
-	frm.submit();
-}
-function manageExpulsion(e, userId) {
-	var frm = document.modfrm;
-	frm.userId.value=userId;
-	frm.grade.value=e.parentNode.childNodes[1].childNodes[1].value;
-	frm.action='${request.contextPath}/team/managing/manage-expulsion';
-	frm.submit();
-} */
 </script>
 </body>
 </html>
