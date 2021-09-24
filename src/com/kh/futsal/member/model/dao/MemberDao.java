@@ -123,13 +123,33 @@ public class MemberDao {
 		return member;
 	}
 	
+	public void leaveId(String userId, Connection conn) {
+
+		String sql = "update member set is_leave = 1 where user_id = ? ";
+
+		PreparedStatement pstm = null;
+
+		try {
+			pstm = conn.prepareStatement(sql);
+
+			pstm.setString(1, userId);
+
+			pstm.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}		
+	}
+	
 	// 데이타베이스에서 받아온 resultset을 member에 담는 method
 	private Member convertRowToMember(ResultSet rset) throws SQLException {
 		Member member = new Member();
 		member.setUserId(rset.getString("user_id")); 
 		member.setTmCode(rset.getString("tm_code")); 
 		member.setPassword(rset.getString("password"));
-		member.setUserId(rset.getString("user_name"));
+		member.setUserName(rset.getString("user_name"));
 		member.setGrade(rset.getString("grade"));
 		member.setUserNick(rset.getString("user_nick"));
 		member.setEmail(rset.getString("email"));
@@ -149,7 +169,7 @@ public class MemberDao {
 			case "user_id":member.setUserId(rset.getString("user_id")); break;
 			case "tm_Code":member.setTmCode(rset.getString("tm_code")); break;
 			case "password":member.setPassword(rset.getString("password"));break;
-			case "user_name":member.setUserId(rset.getString("user_name")); break;
+			case "user_name":member.setUserName(rset.getString("user_name")); break;
 			case "grade":member.setGrade(rset.getString("grade")); break;
 			case "user_nick":member.setUserNick(rset.getString("user_nick"));break;
 			case "email":member.setEmail(rset.getString("email"));break;

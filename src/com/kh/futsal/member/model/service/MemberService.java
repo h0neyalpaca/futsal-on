@@ -95,4 +95,16 @@ public class MemberService {
 		return member;
 	}
 	
+	public void leaveID(String userId) {
+		Connection conn = template.getConnection();
+
+		try {
+			memberDao.leaveId(userId,conn);
+
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+	}
+	
 }
