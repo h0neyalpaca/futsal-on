@@ -86,7 +86,8 @@ public class MypageController extends HttpServlet {
 		String userId = request.getParameter("userId");
 		memberService.leaveID(userId);
 		
-		request.getRequestDispatcher("/index").forward(request, response);
+		request.getSession().removeAttribute("authentication");
+		response.sendRedirect("/index");
 	}
 	
 	private void leaveId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
