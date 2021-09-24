@@ -41,6 +41,20 @@ public class NoticeService {
 		
 		return noticeList;
 	}
+
+
+	public int selectNoticeCnt() {
+		int res = 0;
+		Connection conn = template.getConnection();
+		
+		try {
+			res = noticeDao.selectNoticeCnt(conn);
+		} finally {
+			template.close(conn);
+		}
+		
+		return res;
+	}
 	
 	
 	
