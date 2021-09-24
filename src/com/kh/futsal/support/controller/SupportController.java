@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.futsal.common.code.member.MemberGrade;
 import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.support.model.dto.Support;
 import com.kh.futsal.support.model.service.SupportService;
@@ -58,8 +59,21 @@ public class SupportController extends HttpServlet {
 		case "support-delete":
 			supportDelete(request,response);
 			break;
+		case "support-answer":
+			supportAnswer(request,response);
+			break;
 		default:
 		}
+	}
+	
+	private void supportAnswer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String bdIdx = request.getParameter("bdIdx");
+		String answer = request.getParameter("answer");
+		
+		supportService.updateAnswer(bdIdx,answer);
+		
+		response.sendRedirect("/mypage/support/support-list");
 	}
 	
 	private void supportDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -122,9 +136,15 @@ public class SupportController extends HttpServlet {
 	private void supportList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		Member member = (Member) request.getSession().getAttribute("authentication");
-		String userId = member.getUserId();
+		MemberGrade adminGrade = MemberGrade.valueOf(member.getGrade());
+		List<Support> supportList = null;
 		
-		List<Support> supportList = supportService.selectSupportList(userId);
+		if(adminGrade.ROLE.equals("admin")) {
+			 supportList = supportService.selectAllSupportList();
+		}else {
+			String userId = member.getUserId();
+			supportList = supportService.selectSupportList(userId);
+		}
 		
 		request.setAttribute("supportList", supportList);
 		request.getRequestDispatcher("/mypage/support/support-list").forward(request, response);

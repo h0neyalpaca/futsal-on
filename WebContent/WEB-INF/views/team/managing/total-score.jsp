@@ -16,10 +16,10 @@
 			<div class="myteam-wrap">
 				<h2><i class="far fa-futbol"></i> 나의 팀</h2>
 				<div class="myteam-con">
-					<%@ include file="/WEB-INF/views/team/managing/team_tab.jsp" %>
+					<%@ include file="/WEB-INF/views/team/include/team_tab.jsp" %>
 					
 					<div class="rating_area">
-						<p>다인다색 팀의 평균 평점</p>
+						<p><strong>${team.tmName}</strong> 팀 전적 ${team.gameCnt}전 ${team.tmWin}승 4패</p>
 						<div class="our_rating star">
 							<i class="fas fa-star full-star"></i><i class="fas fa-star full-star"></i><i class="fas fa-star full-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
 						</div>

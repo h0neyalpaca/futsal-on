@@ -11,7 +11,7 @@ public class Support {
 	private String content;
 	private int type;
 	private int isAnswer;
-	
+	private String answer;
 	public String getBdIdx() {
 		return bdIdx;
 	}
@@ -54,13 +54,17 @@ public class Support {
 	public void setIsAnswer(int isAnswer) {
 		this.isAnswer = isAnswer;
 	}
-	
+	public String getAnswer() {
+		return answer;
+	}
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
 	@Override
 	public String toString() {
 		return "Support [bdIdx=" + bdIdx + ", userId=" + userId + ", regDate=" + regDate + ", title=" + title
-				+ ", content=" + content + ", type=" + type + ", isAnswer=" + isAnswer + "]";
+				+ ", content=" + content + ", type=" + type + ", isAnswer=" + isAnswer + ", answer=" + answer + "]";
 	}
-	
 	
 	
 	

@@ -44,7 +44,8 @@ public class TeamDAO {
 		return res;
 	}
 
-	public int updateMember(Member member, Team team, Connection conn) {
+	//팀 생성, 팀 가입
+	public int updateMemberIntoTeam(Member member, Team team, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
 		try {
@@ -66,6 +67,7 @@ public class TeamDAO {
 		return res;
 	}
 	
+	//팀원 등급 변경
 	public int updateGrade(String userId, String grade, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
@@ -82,6 +84,8 @@ public class TeamDAO {
 		}
 		return res;
 	}
+	
+	//팀장위임
 	public int updateGrades(String userId, String managerId, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
@@ -122,7 +126,8 @@ public class TeamDAO {
 		return res;
 	}
 
-	public int updateExpulsion(String userId, Connection conn) {
+	//회원정보에서 팀 정보를 삭제(팀추방 ,팀탈퇴,팀해체)
+	public int updateMemberForLeaveTeam(String userId, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
 		try {
@@ -137,7 +142,25 @@ public class TeamDAO {
 		}
 		return res;
 	}
-	
+
+	//팀 해체 일자 업데이트
+	public int updateDelDateForLeaveTeam(String tmCode, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "UPDATE TEAM SET DEL_DATE = SYSDATE WHERE TM_CODE = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, tmCode);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+
+	//tmCode로 팀 검색
 	public Team selectTeamByTmCode(String tmCode, Connection conn) {
 		Team team = new Team();
 		PreparedStatement pstm = null;
@@ -158,6 +181,7 @@ public class TeamDAO {
 		return team;
 	}
 	
+	//userId로 팀 검색
 	public Team selectTeamByUserId(String userId, Connection conn) {
 		Team team = null;
 		PreparedStatement pstm = null;
@@ -178,8 +202,7 @@ public class TeamDAO {
 		return team;
 	}
 	
-	
-	//
+	//팀코드로 팀원 리스트 호출
 	public List<Member> selectTmMembersByTeamCode(String tmCode, Connection conn) {
 		List<Member> tmMembers = new ArrayList<Member>();
 		PreparedStatement pstm = null;
@@ -223,6 +246,5 @@ public class TeamDAO {
 		team.setDelDate(rset.getDate("DEL_DATE"));
 		return team;
 	}
-
 
 }

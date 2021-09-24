@@ -17,16 +17,16 @@
 		<div class="myteam-wrap">
 			<h2><i class="far fa-futbol"></i> 나의 팀</h2>
 			<div class="myteam-con">
-				<%@ include file="/WEB-INF/views/team/managing/team_tab.jsp" %>
+				<%@ include file="/WEB-INF/views/team/include/team_tab.jsp" %>
 				<div class="team-img"></div>
 				
 				<c:if test="${authentication.grade=='ME03'}">
 					<p class="leave-msg">팀을 해체하시면 <strong>팀원은 자동으로 전원 탈퇴되며, 해체 후 7일간 팀 생성 및 팀 참가가 불가</strong>합니다.<br>또한 같은 이름으로 팀 생성이 불가능하니 신중하게 결정해주세요.</p>
-					<a class="btn-leave-team">팀 해체하기</a>
+					<button class="btn-leave-team" onclick="breakTeam()">팀 해체하기</button>
 				</c:if>
 				<c:if test="${authentication.grade!='ME03'}">
 					<p class="leave-msg">팀을 탈퇴하시면 <strong>7일간 팀 생성 및 팀 참가가 불가</strong>합니다.<br>신중하게 결정해주세요.</p>
-					<a class="btn-leave-team">팀 탈퇴하기</a>
+					<button class="btn-leave-team" onclick="leaveTeam();">팀 탈퇴하기</button>
 				</c:if>
 			</div>
 		</div>
@@ -34,5 +34,6 @@
 </section>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<%@ include file="/WEB-INF/views/team/include/team-pop.jsp" %>
 </body>
 </html>

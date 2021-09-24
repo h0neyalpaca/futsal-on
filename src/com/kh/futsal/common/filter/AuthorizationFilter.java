@@ -165,15 +165,11 @@ public class AuthorizationFilter implements Filter {
 	}
 
 	private void teamAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
-
 		Member member = (Member) httpRequest.getSession().getAttribute("authentication");
-		member.setUserId("alpaca3");
-		member.setTmCode("ALPACATEAM");
-
-		if (member == null) {
+		if(member == null) {
 			throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
 		}
-
+		
 		TeamService ts = new TeamService();
 		Team team = ts.selectTeamByUserId(member.getUserId());
 		httpRequest.getSession().setAttribute("team", team);
@@ -181,22 +177,21 @@ public class AuthorizationFilter implements Filter {
 		MemberGrade grade = MemberGrade.valueOf(member.getGrade());
 		switch (uriArr[2]) {
 		case "managing":
-			if (!grade.ROLE.equals("team")) {
+			if(!grade.ROLE.equals("team")) {
 				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
 			}
 			break;
 		case "create-form":
-			if (!grade.ROLE.equals("user")) {
+			if(!grade.ROLE.equals("user")) {
 				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
 			}
 			break;
 		case "join-team":
-			if (!grade.ROLE.equals("user")) {
+			if(!grade.ROLE.equals("user")) {
 				throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
 			}
 			break;
-		default:
-			break;
+		default: break;
 		}
 	}
 

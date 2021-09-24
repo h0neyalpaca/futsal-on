@@ -17,7 +17,7 @@
 			<div class="myteam-wrap">
 				<h2><i class="far fa-futbol"></i> 나의 팀</h2>
 				<div class="myteam-con">
-					<%@ include file="/WEB-INF/views/team/managing/team_tab.jsp" %>
+					<%@ include file="/WEB-INF/views/team/include/team_tab.jsp" %>
 					<div class="match-box use-myteam">
 						<div class="tit-area">
 							<div class="tit-info">

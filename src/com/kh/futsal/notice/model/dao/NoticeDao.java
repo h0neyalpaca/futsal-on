@@ -102,12 +102,19 @@ public class NoticeDao {
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-
-		String sql = "select * from news order by reg_date desc";
+		//게시판에 글을 5개씩 최근순으로 보여지게 하는 쿼리
+		String sql = "select rownum, NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS" + 
+				"  from(" + 
+				"  select *" + 
+				"  from news" + 
+				"  order by rownum desc)" + 
+				"  where rownum BETWEEN ? and ? and is_del ='0'";
 
 
 		try {
 			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, 1);
+			pstm.setInt(2, 5);
 			rset = pstm.executeQuery();
 			
 			while(rset.next()) {
@@ -122,6 +129,31 @@ public class NoticeDao {
 
 		return noticeList;
 		
+	}
+	
+	public int selectNoticeCnt(Connection conn) {
+		
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		int res = 0;
+		
+		String sql = "select count(*) from news";
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			rset=pstm.executeQuery();
+			if(rset.next()) {
+				res = rset.getInt(1);
+			}
+			
+			
+		}  catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		
+		return res;
 	}
 	
 	private Notice convertRowToNotice(ResultSet rset) throws SQLException {
