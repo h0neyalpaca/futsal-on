@@ -64,4 +64,17 @@ public class MemberService {
 	      
 	      return member;
 	   }
+	
+	public void updateMember(Member member) {
+		Connection conn = template.getConnection();
+		
+		try {
+			memberDao.updateMember(member,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+	}
+	
 }

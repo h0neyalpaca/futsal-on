@@ -120,6 +120,32 @@ public class MemberDao {
 	      return member;
 	   }
 
+	public void updateMember(Member member, Connection conn) {
+		
+		String sql = "update member set password = ?, user_nick = ?,"
+				+ "tell = ?, capacity = ?  where user_id = ? ";
+		
+		PreparedStatement pstm = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, member.getPassword());
+			pstm.setString(2, member.getUserNick());
+			pstm.setString(3, member.getTell());
+			pstm.setString(4, member.getCapacity());
+			pstm.setString(5, member.getUserId());
+			
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}		
+		
+	}
+
 	
 	
 	// 데이타베이스에서 받아온 resultset을 member에 담는 method
@@ -173,6 +199,5 @@ public class MemberDao {
 		
 		return res;
 	}
-
 	
 }

@@ -38,9 +38,10 @@ public class ModifyForm {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		String userId = member.getUserId();
 		
-		if(memberService.selectMemberById(userId).getPassword() != password) {
+		
+		if(!memberService.selectMemberById(userId).getPassword().equals(password)) {
 			faildValidation.put("password",password); 
-			isFailed = true; 
+			isFailed = true;
 		}
 		
 		if(memberService.selectMemberBynickName(nickName) != null || nickName.equals("")) {
@@ -48,22 +49,19 @@ public class ModifyForm {
 			 isFailed = true; 
 		}
 	
-		//비밀번호가 영어,숫자,특수문자 조합의 8자리 이상의 문자열인지 확인
 		if(!Pattern.matches("(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Zㄱ-힣0-9]).{8,}", newPw)) {
 			faildValidation.put("new-password",newPw);
 			isFailed = true;
+			if(newPw.equals("")) {
+				isFailed = false;
+			}
 		}
 		
-		if(newPw != checkPw) {
+		if(!newPw.equals(checkPw)) {
 			faildValidation.put("check-new-password",checkPw);
 			isFailed = true;
 		}
 		
-		//닉네임
-		if(!Pattern.matches("^([a-zA-Zㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{2,8}$", nickName)) {
-			faildValidation.put("nickName",nickName);
-			isFailed = true;
-		}
 		//전화번호가 숫자로만 이루어져 있는 지 확인
 		if(!Pattern.matches("\\d{9,11}", tell)) {
 			faildValidation.put("tell",tell);
@@ -80,7 +78,6 @@ public class ModifyForm {
 			return true;
 		}
 	}
-	
 	
 	public String getNewPw() {
 		return newPw;

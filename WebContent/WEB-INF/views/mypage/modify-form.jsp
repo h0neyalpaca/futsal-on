@@ -41,7 +41,7 @@
 								<td>
 									<input type="password" name="new-password" id="new-password" placeholder="띄어쓰기 없는 6~15자 영문 대/소문자 포함" />
 									<span class="valid-msg" id="newPw">
-						                <c:if test="${!empty param.err and not empty modifyValid.password}">
+						                <c:if test="${not empty modifyValid.password}">
 						                	비밀번호는 영어,숫자,특수문자 조합의 8글자 이상의 문자열입니다.
 						                </c:if>
 					                </span>
@@ -52,7 +52,7 @@
 								<td>
 									<input type="password" name="check-new-password" id="check-new-password" />
 									<span class="valid-msg" id="pwCheck">
-						                <c:if test="${!empty param.err and not empty modifyValid.checkPw}">
+						                <c:if test="${not empty modifyValid.checkPw}">
 						                	비밀번호가 일치하지 않습니다
 						                </c:if>
 					                </span>
@@ -82,7 +82,7 @@
 								<td>
 									<input id="tell" type="tel" name="tell" value="${authentication.tell}" placeholder="숫자만 입력" required />
 									<span class="valid-msg" id="tellCheck">
-						                <c:if test="${!empty param.err and not empty modifyValid.tell}">
+						                <c:if test="${not empty modifyValid.tell}">
 						                	휴대폰 번호는 9~11자리의 숫자입니다
 						                </c:if>
 					                </span>
@@ -97,9 +97,9 @@
 							<tr>
 								<th>실력</th>
 								<td>
-									<label><input type="radio" name="grade" id="grade" value="상" ${authentication.capacity eq "상 "?"checked":""}/> 상</label>
-									<label><input type="radio" name="grade" id="grade" value="중" ${authentication.capacity eq "중 "?"checked":""}/> 중</label>
-									<label><input type="radio" name="grade" id="grade" value="하" ${authentication.capacity eq "하 "?"checked":""}/> 하</label>
+									<label><input type="radio" name="capacity" id="capacity" value="상" ${authentication.capacity eq "상 "?"checked":""}/> 상</label>
+									<label><input type="radio" name="capacity" id="capacity" value="중" ${authentication.capacity eq "중 "?"checked":""}/> 중</label>
+									<label><input type="radio" name="capacity" id="capacity" value="하" ${authentication.capacity eq "하 "?"checked":""}/> 하</label>
 								</td>
 							</tr>
 							<tr>

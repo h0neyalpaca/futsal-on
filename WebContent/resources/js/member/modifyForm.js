@@ -22,6 +22,7 @@
 				}
 			})
 		   .then(text => {
+			console.dir(text);
 			   if(text == 'available'){
 				   confirmId = password;
 				   document.querySelector('#pwCheck').innerHTML = '비밀번호가 일치합니다';
@@ -51,9 +52,8 @@
 				}
 			})
 		   .then(text => {
-				console.dir(text);
 			   if(text == 'available'){
-				   confirmId = userId;
+				   confirmId = nickName;
 				   document.querySelector('#nickCheck').innerHTML = '사용 가능한 닉네임 입니다';
 			   }else{
 				   document.querySelector('#nickCheck').innerHTML = '사용 불가능한 닉네임 입니다';
@@ -72,15 +72,5 @@
 			   document.querySelector('#nickName').focus();
 			   e.preventDefault();
 		   }
-		   /*
-		   if(!pwReg.test(password)){
-			   document.querySelector('#pwCheck').innerHTML = '비밀번호는 숫자,영문,특수문자 조합의 8글자 이상인 문자열입니다'; 
-			   e.preventDefault();
-		   }
-		   
-		   if(!tellReg.test(tell)){
-			   document.querySelector('#tellCheck').innerHTML = '전화번호는 9~11자리의 숫자입니다';
-			   e.preventDefault();
-		   }  */
 	   })
   })();
