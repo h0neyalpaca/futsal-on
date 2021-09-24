@@ -21,7 +21,7 @@ public class JDBCTemplate {
          //1. oracle jdbc Driver를 JVM에 등록
          Class.forName("oracle.jdbc.driver.OracleDriver");
          
-         final String DB_URL="jdbc:oracle:thin:@DBfutsal_high?TNS_ADMIN=C:/CODE/Wallet_DBfutsal";
+         final String DB_URL="jdbc:oracle:thin:@dbfutsal_high?TNS_ADMIN=C:/CODE/Wallet_DBfutsal";
    	     // Use the TNS Alias name along with the TNS_ADMIN - For ATP and ADW
    	     // final static String DB_URL="jdbc:oracle:thin:@dbname_alias?TNS_ADMIN=/Users/test/wallet_dbname";
    	     final String DB_USER = "ADMIN";

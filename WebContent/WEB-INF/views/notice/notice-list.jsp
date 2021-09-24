@@ -1,3 +1,4 @@
+<%@page import="com.kh.futsal.notice.model.dao.NoticeDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -9,6 +10,7 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
+
 
 <section>
 	<div class="section">
@@ -37,8 +39,12 @@
 								<th scope="col" class="th-name">조회</th>
 							</tr>
 						</thead>
+						
+						<c:forEach var ="notice" items="${noticeList}" > 
 						<tbody class="top-notice">
 							<tr>
+							
+							 <c:if test = "${notice.nwMain==0}"> 
 								<td>	
 									<div class="board-tag">
 										<strong class="board-tag-txt">
@@ -47,53 +53,32 @@
 											</span>
 										</strong>
 									</div>
-							</td>
+								</td>
+							 
+							
 								<td class="td_article">
 									<div class="board-wrap">
 									
 										<div class="board-list">
 											<div class="inner-list top-notice-list">
-												<a href="/notice/notice-detail">회원가입 공지입니다.</a>
+												<a href="/notice/notice-detail">${notice.nwTitle}</a>
 											</div>
 										</div>
 									</div>
 								</td>
+							
 								<td class="td-date">
-									2021.09.13
+									${notice.regDate}
 								</td>
 								<td class="td-view">
-									55
+									${notice.views}
 								</td>
+								</c:if> 
 							</tr>
-							<tr>
-								<tr>
-									<td>	
-										<div class="board-tag">
-											<strong class="board-tag-txt">
-												<span class="inner">
-													공지
-												</span>
-											</strong>
-										</div>
-								</td>
-								<td class="td_article">
-									<div class="board-wrap">
-										<div class="board-list">
-											<div class="inner-list top-notice-list">
-												<a href="">회원가입 공지입니다.</a>
-											</div>
-										</div>
-									</div>
-								</td>
-								<td class="td-date">
-									2021.09.13
-								</td>
-								<td class="td-view">
-									55
-								</td>
-							</tr>		
+							</c:forEach> 
 						</tbody>
 					</table>
+					
 					<table class="join-form">
 						<colgroup>
 							<col style="width: 88px;">
@@ -101,85 +86,39 @@
 							<col style="width: 118px;">
 							<col style="width: 68px;">
 						</colgroup>
+						<c:forEach var ="notice" items="${noticeList}" > 
 						<tbody class="notice">
 							<tr>
-								<td class="num"><span>4</span></td>
+							
+								<td class="num"><span>${notice.nwIdx}</span></td>
 								<td class="td_article">
 									<div class="board-wrap">
 										<div class="board-list">
 											<div class="inner-list">
-												<a href="">회원가입 공지입니다.</a>
+												<a href="">${notice.nwTitle}</a>
 											</div>
 										</div>
 									</div>
 								</td>
 								<td class="td-date">
-									2021.09.13
+									${notice.regDate}
 								</td>
 								<td class="td-view">
-									55
+									${notice.views}
 								</td>
+								 
 							</tr>
+							</c:forEach>
+
 							<tr>
-								<td class="num"><span>4</span></td>
-								<td class="td_article">
-									<div class="board-wrap">
-										<div class="board-list">
-											<div class="inner-list">
-												<a href="">회원가입 공지입니다.</a>
-											</div>
-										</div>
-									</div>
-								</td>
-								<td class="td-date">
-									2021.09.13
-								</td>
-								<td class="td-view">
-									55
-								</td>
-							</tr>
-							<tr>
-								<td class="num"><span>4</span></td>
-								<td class="td_article">
-									<div class="board-wrap">
-										<div class="board-list">
-											<div class="inner-list">
-												<a href="">회원가입 공지입니다.</a>
-											</div>
-										</div>
-									</div>
-								</td>
-								<td class="td-date">
-									2021.09.13
-								</td>
-								<td class="td-view">
-									55
-								</td>
-							</tr>
-							<tr>
-								<td class="num"><span>4</span></td>
-								<td class="td_article">
-									<div class="board-wrap">
-										<div class="board-list">
-											<div class="inner-list">
-												<a href="">회원가입 공지입니다.</a>
-											</div>
-										</div>
-									</div>
-								</td>
-								<td class="td-date">
-									2021.09.13
-								</td>
-								<td class="td-view">
-									55
-								</td>
-							</tr>
-						</tbody>
+								
 					</table>
 				</form>
+				<c:forEach var="i" begin="1" end="${totalPage}">
 				<div class="page-button">
-					<div class="page-num"><span>1</span></div>
+					<div class="page-num"><a href="notice-list?page=${i}">${i}</a></div>
 				</div>
+				</c:forEach>
 			</div>
 		</div>
 	</div>
