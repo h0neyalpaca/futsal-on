@@ -64,5 +64,19 @@ public class SupportService {
 		}
 		
 	}
+
+	public void deleteBoard(String bdIdx) {
+		
+		Connection conn = template.getConnection();
+		
+		try {
+			supportDao.updateBoard(bdIdx,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+		
+	}
 	
 }

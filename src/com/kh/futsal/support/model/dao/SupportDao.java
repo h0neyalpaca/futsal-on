@@ -126,5 +126,25 @@ public class SupportDao {
 		}
 		
 	}
+
+	public void updateBoard(String bdIdx, Connection conn) {
+
+		String sql = "delete from board where bd_idx = ? ";
+		
+		PreparedStatement pstm = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, bdIdx);
+			
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+	}
 	
 }
