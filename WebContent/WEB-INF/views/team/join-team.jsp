@@ -32,19 +32,6 @@
 </section>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-<c:if test="${not empty param.err}">
-<div class="pop-msg-wrap">
-	<div class="pop-msg">
-		<p><i class="fas fa-exclamation-triangle"></i><br>팀이 존재하지 않거나 이미 삭제된 팀입니다.<br>팀 코드를 다시 확인해주세요.</p>
-		<button onclick="btnClose()">확인</button>
-	</div>
-</div>
-<script type="text/javascript">
-	let btnClose = () => {
-		let msgWrap = document.querySelector('.pop-msg-wrap');
-		msgWrap.style.display='none';
-	}
-</script>
-</c:if>
+<%@ include file="/WEB-INF/views/team/include/team-pop.jsp" %>
 </body>
 </html>

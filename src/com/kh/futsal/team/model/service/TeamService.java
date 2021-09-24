@@ -18,10 +18,12 @@ public class TeamService {
 	
 	private TeamDAO td = new TeamDAO();
 	
-	public void insertTeam(Team team) {
+	//팀 넣기
+	public int insertTeam(Team team) {
 		Connection conn = template.getConnection();
+		int res = 0;
 		try {
-			td.insertTeam(team,conn);
+			res = td.insertTeam(team,conn);
 			template.commit(conn);
 		} catch (Exception e) {
 			template.rollback(conn);
@@ -29,12 +31,15 @@ public class TeamService {
 		} finally {
 			template.close(conn);
 		}
+		return res;
 	}
 	
-	public void updateMember(Member member, Team team) {
+	//팀 생성,가입
+	public int updateMemberIntoTeam(Member member, Team team) {
 		Connection conn = template.getConnection();
+		int res = 0;
 		try {
-			td.updateMember(member, team, conn);
+			res = td.updateMemberIntoTeam(member, team, conn);
 			template.commit(conn);
 		} catch (Exception e) {
 			template.rollback(conn);
@@ -42,14 +47,14 @@ public class TeamService {
 		} finally {
 			template.close(conn);
 		}
+		return res;
 	}
 	
+	//팀원 등급 변경
 	public int updateGrade(String userId, String grade) {
 		Connection conn = template.getConnection();
 		int res = 0;
 		try {
-			System.out.println(userId);
-			System.out.println(grade);
 			res = td.updateGrade(userId, grade, conn);
 			template.commit(conn);
 		} catch (Exception e) {
@@ -60,6 +65,8 @@ public class TeamService {
 		}
 		return res;
 	}
+	
+	//팀장위임
 	public int updateGrades(String userId, String managerId) {
 		Connection conn = template.getConnection();
 		int res = 0;
@@ -75,6 +82,7 @@ public class TeamService {
 		return res;
 	}
 	
+	//팀장위임->팀 매니저ID 변경
 	public int updateTmManager(String userId, String tmCode) {
 		Connection conn = template.getConnection();
 		int res = 0;
@@ -89,12 +97,13 @@ public class TeamService {
 		}
 		return res;
 	}
-
-	public int updateExpulsion(String userId) {
-		Connection conn = template.getConnection();
+	
+	//회원정보에서 팀 정보를 삭제(팀추방 ,팀탈퇴,팀해체)
+	public int updateMemberForLeaveTeam(String userId) {
 		int res = 0;
+		Connection conn = template.getConnection();
 		try {
-			res = td.updateExpulsion(userId, conn);
+			res = td.updateMemberForLeaveTeam(userId, conn);
 			template.commit(conn);
 		} catch (Exception e) {
 			template.rollback(conn);
@@ -105,6 +114,23 @@ public class TeamService {
 		return res;
 	}
 	
+	//팀 해체 일자 업데이트
+	public int updateDelDateForLeaveTeam(String tmCode) {
+		Connection conn = template.getConnection();
+		int res = 0;
+		try {
+			res = td.updateDelDateForLeaveTeam(tmCode,conn);
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		} finally {
+			template.close(conn);
+		}
+		return res;
+	}
+		
+	//tmCode로 팀 검색
 	public Team selectTeamByTmCode(String tmCode) {
 		Connection conn = template.getConnection();
 		Team team = null;
@@ -116,6 +142,7 @@ public class TeamService {
 		return team;
 	}
 	
+	//userId로 팀 검색
 	public Team selectTeamByUserId(String userId) {
 		Connection conn = template.getConnection();
 		Team team = null;
@@ -127,6 +154,7 @@ public class TeamService {
 		return team;
 	}
 	
+	//tmCode로 팀원 리스트 호출
 	public List<Member> selectTmMembers(String tmCode) {
 		Connection conn = template.getConnection();
 		List<Member> tmMembers = null;
@@ -188,6 +216,5 @@ public class TeamService {
 		}
 		return result;
 	}
-
 
 }

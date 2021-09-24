@@ -171,11 +171,7 @@ public class AuthorizationFilter implements Filter {
 	}
 
 	private void teamAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
-
 		Member member = (Member) httpRequest.getSession().getAttribute("authentication");
-		member.setUserId("alpaca3");
-		member.setTmCode("ALPACATEAM");
-		
 		if(member == null) {
 			throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
 		}
