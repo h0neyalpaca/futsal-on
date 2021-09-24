@@ -58,7 +58,7 @@ public class MypageController extends HttpServlet {
 	private void nickCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nickName = request.getParameter("nickName");
 		
-		Member member = memberService.selectMemberBynickName(nickName);
+		Member member = memberService.selectMemberByNick(nickName);
 		
 		if(member == null) {
 			response.getWriter().print("available");

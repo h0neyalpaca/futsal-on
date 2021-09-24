@@ -44,7 +44,7 @@ public class ModifyForm {
 			isFailed = true;
 		}
 		
-		if(memberService.selectMemberBynickName(nickName) != null || nickName.equals("")) {
+		if(memberService.selectMemberByNick(nickName) != null || nickName.equals("")) {
 			 faildValidation.put("nickName",nickName); 
 			 isFailed = true; 
 		}
