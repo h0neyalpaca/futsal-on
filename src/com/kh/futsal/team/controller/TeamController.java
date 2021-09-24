@@ -90,22 +90,25 @@ public class TeamController extends HttpServlet {
 	}
 	
 	private void manageGrade(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("/team/managing/manage");
+		ts.updateGrade(request.getParameter("userId"),request.getParameter("grade"));
 	}
 	
 	private void manageExpulsion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("/team/managing/manage");
+		ts.updateExpulsion(request.getParameter("userId"));
 	}
 	
 	private void manageDelegation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Team team = (Team) request.getSession().getAttribute("team");
 		Member member = (Member) request.getSession().getAttribute("authentication");
-		
-		ts.updateGrade(request.getParameter("userId"),team.getManagerId());
-		ts.updateTmManager(request.getParameter("userId"),team.getTmCode());
-		
-		member.setGrade("ME01");
-		response.sendRedirect("/team/managing/manage?result=1");
+
+		int res = ts.updateGrades(request.getParameter("userId"),team.getManagerId());
+		if (res > 0) {
+			res = ts.updateTmManager(request.getParameter("userId"),team.getTmCode());
+			if (res > 0) {
+				member.setGrade("ME01");
+				request.getSession().setAttribute("authentication", member);
+			}
+		}
 	}
 	
 	private void teamManage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

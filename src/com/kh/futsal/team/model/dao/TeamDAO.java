@@ -66,7 +66,23 @@ public class TeamDAO {
 		return res;
 	}
 	
-	public int updateGrade(String userId, String managerId, Connection conn) {
+	public int updateGrade(String userId, String grade, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "UPDATE MEMBER SET GRADE = ? WHERE USER_ID = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, grade);
+			pstm.setString(2, userId);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+	public int updateGrades(String userId, String managerId, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
 		try {
@@ -97,6 +113,22 @@ public class TeamDAO {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, userId);
 			pstm.setString(2, tmCode);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+
+	public int updateExpulsion(String userId, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "UPDATE MEMBER SET TM_CODE = '', GRADE = 'ME00' WHERE USER_ID = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, userId);
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
@@ -191,5 +223,6 @@ public class TeamDAO {
 		team.setDelDate(rset.getDate("DEL_DATE"));
 		return team;
 	}
+
 
 }

@@ -19,12 +19,10 @@
 				<%@ include file="/WEB-INF/views/team/managing/team_tab.jsp" %>
 				<form action="${request.contextPath}/team/managing/modify-team" method="post">
 					<table class="team-create-form">
-						<tr>
-							<th>팀 이름</th>
-							<td>
-								${team.tmName}
-							</td>
-						</tr>
+						<c:if test="${authentication.grade=='ME03'}">
+							<tr><th>팀 코드</th><td>${team.tmCode}</td></tr>
+						</c:if>
+						<tr><th>팀 이름</th><td>${team.tmName}</td></tr>
 						<tr>
 							<th>팀 사진</th>
 							<td>
@@ -40,9 +38,9 @@
 							<th>실력</th>
 							<td>
 								<c:if test="${authentication.grade=='ME03'}">
-									<label><input type="radio" name="tmGrade" value="상" ${team.tmGrade eq '상 '?'checked':''} /> 상</label>
-									<label><input type="radio" name="tmGrade" value="중" ${team.tmGrade eq '중 '?'checked':''} /> 중</label>
-									<label><input type="radio" name="tmGrade" value="하" ${team.tmGrade eq '하 '?'checked':''} /> 하</label>									
+									<label><input type="radio" name="tmGrade" value="상" ${team.tmGrade eq '상'?'checked':''} /> 상</label>
+									<label><input type="radio" name="tmGrade" value="중" ${team.tmGrade eq '중'?'checked':''} /> 중</label>
+									<label><input type="radio" name="tmGrade" value="하" ${team.tmGrade eq '하'?'checked':''} /> 하</label>									
 								</c:if>
 								<c:if test="${authentication.grade!='ME03'}">
 									${team.tmGrade}

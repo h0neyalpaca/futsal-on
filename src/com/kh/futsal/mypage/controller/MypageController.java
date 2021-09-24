@@ -45,8 +45,40 @@ public class MypageController extends HttpServlet {
 		case "leave":
 			leave(request,response);
 			break;
+		case "pw-check":
+			pwCheck(request,response);
+			break;
+		case "nick-check":
+			nickCheck(request,response);
+			break;
 		default:
 		}
+	}
+
+	private void nickCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String nickName = request.getParameter("nickName");
+		
+		Member member = memberService.selectMemberByNick(nickName);
+		
+		if(member == null) {
+			response.getWriter().print("available");
+		}else {
+			response.getWriter().print("disable");
+		}
+		
+	}
+
+	private void pwCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		String password = member.getPassword();
+		String checkPw = request.getParameter("password");
+		
+		if(password.equals(checkPw)) {
+			response.getWriter().print("available");
+		}else {
+			response.getWriter().print("disable");
+		}
+		
 	}
 
 	private void leave(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,6 +88,7 @@ public class MypageController extends HttpServlet {
 		
 		request.getRequestDispatcher("/index").forward(request, response);
 	}
+	
 	private void leaveId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/leave-id").forward(request, response);
 		
@@ -63,15 +96,31 @@ public class MypageController extends HttpServlet {
 	
 	private void mypageModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		String userId = member.getUserId();
+		
+		if(!request.getParameter("new-password").equals("")) {
+			member.setPassword(request.getParameter("new-password"));
+		}
+		
+		member.setUserNick(request.getParameter("nickName"));
+		member.setTell(request.getParameter("tell"));
+		member.setCapacity(request.getParameter("capacity"));
+		
+		memberService.updateMember(member);
+		
 		request.getRequestDispatcher("/mypage/modify-form").forward(request, response);
 	}
+	
 	private void mypageModifyForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/modify-form").forward(request, response);
 	}
+	
 	private void myApplication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
 		
 	}
+	
 	private void personalNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
 	}

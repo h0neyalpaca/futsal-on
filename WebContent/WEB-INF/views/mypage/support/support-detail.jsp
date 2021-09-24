@@ -38,7 +38,8 @@
 						</div>
 						
 						<div class="button_wrapper">
-							<input type="submit" onclick="location.href='/mypage/support/support-modify?bdIdx=${support.bdIdx}'" value="수정"> <input type="submit" value="삭제">
+							<input type="submit" onclick="location.href='/mypage/support/support-modify?bdIdx=${support.bdIdx}'" value="수정"> 
+							<input type="submit" onclick="location.href='/mypage/support/support-delete?bdIdx=${support.bdIdx}';" value="삭제">
 						</div>
 					
 				</div> 

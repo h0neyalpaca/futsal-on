@@ -98,6 +98,7 @@ public class MemberDao {
 		
 		return member;
 	}
+
 	
 	public Member selectMemberByNick(String userNick, Connection conn) {
 		Member member = null;			
@@ -123,6 +124,7 @@ public class MemberDao {
 		return member;
 	}
 	
+	
 	public void leaveId(String userId, Connection conn) {
 
 		String sql = "update member set is_leave = 1 where user_id = ? ";
@@ -143,6 +145,34 @@ public class MemberDao {
 		}		
 	}
 	
+
+	public void updateMember(Member member, Connection conn) {
+		
+		String sql = "update member set password = ?, user_nick = ?,"
+				+ "tell = ?, capacity = ?  where user_id = ? ";
+		
+		PreparedStatement pstm = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, member.getPassword());
+			pstm.setString(2, member.getUserNick());
+			pstm.setString(3, member.getTell());
+			pstm.setString(4, member.getCapacity());
+			pstm.setString(5, member.getUserId());
+			
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}		
+		
+	}
+
+//github.com/h0neyalpaca/futsal-on.git
 	// 데이타베이스에서 받아온 resultset을 member에 담는 method
 	private Member convertRowToMember(ResultSet rset) throws SQLException {
 		Member member = new Member();
@@ -196,7 +226,5 @@ public class MemberDao {
 	}
 
 	
-
-
 
 }

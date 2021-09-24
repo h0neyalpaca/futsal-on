@@ -81,7 +81,6 @@ public class MemberService {
 		return member;
 	}
 
-
 	public Member selectMemberByNick(String userNick) {
 		Connection conn = template.getConnection();
 		Member member = null;
@@ -101,6 +100,18 @@ public class MemberService {
 		try {
 			memberDao.leaveId(userId,conn);
 
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+	}
+	
+	public void updateMember(Member member) {
+		Connection conn = template.getConnection();
+		
+		try {
+			memberDao.updateMember(member,conn);
+			
 			template.commit(conn);
 		}finally {
 			template.close(conn);

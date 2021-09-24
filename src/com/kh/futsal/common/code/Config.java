@@ -4,9 +4,9 @@ public enum Config {
 	
 	//DOMAIN("http://www.pclass.com"),
 	DOMAIN("http://localhost:7070"),
-	SMTP_AUTHENTICATION_ID("futsalon2021@gmail.com"),
-	SMTP_AUTHENTICATION_PASSWORD("pclass123!@#"),
-	COMPANY_EMAIL("futsalon2021@gmail.com"),
+	SMTP_AUTHENTICATION_ID("mmyajit@gmail.com"),
+	SMTP_AUTHENTICATION_PASSWORD("kwhyweerrmlwrrez"),
+	COMPANY_EMAIL("mmyajit@gmail.com"),
 	//UPLOAD_PATH("C:\\CODE\\upload") 운영서버
 	UPLOAD_PATH("C:\\CODE\\upload\\");//개발서버
 	

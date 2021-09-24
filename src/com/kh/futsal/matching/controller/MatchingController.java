@@ -1,11 +1,16 @@
 package com.kh.futsal.matching.controller;
 
 import java.io.IOException;
+import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.kh.futsal.matching.model.dto.MatchMaster;
+import com.kh.futsal.matching.model.service.MatchingService;
 
 /**
  * Servlet implementation class MatchingController
@@ -13,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/matching/*")
 public class MatchingController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	MatchingService matchingService = new MatchingService();
        
 
     public MatchingController() {
@@ -57,7 +64,38 @@ public class MatchingController extends HttpServlet {
 
 
 	private void teamMatchRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String localCode = request.getParameter("localCode");
+		String detailAddress = request.getParameter("detailAddress");
+		int size = Integer.parseInt(request.getParameter("size"));
 		
+		
+		String expense = request.getParameter("cost");
+		String grade = request.getParameter("level");
+		String content = request.getParameter("content");
+		
+		String matchDate = request.getParameter("date");
+		String matchTime = request.getParameter("time");
+		StringBuffer sb = new StringBuffer();
+		
+		System.out.println(size); 
+		System.out.println(localCode);
+		
+		sb.append(matchDate+" ");
+		sb.append(matchTime);
+		
+		MatchMaster matchMaster = new MatchMaster();
+		matchMaster.setLocalCode(localCode);
+		matchMaster.setAddress(detailAddress);
+		matchMaster.setExpense(expense);
+		matchMaster.setGrade(grade);
+		matchMaster.setTmMatch(size);
+		matchMaster.setTitle(detailAddress+" 매치 상대 구합니다!");
+		matchMaster.setMatchTime(sb.toString());
+		matchMaster.setContent(content);
+		
+		matchingService.matchRegister(matchMaster);
+		
+	
 	}
 
 

@@ -44,10 +44,13 @@ public class TeamService {
 		}
 	}
 	
-	public void updateGrade(String userId, String managerId) {
+	public int updateGrade(String userId, String grade) {
 		Connection conn = template.getConnection();
+		int res = 0;
 		try {
-			td.updateGrade(userId,managerId,conn);
+			System.out.println(userId);
+			System.out.println(grade);
+			res = td.updateGrade(userId, grade, conn);
 			template.commit(conn);
 		} catch (Exception e) {
 			template.rollback(conn);
@@ -55,12 +58,28 @@ public class TeamService {
 		} finally {
 			template.close(conn);
 		}
+		return res;
+	}
+	public int updateGrades(String userId, String managerId) {
+		Connection conn = template.getConnection();
+		int res = 0;
+		try {
+			res = td.updateGrades(userId,managerId,conn);
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		} finally {
+			template.close(conn);
+		}
+		return res;
 	}
 	
-	public void updateTmManager(String userId, String tmCode) {
+	public int updateTmManager(String userId, String tmCode) {
 		Connection conn = template.getConnection();
+		int res = 0;
 		try {
-			td.updateTmManager(userId,tmCode,conn);
+			res = td.updateTmManager(userId,tmCode,conn);
 			template.commit(conn);
 		} catch (Exception e) {
 			template.rollback(conn);
@@ -68,6 +87,22 @@ public class TeamService {
 		} finally {
 			template.close(conn);
 		}
+		return res;
+	}
+
+	public int updateExpulsion(String userId) {
+		Connection conn = template.getConnection();
+		int res = 0;
+		try {
+			res = td.updateExpulsion(userId, conn);
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		} finally {
+			template.close(conn);
+		}
+		return res;
 	}
 	
 	public Team selectTeamByTmCode(String tmCode) {
@@ -153,5 +188,6 @@ public class TeamService {
 		}
 		return result;
 	}
+
 
 }
