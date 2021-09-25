@@ -1,6 +1,8 @@
 package com.kh.futsal.mypage.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -87,7 +89,10 @@ public class MypageController extends HttpServlet {
 		memberService.leaveID(userId);
 		
 		request.getSession().removeAttribute("authentication");
-		response.sendRedirect("/index");
+		
+		request.setAttribute("msg","탈퇴처리 되었습니다");
+	    request.setAttribute("url", "/index");
+	    request.getRequestDispatcher("/common/result").forward(request, response);
 	}
 	
 	private void leaveId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -110,7 +115,9 @@ public class MypageController extends HttpServlet {
 		
 		memberService.updateMember(member);
 		
-		request.getRequestDispatcher("/mypage/modify-form").forward(request, response);
+		request.setAttribute("msg","회원정보 수정이 완료 되었습니다");
+	    request.setAttribute("url", "/mypage/modify-form");
+	    request.getRequestDispatcher("/common/result").forward(request, response);
 	}
 	
 	private void mypageModifyForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

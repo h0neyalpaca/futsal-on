@@ -29,7 +29,7 @@
 								<td>
 									<input type="password" name="password" id="password" required />
 									<button type="button" name="btnPwCheck" id="btnPwCheck">확인</button>
-									<span class="valid-msg" id="pwCheck">
+									<span class="valid-msg" id="pwCheck" >
 									 	<c:if test="${!empty param.err and not empty modifyValid.password}">
 											<i class="fas fa-exclamation-circle"></i> 비밀번호가 일치하지 않습니다.
 										</c:if>
@@ -115,7 +115,7 @@
 				</div>
 		</div>
 	</section>
-
+	
 <script type="text/javascript" src="/resources/js/member/modifyForm.js"></script>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 

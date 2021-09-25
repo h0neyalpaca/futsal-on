@@ -73,7 +73,9 @@ public class SupportController extends HttpServlet {
 		
 		supportService.updateAnswer(bdIdx,answer);
 		
-		response.sendRedirect("/mypage/support/support-list");
+		request.setAttribute("msg","문의사항 답변 등록이 완료되었습니다.");
+	    request.setAttribute("url", "/mypage/support/support-list");
+	    request.getRequestDispatcher("/common/result").forward(request, response);
 	}
 	
 	private void supportDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -82,7 +84,9 @@ public class SupportController extends HttpServlet {
 		
 		supportService.deleteBoard(bdIdx);
 		
-		response.sendRedirect("/mypage/support/support-list");
+		request.setAttribute("msg","문의사항 삭제가 완료되었습니다.");
+	    request.setAttribute("url", "/mypage/support/support-list");
+	    request.getRequestDispatcher("/common/result").forward(request, response);
 	}
 	
 	private void supportUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -92,7 +96,9 @@ public class SupportController extends HttpServlet {
 		
 		supportService.updateBoard(bdIdx,content);
 		
-		request.getRequestDispatcher("/mypage/support/support-list").forward(request, response);
+		request.setAttribute("msg","문의사항 수정이 완료되었습니다.");
+	    request.setAttribute("url", "/mypage/support/support-list");
+	    request.getRequestDispatcher("/common/result").forward(request, response);
 	}
 
 	private void supportUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -107,7 +113,9 @@ public class SupportController extends HttpServlet {
 
 		supportService.insertBoard(support);
 		
-		request.getRequestDispatcher("/mypage/support/support-list").forward(request, response);
+		request.setAttribute("msg","문의사항 등록이 완료되었습니다.");
+	    request.setAttribute("url", "/mypage/support/support-list");
+	    request.getRequestDispatcher("/common/result").forward(request, response);
 	}
 	
 	private void supportForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
