@@ -1,6 +1,7 @@
 package com.kh.futsal.matching.model.service;
 
 import java.sql.Connection;
+import java.util.List;
 
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.matching.model.dao.MatchDao;
@@ -30,6 +31,22 @@ public class MatchingService {
 		
 		return res;
 		
+	}
+
+	public List<MatchMaster> matchListView() {
+		List res = null;
+		Connection conn = template.getConnection();
+		
+		
+		try {
+			//매치글 리스트 받아오기
+			res = matchDao.matchListView(conn);
+			
+		} finally {
+			template.close(conn);
+		}
+		
+		return res;
 	}
 
 }

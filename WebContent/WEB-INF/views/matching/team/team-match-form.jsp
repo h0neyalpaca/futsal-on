@@ -220,7 +220,7 @@
 		
 	}
 	
-/* 	document.querySelector('#match_reg').addEventListener('submit', function(e){
+ 	document.querySelector('#match_reg').addEventListener('submit', function(e){
 		e.preventDefault;
 		let localCode = document.getElementsByName('localCode');
 		let value = null;
@@ -237,7 +237,7 @@
 			e.preventDefault;
 		}
 		
-   })  */
+   })  
 	
 	
 

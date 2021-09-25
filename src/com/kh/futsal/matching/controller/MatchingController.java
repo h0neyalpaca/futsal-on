@@ -2,6 +2,7 @@ package com.kh.futsal.matching.controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -94,7 +95,7 @@ public class MatchingController extends HttpServlet {
 		matchMaster.setContent(content);
 		
 		matchingService.matchRegister(matchMaster);
-		
+		request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
 	
 	}
 
@@ -106,6 +107,9 @@ public class MatchingController extends HttpServlet {
 		request.getRequestDispatcher("/matching/mercenary/mercenary-match-form").forward(request, response);
 	}
 	private void mercenaryList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		
 		request.getRequestDispatcher("/matching/mercenary/mercenary-list").forward(request, response);
 	}
 	
@@ -116,6 +120,10 @@ public class MatchingController extends HttpServlet {
 		request.getRequestDispatcher("/matching/team/team-match-form").forward(request, response);
 	}
 	private void teamList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<MatchMaster> matchList = matchingService.matchListView(); 	
+		request.setAttribute("matchList", matchList);
+		
+		
 		request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
 	}
 
