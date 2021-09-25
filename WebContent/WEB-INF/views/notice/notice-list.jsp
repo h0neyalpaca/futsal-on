@@ -39,12 +39,11 @@
 								<th scope="col" class="th-name">조회</th>
 							</tr>
 						</thead>
-						
-						<c:forEach var ="notice" items="${noticeList}" > 
+						<!-- 메인 공지 -->
+						<c:forEach var ="mainNotice" items="${mainNoticeList}" > 
 						<tbody class="top-notice">
 							<tr>
 							
-							 <c:if test = "${notice.nwMain==0}"> 
 								<td>	
 									<div class="board-tag">
 										<strong class="board-tag-txt">
@@ -61,24 +60,25 @@
 									
 										<div class="board-list">
 											<div class="inner-list top-notice-list">
-												<a href="/notice/notice-detail">${notice.nwTitle}</a>
+												<a href="/notice/notice-detail">${mainNotice.nwTitle}</a>
 											</div>
 										</div>
 									</div>
 								</td>
 							
 								<td class="td-date">
-									${notice.regDate}
+									${mainNotice.regDate}
 								</td>
 								<td class="td-view">
-									${notice.views}
+									${mainNotice.views}
 								</td>
-								</c:if> 
+						
 							</tr>
 							</c:forEach> 
 						</tbody>
 					</table>
 					
+					<!-- 일반 공지 -->
 					<table class="join-form">
 						<colgroup>
 							<col style="width: 88px;">

@@ -25,6 +25,20 @@ public class NoticeService {
 		}
 		return notice;
 	}
+	
+	public List<Notice> selectMainNoticeList() {
+		
+		List<Notice> mainNoticeList = null;
+		Connection conn = template.getConnection();
+		
+		try {
+			mainNoticeList = noticeDao.selectMainNoticeList(conn);
+		} finally {
+			template.close(conn);
+		}
+		
+		return mainNoticeList;
+	}
 
 
 	public List<Notice> selectNoticeList() {

@@ -96,6 +96,36 @@ public class NoticeDao {
 		
 	}
 	
+	public List<Notice> selectMainNoticeList(Connection conn){
+		
+		List<Notice> mainNoticeList = new ArrayList<Notice>();
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		//게시판에 글을 5개씩 최근순으로 보여지게 하는 쿼리
+		String sql = "select NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS" + 
+					"  from news" + 
+					"  where NW_MAIN = '0' and is_del ='0'";
+
+
+		try {
+			pstm = conn.prepareStatement(sql);
+			rset = pstm.executeQuery();
+			
+			while(rset.next()) {
+				
+				mainNoticeList.add(convertRowToNotice(rset));
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+
+		return mainNoticeList;
+		
+	}
+	
 	public List<Notice> selectNoticeList(Connection conn){
 		
 		List<Notice> noticeList = new ArrayList<Notice>();

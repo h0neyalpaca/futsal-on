@@ -97,11 +97,13 @@ public class NoticeController extends HttpServlet {
 		
 		
 		List<Notice> noticeList = noticeService.selectNoticeList();
-
+		List<Notice> mainNoticeList = noticeService.selectMainNoticeList();
 		
 		
 		
 		request.setAttribute("noticeList", noticeList);
+		request.setAttribute("mainNoticeList", mainNoticeList);
+
 		request.getRequestDispatcher("/notice/notice-list").forward(request, response);
 		
 	}
