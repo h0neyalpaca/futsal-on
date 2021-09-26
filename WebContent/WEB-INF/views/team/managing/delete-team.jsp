@@ -18,7 +18,7 @@
 			<h2><i class="far fa-futbol"></i> 나의 팀</h2>
 			<div class="myteam-con">
 				<%@ include file="/WEB-INF/views/team/include/team_tab.jsp" %>
-				<div class="team-img"></div>
+				<div class="team-img"><img src="/img/team/2021/9/26/2fd4cfd7-b3b2-42b6-ac10-4ad0bd785bb1" /></div>
 				
 				<c:if test="${authentication.grade=='ME03'}">
 					<p class="leave-msg">팀을 해체하시면 <strong>팀원은 자동으로 전원 탈퇴되며, 해체 후 7일간 팀 생성 및 팀 참가가 불가</strong>합니다.<br>또한 같은 이름으로 팀 생성이 불가능하니 신중하게 결정해주세요.</p>

@@ -15,20 +15,20 @@
 			<div class="myteam-wrap">
 				<h2><i class="far fa-futbol"></i> 나의 팀 생성</h2>
 				<div class="myteam-con">
-					<form action="${request.contextPath}/team/create" method="post">
+					<form id="frm_create-team" action="${request.contextPath}/team/create" method="post" enctype="multipart/form-data">
 						<table class="team-create-form">
 							<tr>
 								<th>팀 이름</th>
 								<td>
 									<input type="text" name="tmName" id="tmName" size="8" placeholder="팀 이름을 입력하세요." required />
-									<button type="button" id="btnIdCheck">중복확인</button>
-									<span class="msg">팀 이름 최대 8자</span>
+									<button type="button" id="tmNameCheck">중복확인</button>
+									<span class="msg">2~8자리 한/영/숫자만 입력</span>
 								</td>
 							</tr>
 							<tr>
 								<th>팀 사진</th>
 								<td>
-									<!-- input type="file" name="tmImage" id="teamFile" / -->
+									<input type="file" name="tmImage" id="teamFile" />
 									<span class="msg">500MB 이하의 jpg, gif, png 파일</span>
 								</td>
 							</tr>
@@ -56,7 +56,6 @@
 								<th>소개글</th>
 								<td>
 									<textarea name="tmInfo" placeholder="팀 소개 내용을 입력해주세요."></textarea>
-									<span id="txtCounter" class="txt-counter">(0 / 최대 200자)</span>
 								</td>
 							</tr>
 							<tr>
@@ -73,5 +72,7 @@
 		</div>
 	</section>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<%@ include file="/WEB-INF/views/team/include/team-pop.jsp" %>
+<script type="text/javascript" src="${request.contextPath}/resources/js/team/createForm.js"></script> 
 </body>
 </html>

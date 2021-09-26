@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.futsal.common.code.Config;
+import com.kh.futsal.common.file.FileDTO;
+import com.kh.futsal.common.file.FileUtil;
+import com.kh.futsal.common.file.MultiPartParams;
 import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.member.model.service.MemberService;
 import com.kh.futsal.team.model.dto.Team;
@@ -44,6 +48,9 @@ public class TeamController extends HttpServlet {
 			break;
 		case "create-form":
 			createForm(request,response);
+			break;
+		case "tmName-check":
+			tmNameChk(request,response);
 			break;
 		case "create":
 			createFunc(request,response);
@@ -127,10 +134,17 @@ public class TeamController extends HttpServlet {
 	}
 	
 	private void deleteTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Team team = (Team) request.getSession().getAttribute("team");
+		request.setAttribute("path", request.getServletContext().getRealPath("/"));
+		FileDTO file = ts.selectFileByTmCode(team.getTmCode());
+		request.getSession().setAttribute("file", file);
 		request.getRequestDispatcher("/team/managing/delete-team").forward(request, response);
 	}
 	
+	//내가 작성한 글
 	private void teamBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Team team = (Team) request.getSession().getAttribute("team");
+		//request.setAttribute("tmBoards", ts.selectTmMembers(team.getTmCode()));
 		request.getRequestDispatcher("/team/managing/team-board").forward(request, response);
 		
 	}
@@ -199,8 +213,21 @@ public class TeamController extends HttpServlet {
 		request.getRequestDispatcher("/team/managing/modify").forward(request, response);
 	}
 	
-	//팀 생성 X
+	//팀이름 중복체크
+	private void tmNameChk(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String tmName = request.getParameter("tmName");
+		Team team = ts.selectTeamByTmName(tmName);
+		if(team.getTmName() == null) {
+			response.getWriter().print("available");
+		}else {
+			response.getWriter().print("disable");
+		}	
+	}
+	
+	//팀 생성
 	private void createFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		FileUtil util = new FileUtil();
+		MultiPartParams params = util.fileUpload(request);
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		
 		//random code
@@ -208,29 +235,27 @@ public class TeamController extends HttpServlet {
 		
 		Team team = new Team();
 		team.setTmCode(tmCode);
-		team.setLocalCode(request.getParameter("localCode"));
+		team.setLocalCode(params.getParameter("localCode"));
 		team.setManagerId(member.getUserId());
-		team.setTmName(request.getParameter("tmName"));
-		team.setTmGrade(request.getParameter("tmGrade"));
-		team.setTmInfo(request.getParameter("tmInfo"));
-
-		int res = ts.insertTeam(team);
-		if(res > 0) {
-			res = ts.updateMemberIntoTeam(member, team);
-			if(res > 0) {
-				member.setTmCode(tmCode);
-				member.setGrade("ME03");
-				request.getSession().setAttribute("authentication", member);
-				response.sendRedirect("/team/managing/modify?result=2");
-			}
-		}
+		team.setTmName(params.getParameter("tmName"));
+		team.setTmGrade(params.getParameter("tmGrade"));
+		team.setTmInfo(params.getParameter("tmInfo"));
+		
+		List<FileDTO> fileDTOs = params.getFilesInfo();
+		
+		ts.insertForCreating(team, member, fileDTOs);
+		
+		member.setTmCode(tmCode);
+		member.setGrade("ME03");
+		request.getSession().setAttribute("authentication", member);
+		response.sendRedirect("/team/managing/modify?result=2");
 	}
 	
 	private void createForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/team/create-form").forward(request, response);
 	}
 	
-	//팀 가입 O
+	//팀 가입
 	private void joinFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		Team team = ts.selectTeamByTmCode(request.getParameter("tmCode"));
@@ -256,7 +281,7 @@ public class TeamController extends HttpServlet {
 		Team team = (Team) request.getSession().getAttribute("team");
 		//팀이 있는 회원은 팀관리 화면으로, 없는 회원은 메인으로 보내기
 		if(team != null) {
-			request.getRequestDispatcher("/team/managing/modify").forward(request, response);
+			response.sendRedirect("/team/managing/modify");
 			return;
 		}
 		request.getRequestDispatcher("/team/main").forward(request, response);

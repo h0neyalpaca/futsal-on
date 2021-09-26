@@ -8,7 +8,8 @@ public enum Config {
 	SMTP_AUTHENTICATION_PASSWORD("kwhyweerrmlwrrez"),
 	COMPANY_EMAIL("mmyajit@gmail.com"),
 	//UPLOAD_PATH("C:\\CODE\\upload") 운영서버
-	UPLOAD_PATH("C:\\CODE\\upload\\");//개발서버
+	//UPLOAD_PATH("C:\\CODE\\upload\\");//개발서버
+	UPLOAD_PATH("/resources/img/team/");
 	
 	public final String DESC;
 	

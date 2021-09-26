@@ -1,6 +1,8 @@
 package com.kh.futsal.common.filter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import com.kh.futsal.common.code.ErrorCode;
 import com.kh.futsal.common.code.member.MemberGrade;
 import com.kh.futsal.common.exception.HandlableException;
+import com.kh.futsal.common.file.FileDTO;
 import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.team.model.dto.Team;
 import com.kh.futsal.team.model.service.TeamService;
@@ -167,7 +170,7 @@ public class AuthorizationFilter implements Filter {
 	private void teamAuthorize(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String[] uriArr) {
 		Member member = (Member) httpRequest.getSession().getAttribute("authentication");
 		if(member == null) {
-			throw new HandlableException(ErrorCode.UNAUTHORIZED_PAGE);
+			throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
 		}
 		
 		TeamService ts = new TeamService();

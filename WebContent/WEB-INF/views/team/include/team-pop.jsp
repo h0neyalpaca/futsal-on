@@ -2,6 +2,13 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<div class="pop-msg-wrap msg">
+	<div class="pop-msg">
+		<p></p>
+		<button onclick="btnClose();">확인</button>
+	</div>
+</div>
+
 <div class="pop-msg-wrap question">
 	<div class="pop-msg">
 		<p></p>
@@ -16,6 +23,9 @@
 		<button class="close-btn">확인</button>
 	</div>
 </div>
+
+
+
 
 <c:if test="${not empty param.err}">
 	<div class="pop-msg-wrap" style="display:flex;">
@@ -92,6 +102,7 @@
 		xhr = xmlRequest('POST','leave-team','${request.contextPath}/team/main');
 		xhr.send('userId='+'${authentication.userId}');
 	}
+	//팀 생성
 	//메서드방식,리퀘스트URL,완료후URL
 	let xmlRequest = (method,rqstUrl,rtnUrl) => {
 		let xhr = new XMLHttpRequest();
@@ -114,7 +125,6 @@
 		document.querySelector('.pop-msg-wrap.question').style.display='none';
 		document.querySelector('.pop-msg-wrap.answer').style.display='flex';
 		document.querySelector('.pop-msg-wrap.answer p').innerHTML='<i class="fas fa-check-circle"></i><br>'+txt;
-		document.querySelector('.close-btn').setAttribute('onClick','location.href="'+url+'"');
 	}
 	
 	let btnClose = () => {

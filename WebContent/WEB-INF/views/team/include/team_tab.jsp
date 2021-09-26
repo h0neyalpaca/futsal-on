@@ -20,14 +20,12 @@
 </ul>
 
 <script type="text/javascript">
-let tmUrlArr = document.location.href.split('/');
-let tmUrl = tmUrlArr[tmUrlArr.length-1];
-let dd = document.querySelector('.team-tab-wrap').children;
-console.dir(dd);
-switch(tmUrl){
-case 'main':
-	
-	break;
+let tabBtns = document.querySelector('.team-tab-wrap').children;
+for (var i = 0; i < tabBtns.length; i++) {
+	let tabBtn = tabBtns[i].children[0];
+	tabBtn.classList.remove('selected');
+	if(tabBtn.href==document.location.href.split('?')[0]){
+		tabBtn.classList.add('selected');
+	}
 }
-
 </script>

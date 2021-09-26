@@ -36,9 +36,7 @@ public class FileUtil {
 			MultipartParser parser = new MultipartParser(request, MAX_SIZE);
 			parser.setEncoding("UTF-8");
 			Part part = null;
-			
 			while((part = parser.readNextPart()) != null) {
-				
 				//input type=file 요소가 존재하면, 사용자가 파일을 첨부하지 않았더라도
 				//빈 FilePart 객체사 넘어오다,, 단 파일을 첨부하지 않았기 때문에 getFileName 메서드에서 Null이 반환된다
 				
@@ -46,8 +44,7 @@ public class FileUtil {
 					FilePart filePart = (FilePart) part;
 					if(filePart.getFileName() != null) {
 						FileDTO fileDTO = createFiledDTO(filePart);
-						filePart.writeTo(new File(getSavePath() + fileDTO.getRenameFileName())); //파일저장
-						//4. FileDTO를 fileDTOs에 저장
+						filePart.writeTo(new File(getSavePath(request) + fileDTO.getRenameFileName())); //파일저장
 						fileDTOs.add(fileDTO);
 					}
 				}else {
@@ -64,11 +61,11 @@ public class FileUtil {
 	}
 	
 	
-	private String getSavePath() {
+	private String getSavePath(HttpServletRequest request) {
 		//2. 저장경로를 웹어플리케이션 외부로 지정
 		//저장경로를 외부경로 + /연/월/일 형태로 작성
 		String subPath = getSubPath();
-		String savePath = Config.UPLOAD_PATH.DESC + subPath;
+		String savePath = request.getServletContext().getRealPath("/")+Config.UPLOAD_PATH.DESC + subPath;
 		
 		File dir = new File(savePath);
 		if(!dir.exists()) {
@@ -82,7 +79,7 @@ public class FileUtil {
 		int year = today.get(Calendar.YEAR);
 		int month = today.get(Calendar.MONTH)+1;
 		int date = today.get(Calendar.DATE);
-		return year + "\\" + month +"\\"+date+"\\";
+		return year + "/" + month +"/"+date+"/";
 	}
 	
 	private FileDTO createFiledDTO(FilePart filePart) {

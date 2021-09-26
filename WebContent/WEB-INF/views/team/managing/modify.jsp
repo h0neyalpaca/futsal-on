@@ -19,10 +19,10 @@
 				<%@ include file="/WEB-INF/views/team/include/team_tab.jsp" %>
 				<form action="${request.contextPath}/team/managing/modify-team" method="post">
 					<table class="team-create-form">
+						<tr><th>팀 이름</th><td>${team.tmName}</td></tr>
 						<c:if test="${authentication.grade=='ME03'}">
 							<tr><th>팀 코드</th><td>${team.tmCode}</td></tr>
 						</c:if>
-						<tr><th>팀 이름</th><td>${team.tmName}</td></tr>
 						<tr>
 							<th>팀 사진</th>
 							<td>

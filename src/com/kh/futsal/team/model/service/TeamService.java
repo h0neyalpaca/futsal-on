@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.kh.futsal.common.db.JDBCTemplate;
+import com.kh.futsal.common.file.FileDTO;
 import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.team.model.dao.TeamDAO;
 import com.kh.futsal.team.model.dto.Team;
@@ -18,12 +19,15 @@ public class TeamService {
 	
 	private TeamDAO td = new TeamDAO();
 	
-	//팀 넣기
-	public int insertTeam(Team team) {
+	//팀 생성 코드
+	public void insertForCreating(Team team, Member member, List<FileDTO> fileDTOs) {
 		Connection conn = template.getConnection();
-		int res = 0;
 		try {
-			res = td.insertTeam(team,conn);
+			td.insertTeam(team,conn); //팀테이블
+			for (FileDTO fileDTO : fileDTOs) {
+				td.insertFile(fileDTO,team.getTmCode(),conn); //파일테이블
+			}
+			td.updateMemberIntoTeam(member, team, conn); //멤버테이블
 			template.commit(conn);
 		} catch (Exception e) {
 			template.rollback(conn);
@@ -31,7 +35,6 @@ public class TeamService {
 		} finally {
 			template.close(conn);
 		}
-		return res;
 	}
 	
 	//팀 생성,가입
@@ -142,6 +145,18 @@ public class TeamService {
 		return team;
 	}
 	
+	//tmName으로 팀 검색
+	public Team selectTeamByTmName(String tmName) {
+		Connection conn = template.getConnection();
+		Team team = null;
+		try {
+			team = td.selectTeamByTmName(tmName, conn);
+		} finally {
+			template.close(conn);
+		}
+		return team;
+	}
+	
 	//userId로 팀 검색
 	public Team selectTeamByUserId(String userId) {
 		Connection conn = template.getConnection();
@@ -152,6 +167,18 @@ public class TeamService {
 			template.close(conn);
 		}
 		return team;
+	}
+	
+	//tmCode로 파일 검색
+	public FileDTO selectFileByTmCode(String tmCode) {
+		Connection conn = template.getConnection();
+		FileDTO file = null;
+		try {
+			file = td.selectFileByTmCode(tmCode, conn);
+		} finally {
+			template.close(conn);
+		}
+		return file;
 	}
 	
 	//tmCode로 팀원 리스트 호출
