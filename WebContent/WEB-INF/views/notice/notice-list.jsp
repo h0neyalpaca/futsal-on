@@ -114,14 +114,26 @@
 								
 					</table>
 				</form>
-				<c:forEach var="i" begin="1" end="${totalPage}">
-				<div class="page-button">
-					<div class="page-num"><a href="notice-list?page=${i}">${i}</a></div>
+				
+				<ul class="page-button">
+				
+				<c:if test="${curPage> pageSize }"> 
+						<li><a href="/notice/notice-list?page=${endPage-pageSize}"></a><i class="far fa-arrow-alt-circle-left"></i></li>
+				</c:if>
+				
+					<c:forEach var="page" begin="${startPage}" end="${endPage}">
+						<li class="page-num"><a href="notice-list?curPage=${page}">${page}</a></li>
+					</c:forEach>
+						
+						<c:if test="${totalPage>pageSize }">
+							<li><a href="/notice/notice-list?curPage=${endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
+						</c:if>
+					</ul>
 				</div>
-				</c:forEach>
+				
 			</div>
 		</div>
-	</div>
+
 </section>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

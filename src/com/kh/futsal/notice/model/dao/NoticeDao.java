@@ -102,7 +102,7 @@ public class NoticeDao {
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-		//게시판에 글을 5개씩 최근순으로 보여지게 하는 쿼리
+
 		String sql = "select NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS" + 
 					"  from news" + 
 					"  where NW_MAIN = '0' and is_del ='0'";
@@ -126,25 +126,35 @@ public class NoticeDao {
 		
 	}
 	
-	public List<Notice> selectNoticeList(Connection conn){
+	
+	
+	public List<Notice> selectNoticeList(Connection conn, int startNo, int endNo){
+
 		
 		List<Notice> noticeList = new ArrayList<Notice>();
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-		//게시판에 글을 5개씩 최근순으로 보여지게 하는 쿼리
-		String sql = "select rownum, NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS" + 
+		
+		String sql = "select *" + 
 				"  from(" + 
-				"  select *" + 
-				"  from news" + 
-				"  order by rownum desc)" + 
-				"  where rownum BETWEEN ? and ? and is_del ='0'";
+				"  select rownum rnum, news.*" + 
+				"  from(" + 
+				"  select * from news" + 
+				"  order by NW_IDX desc) news)" + 
+				"  where rnum BETWEEN ? and ? and is_del ='0'";
+
 
 
 		try {
 			pstm = conn.prepareStatement(sql);
+
 			pstm.setInt(1, 1);
 			pstm.setInt(2, 5);
+
+			pstm.setInt(1, startNo); 
+			pstm.setInt(2, endNo); 
+
 			rset = pstm.executeQuery();
 			
 			while(rset.next()) {

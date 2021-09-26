@@ -41,13 +41,13 @@ public class NoticeService {
 	}
 
 
-	public List<Notice> selectNoticeList() {
+	public List<Notice> selectNoticeList(int startNo, int endNo) {
 
 		List<Notice> noticeList = null;
 		Connection conn = template.getConnection();
 		
 		try {
-			noticeList = noticeDao.selectNoticeList(conn);
+			noticeList = noticeDao.selectNoticeList(conn, startNo, endNo);
 		} finally {
 			template.close(conn);
 		}
@@ -69,7 +69,7 @@ public class NoticeService {
 		
 		return res;
 	}
-	
+
 	
 	
 
