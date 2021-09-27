@@ -11,7 +11,7 @@
 		<li><a href="${request.contextPath}/team/managing/delete-team">팀 해체</a></li>
 	</c:if>
 	<c:if test="${authentication.grade!='ME03'}">
-		<li><a class="selected" href="${request.contextPath}/team/modify">팀 정보</a></li>
+		<li><a class="selected" href="${request.contextPath}/team/managing/modify">팀 정보</a></li>
 		<li><a href="${request.contextPath}/team/managing/manage">팀원 보기</a></li>
 		<li><a href="${request.contextPath}/team/managing/total-score">팀 전적</a></li>
 		<li><a href="${request.contextPath}/team/managing/team-board">작성 게시글</a></li>

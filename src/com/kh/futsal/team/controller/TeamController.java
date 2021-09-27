@@ -94,7 +94,7 @@ public class TeamController extends HttpServlet {
 		}
 	}
 
-	//팀 탈퇴 O
+	//팀 탈퇴
 	private void leaveTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int res = ts.updateMemberForLeaveTeam(request.getParameter("userId"));
 		
@@ -110,21 +110,15 @@ public class TeamController extends HttpServlet {
 		pw.print(msg);
 	}
 	
-	//팀 해체 O
+	//팀 해체
 	private void breakTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Member member = (Member) request.getSession().getAttribute("authentication");
 		List<Member> tmMembers = ts.selectTmMembers(request.getParameter("tmCode"));
-		int res = 0;
-		for (Member member : tmMembers) {
-			res = ts.updateMemberForLeaveTeam(member.getUserId());
-			if(res < 1) {
-				return;
-			}
-		}
-		res = ts.updateDelDateForLeaveTeam(request.getParameter("tmCode"));
+
+		int res = ts.updateDelDate(request.getParameter("tmCode"),tmMembers);
 		String msg = "처리 도중 오류가 발생하였습니다.";
 		if(res > 0) {
 			msg = "팀 해체가 완료되었습니다.";
-			Member member = (Member) request.getSession().getAttribute("authentication");
 			member.setTmCode(null);
 			member.setGrade("ME00");
 			request.getSession().setAttribute("authentication", member);
@@ -138,7 +132,6 @@ public class TeamController extends HttpServlet {
 	
 	private void deleteTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Team team = (Team) request.getSession().getAttribute("team");
-		request.setAttribute("path", request.getServletContext().getRealPath("/"));
 		FileDTO file = ts.selectFileByTmCode(team.getTmCode());
 		request.getSession().setAttribute("file", file);
 		request.getRequestDispatcher("/team/managing/delete-team").forward(request, response);
@@ -155,21 +148,7 @@ public class TeamController extends HttpServlet {
 		request.getRequestDispatcher("/team/managing/total-score").forward(request, response);
 	}
 	
-	//팀원 등급 변경 O
-	private void manageGrade(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int res = ts.updateGrade(request.getParameter("userId"),request.getParameter("grade"));
-		
-		String msg = "처리 도중 오류가 발생하였습니다.";
-		if(res > 0) {
-			msg = request.getParameter("userId")+"님의 등급 변경이 완료되었습니다.";
-		}
-		response.setContentType("text/html;charset=UTF-8");
-		response.setHeader("cache-control", "no-cache, no-store");
-		PrintWriter pw= response.getWriter();
-		pw.print(msg);
-	}
-	
-	//팀원 추방 O
+	//팀원 추방
 	private void manageExpulsion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int res = ts.updateMemberForLeaveTeam(request.getParameter("userId"));
 
@@ -183,21 +162,30 @@ public class TeamController extends HttpServlet {
 		pw.print(msg);
 	}
 	
-	//팀장 위임 O
+	//팀장 위임
 	private void manageDelegation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Team team = (Team) request.getSession().getAttribute("team");
 		Member member = (Member) request.getSession().getAttribute("authentication");
 
-		String userId = request.getParameter("userId");
 		String msg = "처리 중 오류가 발생하였습니다.";
-		int res = ts.updateGrades(userId,team.getManagerId());
+		int res = ts.updateGrades(request.getParameter("userId"), team);
 		if (res > 0) {
-			res = ts.updateTmManager(userId,team.getTmCode());
-			if (res > 0) {
-				msg = userId+"님에게 팀장을 위임하였습니다.";
-				member.setGrade("ME01");
-				request.getSession().setAttribute("authentication", member);
-			}
+			msg = request.getParameter("userId")+"님에게 팀장을 위임하였습니다.";
+			member.setGrade("ME01");
+			request.getSession().setAttribute("authentication", member);
+		}
+		response.setContentType("text/html;charset=UTF-8");
+		response.setHeader("cache-control", "no-cache, no-store");
+		PrintWriter pw= response.getWriter();
+		pw.print(msg);
+	}
+
+	//팀원 등급 변경
+	private void manageGrade(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int res = ts.updateGrade(request.getParameter("userId"),request.getParameter("grade"));
+		String msg = "처리 도중 오류가 발생하였습니다.";
+		if(res > 0) {
+			msg = request.getParameter("userId")+"님의 등급 변경이 완료되었습니다.";
 		}
 		response.setContentType("text/html;charset=UTF-8");
 		response.setHeader("cache-control", "no-cache, no-store");

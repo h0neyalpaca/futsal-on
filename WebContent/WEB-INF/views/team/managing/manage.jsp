@@ -61,5 +61,6 @@
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <%@ include file="/WEB-INF/views/team/include/team-pop.jsp" %>
+<script type="text/javascript" src="${request.contextPath}/resources/js/team/managing.js"></script> 
 </body>
 </html>

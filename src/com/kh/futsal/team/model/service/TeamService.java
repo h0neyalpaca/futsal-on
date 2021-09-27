@@ -38,11 +38,10 @@ public class TeamService {
 	}
 	
 	//팀 생성,가입
-	public int updateMemberIntoTeam(Member member, Team team) {
+	public void updateMemberIntoTeam(Member member, Team team) {
 		Connection conn = template.getConnection();
-		int res = 0;
 		try {
-			res = td.updateMemberIntoTeam(member, team, conn);
+			td.updateMemberIntoTeam(member, team, conn);
 			template.commit(conn);
 		} catch (Exception e) {
 			template.rollback(conn);
@@ -50,7 +49,6 @@ public class TeamService {
 		} finally {
 			template.close(conn);
 		}
-		return res;
 	}
 	
 	//팀원 등급 변경
@@ -69,13 +67,18 @@ public class TeamService {
 		return res;
 	}
 	
-	//팀장위임
-	public int updateGrades(String userId, String managerId) {
+	//팀장 위임
+	public int updateGrades(String userId, Team team) {
 		Connection conn = template.getConnection();
 		int res = 0;
 		try {
-			res = td.updateGrades(userId,managerId,conn);
-			template.commit(conn);
+			res = td.updateGrades(userId,team,conn);
+			if(res > 0) {
+				res = td.updateTmManager(userId,team,conn);
+				if(res > 0) {
+					template.commit(conn);
+				}
+			}
 		} catch (Exception e) {
 			template.rollback(conn);
 			throw e;
@@ -85,23 +88,7 @@ public class TeamService {
 		return res;
 	}
 	
-	//팀장위임->팀 매니저ID 변경
-	public int updateTmManager(String userId, String tmCode) {
-		Connection conn = template.getConnection();
-		int res = 0;
-		try {
-			res = td.updateTmManager(userId,tmCode,conn);
-			template.commit(conn);
-		} catch (Exception e) {
-			template.rollback(conn);
-			throw e;
-		} finally {
-			template.close(conn);
-		}
-		return res;
-	}
-	
-	//회원정보에서 팀 정보를 삭제(팀추방 ,팀탈퇴,팀해체)
+	//회원정보에서 팀 정보를 삭제(팀추방,팀탈퇴,팀해체)
 	public int updateMemberForLeaveTeam(String userId) {
 		int res = 0;
 		Connection conn = template.getConnection();
@@ -117,12 +104,17 @@ public class TeamService {
 		return res;
 	}
 	
-	//팀 해체 일자 업데이트
-	public int updateDelDateForLeaveTeam(String tmCode) {
+	//팀 해체
+	public int updateDelDate(String tmCode, List<Member> tmMembers) {
 		Connection conn = template.getConnection();
 		int res = 0;
 		try {
 			res = td.updateDelDateForLeaveTeam(tmCode,conn);
+			if(res > 0) {
+				for (Member member : tmMembers) {
+					res = td.updateMemberForLeaveTeam(member.getUserId(),conn);
+				}
+			}
 			template.commit(conn);
 		} catch (Exception e) {
 			template.rollback(conn);

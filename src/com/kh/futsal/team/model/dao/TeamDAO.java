@@ -44,7 +44,8 @@ public class TeamDAO {
 		return res;
 	}
 	
-	public void insertFile(FileDTO fileDTO, String tmCode, Connection conn) {
+	public int insertFile(FileDTO fileDTO, String tmCode, Connection conn) {
+		int res = 0;
 		PreparedStatement pstm = null;
 		try {
 			String sql = "INSERT INTO FILE_INFO"+
@@ -61,6 +62,7 @@ public class TeamDAO {
 		} finally {
 			template.close(pstm);
 		}
+		return res;
 	}
 	
 	public int updateMemberIntoTeam(Member member, Team team, Connection conn) {
@@ -85,7 +87,6 @@ public class TeamDAO {
 		return res;
 	}
 	
-	//팀원 등급 변경
 	public int updateGrade(String userId, String grade, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
@@ -103,15 +104,14 @@ public class TeamDAO {
 		return res;
 	}
 	
-	//팀장위임
-	public int updateGrades(String userId, String managerId, Connection conn) {
+	public int updateGrades(String userId, Team team, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
 		try {
 			String sql = "UPDATE MEMBER SET GRADE = ? WHERE USER_ID = ? ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, "ME01");
-			pstm.setString(2, managerId);
+			pstm.setString(2, team.getManagerId());
 			res = pstm.executeUpdate();
 			if(res < 1) {
 				return res;
@@ -127,14 +127,14 @@ public class TeamDAO {
 		return res;
 	}
 
-	public int updateTmManager(String userId, String tmCode, Connection conn) {
+	public int updateTmManager(String userId, Team team, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
 		try {
 			String sql = "UPDATE TEAM SET MANAGER_ID = ? WHERE TM_CODE = ? ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, userId);
-			pstm.setString(2, tmCode);
+			pstm.setString(2, team.getTmCode());
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
