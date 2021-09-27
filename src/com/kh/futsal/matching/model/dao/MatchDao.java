@@ -115,7 +115,7 @@ public class MatchDao {
 			rset = pstm.executeQuery();
 
 			if(rset.next()) {
-				matchMaster = convertRowToMatchList(rset);
+				matchMaster = convertRowToMatchListWithMatchNum(rset);
 			}
 			
 		} catch (SQLException e) {
@@ -125,6 +125,26 @@ public class MatchDao {
 		}
 		return matchMaster;
 	}
+	
+	private MatchMaster convertRowToMatchListWithMatchNum(ResultSet rset) throws SQLException {
+		MatchMaster match = new MatchMaster();
+		
+		match.setMmIdx(rset.getString("MM_IDX"));
+		match.setUserId(rset.getString("USER_ID"));
+		match.setTmCode(rset.getString("TM_CODE"));
+		match.setLocalCode(rset.getString("LOCAL_CODE"));
+		match.setAddress(rset.getString("ADDRESS"));
+		match.setRegDate(rset.getDate("REG_DATE"));
+		match.setTitle(rset.getString("TITLE"));
+		match.setExpense(rset.getString("EXPENSE"));
+		match.setMatchNum(rset.getInt("MATCH_NUM"));
+		match.setGrade(rset.getString("GRADE"));
+		match.setContent(rset.getString("CONTENT"));
+		match.setTmMatch(rset.getInt("TM_MATCH"));
+		match.setMatchTime(rset.getString("MATCH_TIME"));
+		
+		return match;
+	}	
 	
 	private MatchMaster convertRowToMatchList(ResultSet rset) throws SQLException {
 		MatchMaster match = new MatchMaster();
@@ -137,7 +157,6 @@ public class MatchDao {
 		match.setRegDate(rset.getDate("REG_DATE"));
 		match.setTitle(rset.getString("TITLE"));
 		match.setExpense(rset.getString("EXPENSE"));
-		match.setMatchNum(rset.getInt("MATCH_NUM"));
 		match.setGrade(rset.getString("GRADE"));
 		match.setContent(rset.getString("CONTENT"));
 		match.setTmMatch(rset.getInt("TM_MATCH"));
