@@ -43,6 +43,9 @@ public class TeamController extends HttpServlet {
 		case "join-team":
 			joinTeam(request,response);
 			break;
+		case "tmCode-check":
+			tmCodeChk(request,response);
+			break;
 		case "join":
 			joinFunc(request,response);
 			break;
@@ -202,7 +205,6 @@ public class TeamController extends HttpServlet {
 		pw.print(msg);
 	}
 	
-	//팀원 목록 O
 	private void teamManage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Team team = (Team) request.getSession().getAttribute("team");
 		request.setAttribute("tmMembers", ts.selectTmMembers(team.getTmCode()));
@@ -215,8 +217,7 @@ public class TeamController extends HttpServlet {
 	
 	//팀이름 중복체크
 	private void tmNameChk(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String tmName = request.getParameter("tmName");
-		Team team = ts.selectTeamByTmName(tmName);
+		Team team = ts.selectTeamByTmName(request.getParameter("tmName"));
 		if(team.getTmName() == null) {
 			response.getWriter().print("available");
 		}else {
@@ -255,22 +256,28 @@ public class TeamController extends HttpServlet {
 		request.getRequestDispatcher("/team/create-form").forward(request, response);
 	}
 	
+	//팀코드 체크
+	private void tmCodeChk(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Team team = ts.selectTeamByTmCode(request.getParameter("tmCode"));
+		
+		//팀코드가 있고 삭제되지 않은 팀만 가입 가능
+		if(team.getTmCode()!=null && team.getDelDate()==null) {
+			response.getWriter().print("available");
+		} else {
+			response.getWriter().print("disable");
+		}
+	}
+	
 	//팀 가입
 	private void joinFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		Team team = ts.selectTeamByTmCode(request.getParameter("tmCode"));
 		
-		if(team.getTmCode()==null || team.getDelDate()!=null) {
-			response.sendRedirect("/team/join-team?err=1");
-			return;
-		}
-		int res = ts.updateMemberIntoTeam(member, team);
-		if(res > 0) {			
-			member.setTmCode(team.getTmCode());
-			member.setGrade("ME01");
-			request.getSession().setAttribute("authentication", member);
-			response.sendRedirect("/team/managing/modify?result=1");
-		}
+		ts.updateMemberIntoTeam(member, team);			
+		member.setTmCode(team.getTmCode());
+		member.setGrade("ME01");
+		request.getSession().setAttribute("authentication", member);
+		response.sendRedirect("/team/managing/modify?result=1");
 	}
 	
 	private void joinTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

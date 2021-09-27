@@ -97,7 +97,7 @@
 	font-size:1.2em;
 	border:2px solid #1c1350;
 }
-.team-join-form input[type="submit"]{
+.team-join-form button{
 	width:50%;
 	margin-top:15px;
 	background:linear-gradient(45deg, #000, #1c1350, #000);

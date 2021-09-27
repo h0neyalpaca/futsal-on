@@ -20,12 +20,10 @@
 					<i class="fas fa-user-lock"></i>
 					전달받으신 <strong>팀 참가 코드</strong>를 입력하세요.
 				</p>
-				<form action="${request.contextPath}/team/join" method="post">
-					<div class="team-join-form">
-						<input type="text" name="tmCode" id="tmCode" placeholder="팀 참가코드를 입력하세요." required />
-						<input type="submit" value="팀 참가하기" />
-					</div>
-				</form>
+				<div class="team-join-form">
+					<input type="text" name="tmCode" id="tmCode" placeholder="팀 참가코드를 입력하세요." required />
+					<button id="tmCodeCheck">팀 참가하기</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -33,5 +31,6 @@
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <%@ include file="/WEB-INF/views/team/include/team-pop.jsp" %>
+<script type="text/javascript" src="${request.contextPath}/resources/js/team/joinForm.js"></script> 
 </body>
 </html>

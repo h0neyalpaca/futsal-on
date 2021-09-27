@@ -19,7 +19,7 @@ public class TeamService {
 	
 	private TeamDAO td = new TeamDAO();
 	
-	//팀 생성 코드
+	//팀 생성
 	public void insertForCreating(Team team, Member member, List<FileDTO> fileDTOs) {
 		Connection conn = template.getConnection();
 		try {

@@ -24,18 +24,6 @@
 	</div>
 </div>
 
-
-
-
-<c:if test="${not empty param.err}">
-	<div class="pop-msg-wrap" style="display:flex;">
-		<div class="pop-msg">
-			<p><i class="fas fa-exclamation-triangle"></i><br>팀이 존재하지 않거나 이미 삭제된 팀입니다.</p>
-			<button onclick="btnClose();">확인</button>
-		</div>
-	</div>
-</c:if>
-
 <c:if test="${not empty param.result}">
 	<div class="pop-msg-wrap" style="display:flex;">
 		<div class="pop-msg">
@@ -48,6 +36,7 @@
 		</div>
 	</div>
 </c:if>
+
 <script type="text/javascript">
 	let manageGrade = (e, userId) => {
 		let grade = e.parentNode.childNodes[1].childNodes[1].value;
@@ -102,7 +91,6 @@
 		xhr = xmlRequest('POST','leave-team','${request.contextPath}/team/main');
 		xhr.send('userId='+'${authentication.userId}');
 	}
-	//팀 생성
 	//메서드방식,리퀘스트URL,완료후URL
 	let xmlRequest = (method,rqstUrl,rtnUrl) => {
 		let xhr = new XMLHttpRequest();

@@ -23,13 +23,14 @@
 		})
 		.then(text => {
 			if(text == 'available'){
+				cfmTmName = tmName;
 				drawMsg('<i class="fas fa-check-circle"></i><br>사용 가능한 팀명입니다.');
 			}else{
 				drawMsg('<i class="fas fa-times-circle"></i><br>사용 불가능한 팀명입니다.');
 			}
 		})
 		.catch(error=>{
-			drawMsg('<i class="fas fa-times-circle"></i><br>응답에 실패했습니다.<ar>상태코드 : '+error); ;
+			drawMsg('<i class="fas fa-times-circle"></i><br>응답에 실패했습니다.<br>상태코드 : '+error); ;
 		})
 	});
 
@@ -40,7 +41,7 @@
 			e.preventDefault();
 		};
 	});
-	
+
 	let drawMsg = (msg) => {
 		document.querySelector('.pop-msg-wrap.question').style.display='none';
 		document.querySelector('.pop-msg-wrap.answer').style.display='none';

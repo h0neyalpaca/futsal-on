@@ -69,7 +69,6 @@
 							<td>
 								<c:if test="${authentication.grade=='ME03'}">
 									<textarea placeholder="팀 소개 내용을 입력해주세요.">${team.tmInfo}</textarea>
-									<span id="txtCounter" class="txt-counter">(0 / 최대 200자)</span>
 								</c:if>
 								<c:if test="${authentication.grade!='ME03'}">
 									${team.tmInfo}
