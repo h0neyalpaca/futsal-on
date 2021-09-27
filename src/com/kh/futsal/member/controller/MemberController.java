@@ -140,7 +140,7 @@ public class MemberController extends HttpServlet {
 //		System.out.println(userId + password);
 		Member member = memberService.memberAuthenticate(userId,password);
 		
-		if(member == null) {
+		if(member == null || member.getIsLeave() != 0) {
 			response.sendRedirect("/member/login-form?err=1");
 			return;
 		}
