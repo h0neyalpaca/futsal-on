@@ -44,28 +44,27 @@ public class NoticeDao {
 		return res;
 	}
 	
-	public int noticeViewCnt(String nw_idx, Connection conn) { //조회수 증가 메서드
-		//조회했을 때 new NoticeDao().noticeViewCnt(nw_idx, conn); 실행시키면 됨
-
-		int res = 0;
+	public void noticeViewCnt(String nwIdx, Connection conn) { //조회수 증가 메서드
 		
+
+	
 		PreparedStatement pstm = null;
-		String sql = "update into news "
-				+ "set views = views + 1 where nw_idx = ?";
+		String sql = "update news" + 
+					" set views = views + 1 " + 
+					" where nw_idx = ?";
 		
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, nw_idx);
-			
-			res = pstm.executeUpdate();
+			pstm.setString(1, nwIdx);
+			pstm.executeUpdate();
 			
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
 		}finally {
-			template.close(conn);
+			template.close(pstm);
 		}
 		
-		return res;
+		
 	}
 	
 	
@@ -75,17 +74,17 @@ public class NoticeDao {
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-		String sql = "select * from news where nw_idx = ?";
+		String sql = "select NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS from news where nw_idx =?";
 				
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, nwIdx);
+			pstm.setString(1,nwIdx);
 			rset = pstm.executeQuery();
-			
+	
 			if(rset.next()) {
-				convertRowToNotice(rset);
+				notice = convertRowToNotice(rset);
 			}
-		
+			
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
 		}finally {
@@ -96,13 +95,15 @@ public class NoticeDao {
 		
 	}
 	
+
+	
 	public List<Notice> selectMainNoticeList(Connection conn){
 		
 		List<Notice> mainNoticeList = new ArrayList<Notice>();
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-
+		
 		String sql = "select NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS" + 
 					"  from news" + 
 					"  where NW_MAIN = '0' and is_del ='0'";
@@ -126,17 +127,14 @@ public class NoticeDao {
 		
 	}
 	
-	
-	
 	public List<Notice> selectNoticeList(Connection conn, int startNo, int endNo){
-
 		
 		List<Notice> noticeList = new ArrayList<Notice>();
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
 		
-		String sql = "select *" + 
+		String sql = "select NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS" + 
 				"  from(" + 
 				"  select rownum rnum, news.*" + 
 				"  from(" + 
@@ -145,16 +143,10 @@ public class NoticeDao {
 				"  where rnum BETWEEN ? and ? and is_del ='0'";
 
 
-
 		try {
 			pstm = conn.prepareStatement(sql);
-
-			pstm.setInt(1, 1);
-			pstm.setInt(2, 5);
-
 			pstm.setInt(1, startNo); 
 			pstm.setInt(2, endNo); 
-
 			rset = pstm.executeQuery();
 			
 			while(rset.next()) {

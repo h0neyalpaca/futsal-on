@@ -2,6 +2,15 @@ package com.kh.futsal.mypage.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,15 +18,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.futsal.matching.model.dto.MatchGame;
+import com.kh.futsal.matching.model.dto.MatchMaster;
+import com.kh.futsal.matching.model.service.MatchingService;
 import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.member.model.service.MemberService;
+import com.kh.futsal.team.model.dto.Team;
+import com.kh.futsal.team.model.service.TeamService;
 
 @WebServlet("/mypage/*")
 public class MypageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();
-
-       
+	private MatchingService matchingService = new MatchingService();
+    private TeamService teamService = new TeamService();   
+	
     public MypageController() {
         super();
         // TODO Auto-generated constructor stub
@@ -34,6 +49,9 @@ public class MypageController extends HttpServlet {
 			break;
 		case "my-application":
 			myApplication(request,response);
+			break;
+		case "my-application-delete":
+			myApplicationDelete(request,response);
 			break;
 		case "modify-form":
 			mypageModifyForm(request,response);
@@ -55,6 +73,47 @@ public class MypageController extends HttpServlet {
 			break;
 		default:
 		}
+	}
+
+	private void myApplicationDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String mgIdx = request.getParameter("mgIdx");
+		
+		boolean flag = checkDate(mgIdx, request, response);
+		if(flag) {
+			matchingService.deleteMyApplicant(mgIdx);
+			request.setAttribute("msg","신청이 취소되었습니다");
+		}else {
+			request.setAttribute("msg","경기시작이 얼마남지 않아 취소가 불가합니다");
+		}
+		
+	    request.setAttribute("url", "/mypage/my-application");
+	    request.getRequestDispatcher("/common/result").forward(request, response);
+	}
+	
+	private boolean checkDate(String mgIdx,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		MatchGame match = matchingService.selectMatch(mgIdx);
+		
+		String matchDay= match.getMatchDate();
+		int matchMonth = Integer.parseInt(matchDay.substring(5, 7));
+		int matchDate = Integer.parseInt(matchDay.substring(8, 10));
+		int matchHour = Integer.parseInt(matchDay.substring(11, 13));
+		
+		LocalDateTime today = LocalDateTime.now();
+		int month = today.getMonthValue();
+		int date =  today.getDayOfMonth();
+		int hour = today.getHour();
+		
+		if(matchMonth == month && matchDate == date) {
+			if((matchHour-4) <= hour) {
+				return false;
+			}
+		}else if(matchMonth == month && matchDate < date){
+			return false;
+		}else if(matchMonth > month){
+			return false;
+		}
+		return true;
 	}
 
 	private void nickCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -125,8 +184,27 @@ public class MypageController extends HttpServlet {
 	}
 	
 	private void myApplication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		String userId = member.getUserId();
 		
+		List<MatchMaster> matchList = matchingService.matchGameList(userId);
+		List<Team> teamInfos = new ArrayList<Team>();
+		List<MatchGame> mgList = matchingService.matchMgList(userId);
+		
+		Map<String,Object> matchTeamList =  new HashMap<String, Object>();
+		
+		
+		for (int i = 0; i < matchList.size(); i++) {
+			teamInfos.add(teamService.selectTeamByTmCode(matchList.get(i).getTmCode()));
+		}		
+		
+		
+		matchTeamList.put("matchList", matchList);
+		matchTeamList.put("teamList",teamInfos);
+		matchTeamList.put("mgList",mgList);
+		
+		request.setAttribute("datas", matchTeamList);
+		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
 	}
 	
 	private void personalNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -17,35 +17,64 @@
 				<h2><i class="fas fa-user-cog"></i> 마이페이지</h2>
 				<div class="mypage-con">
 					<%@ include file="/WEB-INF/views/mypage/mypage_tab.jsp" %>
-					<div class="match-box use-mypage">
-					<div class="tit-area">
-						<div class="tit-info">
-							<div class="state recruiting">모집중</div>
-							<div class="tit">
-								<strong>수원 화성 풋살파크 1구장 매치 모집</strong>
-								별점 ★★★★★&nbsp;&nbsp;&nbsp;전적 10전 6승 4패
+					
+					<c:forEach items="${datas.matchList}" var="match" varStatus="status">
+						<div class="match-box use-mypage">
+						<div class="tit-area">
+							<div class="tit-info">
+								<div class="state recruiting">모집중</div>
+								<div class="tit">
+									<strong>${match.title}</strong>
+									별점<c:choose>
+										<c:when test="${datas.teamList[status.index].tmScore == 0}">☆☆☆☆☆</c:when>
+										<c:when test="${datas.teamList[status.index].tmScore == 1}">★☆☆☆☆</c:when>
+										<c:when test="${datas.teamList[status.index].tmScore == 2}">★★☆☆☆</c:when>
+										<c:when test="${datas.teamList[status.index].tmScore == 3}">★★★☆☆</c:when>
+										<c:when test="${datas.teamList[status.index].tmScore == 4}">★★★★☆</c:when>
+										<c:when test="${datas.teamList[status.index].tmScore == 5}">★★★★★</c:when>
+									</c:choose>&nbsp;&nbsp;&nbsp;전적  ${datas.teamList[status.index].gameCnt}전  ${datas.teamList[status.index].tmWin}승 ${datas.teamList[status.index].gameCnt - datas.teamList[status.index].tmWin}패
+								</div>
+							</div>
+							<div class="profile_n_appli">
+								<div class="profile">
+									<div class="profile-name">${match.matchNum}명남음</div>
+								</div>
+								<div class="btn-appli" onclick="location.href='/mypage/my-application-delete?mgIdx=${datas.mgList[status.index].mgIdx}';">신청취소</div>
 							</div>
 						</div>
-						<div class="profile_n_appli">
-							<div class="profile">
-								<div class="profile-name">0 명남음</div>
-							</div>
-							<div class="btn-appli">신청취소</div>
+						<div class="match-detail">
+							<ul>
+								<li><span class="tit">지역</span>
+								<c:choose>
+									<c:when test="${match.localCode == 'LC11'}">[서울]</c:when>
+									<c:when test="${match.localCode == 'LC21'}">[부산]</c:when>
+									<c:when test="${match.localCode == 'LC22'}">[대구]</c:when>
+									<c:when test="${match.localCode == 'LC23'}">[인천]</c:when>
+									<c:when test="${match.localCode == 'LC24'}">[광주]</c:when>
+									<c:when test="${match.localCode == 'LC25'}">[대전]</c:when>
+									<c:when test="${match.localCode == 'LC26'}">[울산]</c:when>
+									<c:when test="${match.localCode == 'LC29'}">[세종]</c:when>
+									<c:when test="${match.localCode == 'LC31'}">[경기]</c:when>
+									<c:when test="${match.localCode == 'LC32'}">[강원]</c:when>
+									<c:when test="${match.localCode == 'LC33'}">[충북]</c:when>
+									<c:when test="${match.localCode == 'LC34'}">[충남]</c:when>
+									<c:when test="${match.localCode == 'LC35'}">[전북]</c:when>
+									<c:when test="${match.localCode == 'LC36'}">[전남]</c:when>
+									<c:when test="${match.localCode == 'LC37'}">[경북]</c:when>
+									<c:when test="${match.localCode == 'LC38'}">[경남]</c:when>
+									<c:when test="${match.localCode == 'LC39'}">[제주]</c:when>
+								</c:choose> ${match.address} <a class="view-map"><i class="fas fa-map-marker-alt"></i> 지도보기</a></li>
+								<li><span class="tit">매치날짜</span>${match.matchTime}</li>
+							</ul>
+							<ul>
+								<li><span class="tit">매치방식</span>${match.tmMatch}:${match.tmMatch}</li>
+								<li><span class="tit">실력</span>${match.grade}</li>
+								<li><span class="tit">용병비</span>${match.expense}</li>
+							</ul>
+							<div class="txt">${match.content}</div>
 						</div>
 					</div>
-					<div class="match-detail">
-						<ul>
-							<li><span class="tit">지역</span>[경기] 수원 화성 풀살파크 1구장 <a class="view-map"><i class="fas fa-map-marker-alt"></i> 지도보기</a></li>
-							<li><span class="tit">매치날짜</span>2021-09-11 13:00</li>
-						</ul>
-						<ul>
-							<li><span class="tit">매치방식</span>6:6</li>
-							<li><span class="tit">실력</span>상</li>
-							<li><span class="tit">용병비</span>10,000원</li>
-						</ul>
-						<div class="txt">내용이 들어갑니다.</div>
-					</div>
-				</div>
+				</c:forEach>
 			</div>
 		</div>
 	</section>

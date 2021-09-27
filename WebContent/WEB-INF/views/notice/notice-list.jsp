@@ -60,7 +60,9 @@
 									
 										<div class="board-list">
 											<div class="inner-list top-notice-list">
-												<a href="/notice/notice-detail">${mainNotice.nwTitle}</a>
+
+												<a href="/notice/notice-detail?noticeNo=${mainNotice.nwIdx}">${mainNotice.nwTitle}</a>
+
 											</div>
 										</div>
 									</div>
@@ -95,7 +97,7 @@
 									<div class="board-wrap">
 										<div class="board-list">
 											<div class="inner-list">
-												<a href="">${notice.nwTitle}</a>
+												<a href="/notice/notice-detail?curPage=${curPage}&noticeNo=${notice.nwIdx}">${notice.nwTitle}</a>
 											</div>
 										</div>
 									</div>
@@ -115,20 +117,22 @@
 					</table>
 				</form>
 				
+								
 				<ul class="page-button">
 				
-				<c:if test="${curPage> pageSize }"> 
-						<li><a href="/notice/notice-list?page=${endPage-pageSize}"></a><i class="far fa-arrow-alt-circle-left"></i></li>
-				</c:if>
+					<c:if test="${curPage> pageSize }"> 
+							<li><a href="/notice/notice-list?page=${endPage-1}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
+					</c:if>
 				
 					<c:forEach var="page" begin="${startPage}" end="${endPage}">
 						<li class="page-num"><a href="notice-list?curPage=${page}">${page}</a></li>
 					</c:forEach>
 						
-						<c:if test="${totalPage>pageSize }">
-							<li><a href="/notice/notice-list?curPage=${endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
-						</c:if>
-					</ul>
+					<c:if test="${endPage<totalPage }">
+						<li><a href="/notice/notice-list?curPage=${endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
+					</c:if>
+				</ul>
+				
 				</div>
 				
 			</div>
