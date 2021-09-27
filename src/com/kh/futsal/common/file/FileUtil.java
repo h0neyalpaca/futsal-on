@@ -40,7 +40,7 @@ public class FileUtil {
 				//input type=file 요소가 존재하면, 사용자가 파일을 첨부하지 않았더라도
 				//빈 FilePart 객체사 넘어오다,, 단 파일을 첨부하지 않았기 때문에 getFileName 메서드에서 Null이 반환된다
 				
-				if(part.isFile() == true) {
+				if(part.isFile()) {
 					FilePart filePart = (FilePart) part;
 					if(filePart.getFileName() != null) {
 						FileDTO fileDTO = createFiledDTO(filePart);
@@ -52,7 +52,7 @@ public class FileUtil {
 					setParameterMap(paramPart, res);
 				}
 			}
-			res.put("com.kh.toy.files", fileDTOs);	
+			res.put("com.kh.futsal.files", fileDTOs);	
 			
 		} catch (IOException e) {
 			throw new HandlableException(ErrorCode.FAILED_FILE_UPLOAD_ERROR,e);

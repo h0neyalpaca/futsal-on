@@ -42,7 +42,7 @@
 					<div class="login-info">
 						<a class="btn-search-id" href="/member/login/lost-id">아이디 찾기</a>
 						<a class="btn-search-pw" href="/member/login/lost-password">비밀번호 찾기</a>
-						<a class="btn-kakao-login"><i class="fas fa-comment"></i> 카카오 로그인</a>
+						<a class="btn-kakao-login" href="javascript:kakaoLogin();" onclick="pageChange()"><i class="fas fa-comment"></i> 카카오 로그인</a>
 						<a class="btn-join" href="/member/join-form">회원가입</a>
 						
 					</div>
@@ -50,6 +50,7 @@
 			</div>
 		</div>
 	</section>
+	<script type="text/javascript" src="/resources/js/kakaoLogin/kakaoLogin.js"></script> 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </body>
 </html>

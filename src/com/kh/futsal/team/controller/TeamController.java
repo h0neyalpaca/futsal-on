@@ -62,6 +62,9 @@ public class TeamController extends HttpServlet {
 		case "modify":
 			teamModify(request,response);
 			break;
+		case "modify-func":
+			modifyFunc(request,response);
+			break;
 		case "manage":
 			teamManage(request,response);
 			break;
@@ -199,7 +202,28 @@ public class TeamController extends HttpServlet {
 		request.getRequestDispatcher("/team/managing/manage").forward(request, response);
 	}
 	
+	//팀 수정
+	private void modifyFunc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		FileUtil util = new FileUtil();
+		MultiPartParams params = util.fileUpload(request);
+		Team team = (Team) request.getSession().getAttribute("team");
+		
+		team.setLocalCode(params.getParameter("localCode"));
+		team.setTmGrade(params.getParameter("tmGrade"));
+		team.setTmInfo(params.getParameter("tmInfo"));
+		
+		List<FileDTO> fileDTOs = params.getFilesInfo();
+		
+		ts.updateTeam(team, fileDTOs);
+		
+		request.getSession().setAttribute("team", team);
+		response.sendRedirect("/team/managing/modify?result=3");
+	}
+	
 	private void teamModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Team team = (Team) request.getSession().getAttribute("team");
+		FileDTO file = ts.selectFileByTmCode(team.getTmCode());
+		request.setAttribute("file", file);
 		request.getRequestDispatcher("/team/managing/modify").forward(request, response);
 	}
 	

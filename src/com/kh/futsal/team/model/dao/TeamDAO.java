@@ -65,6 +65,22 @@ public class TeamDAO {
 		return res;
 	}
 	
+	public int deleteFile(String tmCode, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "DELETE FILE_INFO WHERE TM_CODE = ?";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, tmCode);
+			pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+	
 	public int updateMemberIntoTeam(Member member, Team team, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
@@ -78,6 +94,25 @@ public class TeamDAO {
 				pstm.setString(2, "ME01");
 			};
 			pstm.setString(3, member.getUserId());
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+
+	public int updateTeam(Team team, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "UPDATE TEAM SET TM_GRADE = ?, LOCAL_CODE = ?, TM_INFO = ? WHERE TM_CODE = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, team.getTmGrade());
+			pstm.setString(2, team.getLocalCode());
+			pstm.setString(3, team.getTmInfo());
+			pstm.setString(4, team.getTmCode());
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
@@ -252,6 +287,8 @@ public class TeamDAO {
 			pstm.setString(1, tmCode);
 			rset = pstm.executeQuery();
 			if(rset.next()) {
+				file.setFlIdx(rset.getString("FL_IDX"));
+				file.setTmCode(rset.getString("TM_CODE"));
 				file.setOriginFileName(rset.getString("ORIGIN_FILE_NAME"));
 				file.setRenameFileName(rset.getString("RENAME_FILE_NAME"));
 				file.setSavePath(rset.getString("SAVE_PATH"));

@@ -12,3 +12,4 @@
 <link rel="shortcut icon" href="/resources/img/common/favicon.ico" type="image/x-icon">
 <link rel="icon" href="/resources/img/common/favicon.ico" type="image/x-icon">
 <script type="text/javascript" src="${contextPath}/resources/js/webUtil.js"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>

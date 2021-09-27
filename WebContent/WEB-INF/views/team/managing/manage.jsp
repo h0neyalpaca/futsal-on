@@ -43,7 +43,7 @@
 									<button class="btn-change-grade" onclick="manageGrade(this, '${tmMembers.userId}');return false;">변경</button>
 								</c:if>
 								<c:if test="${authentication.grade!='ME03'||tmMembers.grade=='ME03'}">
-									<c:out value="${tmMembers.grade eq 'ME03'?'팀장':'ME02'?'매니저':'팀원'}" />
+									<c:out value="${tmMembers.grade eq 'ME03'?'팀장':tmMembers.grade eq 'ME02'?'매니저':'팀원'}" />
 								</c:if>
 							</td>
 							<c:if test="${authentication.grade=='ME03'}">

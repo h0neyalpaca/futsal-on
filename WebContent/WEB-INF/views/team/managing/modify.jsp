@@ -15,25 +15,29 @@
 		<div class="myteam-wrap">
 			<h2><i class="far fa-futbol"></i> 나의 팀</h2>
 			<div class="myteam-con">
-				
 				<%@ include file="/WEB-INF/views/team/include/team_tab.jsp" %>
-				<form action="${request.contextPath}/team/managing/modify-team" method="post">
+				<c:if test="${authentication.grade!='ME03'}">
+					<div class="team-img" style="margin-bottom:30px;"></div>
+				</c:if>
+				<form id="frm_create-team" action="${request.contextPath}/team/managing/modify-func" method="post" enctype="multipart/form-data">
 					<table class="team-create-form">
 						<tr><th>팀 이름</th><td>${team.tmName}</td></tr>
 						<c:if test="${authentication.grade=='ME03'}">
 							<tr><th>팀 코드</th><td>${team.tmCode}</td></tr>
+							<tr>
+								<th>팀 사진</th>
+								<td>
+									<input type="file" name="teamFile" id="teamFile" onchange="fileCheck(this.files)">
+									<span class="msg">JPG/GIF/PNG 파일만 업로드 가능</span>
+									<c:if test="${file.tmCode != null}">
+										<div class="team-file leader">
+											<a class="view-file" target="_blank" href="/img/team/${file.savePath}${file.renameFileName}"><i class="fas fa-eye"></i> 현재 팀 이미지 :  ${file.originFileName}</a>
+											<%--a class="del-file"><i class="fas fa-trash-alt"></i> 팀 사진 삭제</a --%>
+										</div>
+									</c:if>
+								</td>
+							</tr>
 						</c:if>
-						<tr>
-							<th>팀 사진</th>
-							<td>
-								<input type="file" name="teamFile" id="teamFile" />
-								<span class="msg">500MB 이하의 jpg, gif, png</span>
-								<div class="team-file leader">
-									<a class="view-file"><i class="fas fa-eye"></i> team_file_name.jpg</a>
-									<a class="del-file"><i class="fas fa-trash-alt"></i> 팀 사진 삭제</a>
-								</div>
-							</td>
-						</tr>
 						<tr>
 							<th>실력</th>
 							<td>
@@ -60,7 +64,7 @@
 									<label><input type="radio" name="localCode" value="LC37" ${team.localCode eq 'LC37'?'checked':''} /> 경상</label>
 								</c:if>
 								<c:if test="${authentication.grade!='ME03'}">
-									${team.localCode}
+									${team.localCode eq 'LC11'?'서울':team.localCode eq 'LC31'?'경기':team.localCode eq 'LC32'?'강원':team.localCode eq 'LC33'?'충청':team.localCode eq 'LC35'?'전라':team.localCode eq 'LC39'?'제주':'경상'}
 								</c:if>
 							</td>
 						</tr>
@@ -68,7 +72,7 @@
 							<th>소개글</th>
 							<td>
 								<c:if test="${authentication.grade=='ME03'}">
-									<textarea placeholder="팀 소개 내용을 입력해주세요.">${team.tmInfo}</textarea>
+									<textarea name="tmInfo" placeholder="팀 소개 내용을 입력해주세요.">${team.tmInfo}</textarea>
 								</c:if>
 								<c:if test="${authentication.grade!='ME03'}">
 									${team.tmInfo}
@@ -93,6 +97,16 @@
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <%@ include file="/WEB-INF/views/team/include/team-pop.jsp" %>
-<script type="text/javascript" src="${request.contextPath}/resources/js/team/managing.js"></script> 
+<script type="text/javascript" src="${request.contextPath}/resources/js/team/modForm.js"></script>
+<c:if test="${authentication.grade!='ME03'}">
+<script type="text/javascript">
+	let tmImg = document.querySelector('.team-img');
+	tmImg.style.background='url("/img/team/no-img.jpg") center center';
+	<c:if test="${file.tmCode != null}">
+		tmImg.style.background='url("/img/team/${file.savePath}${file.renameFileName}") center center';
+	</c:if>
+	tmImg.style.backgroundSize='cover';
+</script>
+</c:if>
 </body>
 </html>
