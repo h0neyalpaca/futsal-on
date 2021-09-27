@@ -23,7 +23,7 @@
 					<a href="team-match-form"><i class="fas fa-pencil-alt"></i>글쓰기</a>
 				</div>
 				<div class="search-wrap">
-					<form>
+					<form action="/matching/team/team-match-search" method="post">
 						<dl>
 							<dt>경기지역</dt>
 							<dd class="local">
@@ -38,14 +38,14 @@
 						</dl>
 						<dl>
 							<dt>기간</dt>
-							<dd><input type="date"></dd>
+							<dd><input type="date" name="date"></dd>
 						</dl>
 						<dl>
 							<dt>상대팀 실력</dt>
 							<dd class="level-dd">
-								<label><input type="radio" name="level" value="상">상</label>
-								<label><input type="radio" name="level" value="중">중</label>
-								<label><input type="radio" name="level" value="하">하</label>
+								<label><input type="radio" name="level" value="high">상</label>
+								<label><input type="radio" name="level" value="middle">중</label>
+								<label><input type="radio" name="level" value="low">하</label>
 							</dd>
 						</dl>
 						<input type="submit" value="검색">
@@ -61,7 +61,7 @@
 				</div>
 				<c:forEach var="matchBox" items="${matchList}">
 				<div class="match-box">
-					<div class="tit-area">
+					<div class="tit-area">	
 						<div class="tit-info">
 							<div class="state recruiting">모집중</div>
 							<div class="tit">
@@ -79,8 +79,12 @@
 					</div>
 					<div class="match-detail">
 						<ul>
-							<li><span class="tit">지역</span>[${matchBox.getLocalCode()}] ${matchBox.getAddress()} <a class="view-map"><i class="fas fa-map-marker-alt"></i> 지도보기</a></li>
-							<li><span class="tit">매치날짜</span>${matchBox.getMatchTime()}</li>
+							<li><span class="tit">지역</span>[${matchBox.getLocalCode()}] ${matchBox.getAddress()} 
+								<a class="view-map" onclick="window.open('https://map.kakao.com/link/search/${matchBox.getAddress()}', 'pop01', 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no');"> 
+									<i class="fas fa-map-marker-alt"></i> 지도보기
+								</a>
+							</li>
+							<li><span class="tit">매치날짜</span>${matchBox.getMatchDate()} ${matchBox.getMatchTime()} </li>
 						</ul>
 						<ul>
 							<li><span class="tit">매치방식</span>${matchBox.getTmMatch()}:${matchBox.getTmMatch()}</li>
@@ -90,6 +94,7 @@
 						<div class="txt">${matchBox.getContent()}</div>
 					</div>
 				</div><!-- End 매치 박스 -->
+				
 				</c:forEach>
 				<!-- 하나의 매치 박스 -->
 				<div class="match-box">

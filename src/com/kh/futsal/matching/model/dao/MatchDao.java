@@ -18,8 +18,8 @@ public class MatchDao {
 		int res = 0;		
 		PreparedStatement pstm = null;
 		
-		String query = "INSERT INTO MATCH_MASTER (MM_IDX, USER_ID, TM_CODE, LOCAL_CODE, ADDRESS, REG_DATE, TITLE,EXPENSE, GRADE, CONTENT, TM_MATCH, MATCH_TIME)"
-					 + " VALUES(SC_MM_IDX.nextval,'leader','TEAMCODE',?,?,sysdate,?, ?, ?, ?,?, ?)";
+		String query = "INSERT INTO MATCH_MASTER (MM_IDX, USER_ID, TM_CODE, LOCAL_CODE, ADDRESS, REG_DATE, TITLE,EXPENSE, GRADE, CONTENT, TM_MATCH, MATCH_TIME,MATCH_DATE)"
+					 + " VALUES(SC_MM_IDX.nextval,'leader','TEAMCODE',?,?,sysdate,?, ?, ?, ?,?, ?,?)";
 		
 		 
 		
@@ -34,7 +34,7 @@ public class MatchDao {
 			pstm.setString(6, matchMaster.getContent());
 			pstm.setInt(7, matchMaster.getTmMatch());
 			pstm.setString(8, matchMaster.getMatchTime());
-			
+			pstm.setString(9, matchMaster.getMatchDate());
 			
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
@@ -55,7 +55,7 @@ public class MatchDao {
 		String query = "select "
 				+ "MM_IDX,USER_ID,TM_CODE,LOCAL_CODE,ADDRESS,"
 				+ "REG_DATE,TITLE,EXPENSE,GRADE,CONTENT,TM_MATCH"
-				+ ",MATCH_TIME"
+				+ ",MATCH_TIME,MATCH_DATE"
 				+ " from MATCH_MASTER";
 		
 		try {
@@ -89,8 +89,41 @@ public class MatchDao {
 		match.setContent(rset.getString("CONTENT"));
 		match.setTmMatch(rset.getInt("TM_MATCH"));
 		match.setMatchTime(rset.getString("MATCH_TIME"));
+		match.setMatchDate(rset.getString("MATCH_DATE"));
 		
 		return match;
+	}
+
+
+	public List matchListSearch(Connection conn, String localCode, String date, String level) {
+		List<MatchMaster> memberList = new ArrayList<MatchMaster>();	
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		String query = "select "
+				+ "MM_IDX,USER_ID,TM_CODE,LOCAL_CODE,ADDRESS,"
+				+ "REG_DATE,TITLE,EXPENSE,GRADE,CONTENT,TM_MATCH"
+				+ ",MATCH_TIME,MATCH_DATE"
+				+ " from MATCH_MASTER where LOCAL_CODE = ? and MATCH_DATE = ? and GRADE = ?";
+		
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1,localCode);
+			pstm.setString(2,date); 
+			pstm.setString(3,level);
+			 
+			
+			rset = pstm.executeQuery();
+			while(rset.next()) {
+				memberList.add(convertRowToMatchList(rset));
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		
+		return memberList;
 	}
 	
 	

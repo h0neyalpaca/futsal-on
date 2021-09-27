@@ -49,4 +49,20 @@ public class MatchingService {
 		return res;
 	}
 
+	public List<MatchMaster> matchListSearch(String localCode, String date, String level) {
+		List res = null;
+		Connection conn = template.getConnection();
+		
+		
+		try {
+			//매치글 리스트 받아오기
+			res = matchDao.matchListSearch(conn,localCode,date,level);
+			
+		} finally {
+			template.close(conn);
+		}
+		
+		return res;
+	}
+
 }

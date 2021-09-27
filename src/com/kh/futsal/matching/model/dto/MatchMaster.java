@@ -14,7 +14,16 @@ public class MatchMaster {
 	private String grade; // 실력
 	private String content; //내용
 	private int tmMatch; //매치 방식
+	private String matchDate; //매치 날짜
 	private String matchTime; //매치 시간
+	
+	
+	public String getMatchDate() {
+		return matchDate;
+	}
+	public void setMatchDate(String matchDate) {
+		this.matchDate = matchDate;
+	}
 	public String getMmIdx() {
 		return mmIdx;
 	}
@@ -98,7 +107,7 @@ public class MatchMaster {
 		return "MatchMaster [mmIdx=" + mmIdx + ", userId=" + userId + ", tmCode=" + tmCode + ", localCode=" + localCode
 				+ ", address=" + address + ", regDate=" + regDate + ", title=" + title + ", matchNum=" + matchNum
 				+ ", expense=" + expense + ", grade=" + grade + ", content=" + content + ", tmMatch=" + tmMatch
-				+ ", matchTime=" + matchTime + "]";
+				+ ", matchDate=" + matchDate + ", matchTime=" + matchTime + "]";
 	}
 	
 

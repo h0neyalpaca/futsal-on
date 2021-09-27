@@ -44,6 +44,9 @@ public class MatchingController extends HttpServlet {
 		case "team-match-register":
 			teamMatchRegister(request,response);
 			break;
+		case "team-match-search":
+			teamMatchSearch(request,response);
+			break;
 		case "team-modify":
 			teamModify(request,response);
 			break;
@@ -61,6 +64,21 @@ public class MatchingController extends HttpServlet {
 		default:
 		}
 		
+	}
+
+
+	private void teamMatchSearch(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+		String localCode = request.getParameter("localCode");
+		String date = request.getParameter("date");
+		String level = request.getParameter("level");
+		
+		
+		List<MatchMaster> matchList = matchingService.matchListSearch(localCode,date,level); 	
+		
+		
+		request.setAttribute("matchList", matchList);
+		
+		request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
 	}
 
 
@@ -91,7 +109,8 @@ public class MatchingController extends HttpServlet {
 		matchMaster.setGrade(grade);
 		matchMaster.setTmMatch(size);
 		matchMaster.setTitle(detailAddress+" 매치 상대 구합니다!");
-		matchMaster.setMatchTime(sb.toString());
+		matchMaster.setMatchTime(matchTime);
+		matchMaster.setMatchDate(matchDate);
 		matchMaster.setContent(content);
 		
 		matchingService.matchRegister(matchMaster);

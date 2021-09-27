@@ -63,9 +63,9 @@
 						<dl>
 							<dt>우리팀 실력</dt>
 							<dd class="level-dd" style="padding-left: 10px;">
-								<label><input type="radio" name="level" value="상">상</label>
-								<label><input type="radio" name="level" value="중">중</label>
-								<label><input type="radio" name="level" value="하">하</label>
+								<label><input type="radio" name="level" value="high">상</label>
+								<label><input type="radio" name="level" value="middle">중</label>
+								<label><input type="radio" name="level" value="low">하</label>
 							</dd>
 						</dl>
 						<div class="textarea-wrap">
