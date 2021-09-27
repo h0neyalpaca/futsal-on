@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.matching.model.dao.MatchDao;
+import com.kh.futsal.matching.model.dto.MatchGame;
 import com.kh.futsal.matching.model.dto.MatchMaster;
 
 public class MatchingService {
@@ -52,7 +53,7 @@ public class MatchingService {
 	
 	public List<MatchMaster> matchGameList(String userId) {
 		
-		List<String> mmIdxList = new ArrayList<String>();
+		List<MatchGame> mmIdxList = new ArrayList<MatchGame>();
 		List<MatchMaster> res = new ArrayList<MatchMaster>();
 		
 		Connection conn = template.getConnection();
@@ -62,7 +63,7 @@ public class MatchingService {
 			mmIdxList = matchDao.matchGameList(userId, conn);
 			
 			for (int i = 0; i < mmIdxList.size(); i++) {
-				res.add(matchDao.matchGame(mmIdxList.get(i), conn));
+				res.add(matchDao.matchGame(mmIdxList.get(i).getMmIdx(), conn));
 			}
 			
 			
@@ -71,5 +72,35 @@ public class MatchingService {
 		}
 		
 		return res;
+	}
+	
+	public List<MatchGame> matchMgList(String userId) {
+		
+		List<MatchGame> mgList = null;
+		Connection conn = template.getConnection();
+		
+		try {
+			mgList = matchDao.matchGameList(userId, conn);
+			
+		} finally {
+			template.close(conn);
+		}
+		
+		return mgList;
+	}
+
+	public void deleteMyApplicant(String mgIdx) {
+		
+		Connection conn = template.getConnection();
+		
+		try {
+			matchDao.deleteMatchGame(mgIdx,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+		
+		
 	}
 }

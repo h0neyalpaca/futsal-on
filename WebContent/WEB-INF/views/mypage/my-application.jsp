@@ -39,7 +39,7 @@
 								<div class="profile">
 									<div class="profile-name">${match.matchNum}명남음</div>
 								</div>
-								<div class="btn-appli">신청취소</div>
+								<div class="btn-appli" onclick="location.href='/mypage/my-application-delete?mgIdx=${datas.mgList[status.index].mgIdx}';">신청취소</div>
 							</div>
 						</div>
 						<div class="match-detail">

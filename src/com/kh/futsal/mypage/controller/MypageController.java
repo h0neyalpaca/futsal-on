@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.futsal.matching.model.dto.MatchGame;
 import com.kh.futsal.matching.model.dto.MatchMaster;
 import com.kh.futsal.matching.model.service.MatchingService;
 import com.kh.futsal.member.model.dto.Member;
@@ -44,6 +45,9 @@ public class MypageController extends HttpServlet {
 		case "my-application":
 			myApplication(request,response);
 			break;
+		case "my-application-delete":
+			myApplicationDelete(request,response);
+			break;
 		case "modify-form":
 			mypageModifyForm(request,response);
 			break;
@@ -64,6 +68,18 @@ public class MypageController extends HttpServlet {
 			break;
 		default:
 		}
+	}
+
+	private void myApplicationDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String mgIdx = request.getParameter("mgIdx");
+		
+		matchingService.deleteMyApplicant(mgIdx);
+		
+		request.setAttribute("msg","신청이 취소되었습니다");
+	    request.setAttribute("url", "/mypage/my-application");
+	    request.getRequestDispatcher("/common/result").forward(request, response);
+		
 	}
 
 	private void nickCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -137,19 +153,21 @@ public class MypageController extends HttpServlet {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		String userId = member.getUserId();
 		
-		List<MatchMaster> matchList = null;
+		List<MatchMaster> matchList = matchingService.matchGameList(userId);
 		List<Team> teamInfos = new ArrayList<Team>();
+		List<MatchGame> mgList = matchingService.matchMgList(userId);
 		
 		Map<String,Object> matchTeamList =  new HashMap<String, Object>();
 		
-		matchList = matchingService.matchGameList(userId);
 		
 		for (int i = 0; i < matchList.size(); i++) {
 			teamInfos.add(teamService.selectTeamByTmCode(matchList.get(i).getTmCode()));
 		}		
 		
+		
 		matchTeamList.put("matchList", matchList);
 		matchTeamList.put("teamList",teamInfos);
+		matchTeamList.put("mgList",mgList);
 		
 		request.setAttribute("datas", matchTeamList);
 		request.getRequestDispatcher("/mypage/my-application").forward(request, response);

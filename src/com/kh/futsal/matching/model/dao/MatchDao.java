@@ -75,13 +75,13 @@ public class MatchDao {
 		return memberList;
 	}
 	
-	public List<String> matchGameList(String userId,Connection conn){
+	public List<MatchGame> matchGameList(String userId,Connection conn){
 		
-		List<String> gameList = new ArrayList<String>();	
+		List<MatchGame> gameList = new ArrayList<MatchGame>();	
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-		String query = "select mm_idx from match_game where APPLICANT_CODE = ?";
+		String query = "select mm_idx, mg_idx from match_game where APPLICANT_CODE = ?";
 
 		try {
 			pstm = conn.prepareStatement(query);
@@ -89,7 +89,10 @@ public class MatchDao {
 			rset = pstm.executeQuery();
 			
 			while(rset.next()) {
-				gameList.add(rset.getString("mm_idx"));
+				MatchGame match = new MatchGame();
+				match.setMmIdx(rset.getString("mm_idx"));
+				match.setMgIdx(rset.getString("mg_idx"));
+				gameList.add(match);
 			}
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
@@ -125,6 +128,27 @@ public class MatchDao {
 		}
 		return matchMaster;
 	}
+	
+	public void deleteMatchGame(String mgIdx, Connection conn) {
+		
+		String sql = "delete from match_game where mg_idx = ? ";
+		
+		PreparedStatement pstm = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, mgIdx);
+			
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
+	}	
 	
 	private MatchMaster convertRowToMatchListWithMatchNum(ResultSet rset) throws SQLException {
 		MatchMaster match = new MatchMaster();
@@ -163,5 +187,6 @@ public class MatchDao {
 		match.setMatchTime(rset.getString("MATCH_TIME"));
 		
 		return match;
-	}	
+	}
+
 }
