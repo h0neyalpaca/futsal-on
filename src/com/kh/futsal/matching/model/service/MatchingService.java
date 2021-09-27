@@ -1,6 +1,7 @@
 package com.kh.futsal.matching.model.service;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.kh.futsal.common.db.JDBCTemplate;
@@ -48,5 +49,27 @@ public class MatchingService {
 		
 		return res;
 	}
-
+	
+	public List<MatchMaster> matchGameList(String userId) {
+		
+		List<String> mmIdxList = new ArrayList<String>();
+		List<MatchMaster> res = new ArrayList<MatchMaster>();
+		
+		Connection conn = template.getConnection();
+		
+		try {
+			
+			mmIdxList = matchDao.matchGameList(userId, conn);
+			
+			for (int i = 0; i < mmIdxList.size(); i++) {
+				res.add(matchDao.matchGame(mmIdxList.get(i), conn));
+			}
+			
+			
+		} finally {
+			template.close(conn);
+		}
+		
+		return res;
+	}
 }

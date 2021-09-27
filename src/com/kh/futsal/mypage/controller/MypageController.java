@@ -2,6 +2,10 @@ package com.kh.futsal.mypage.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,15 +13,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.futsal.matching.model.dto.MatchMaster;
+import com.kh.futsal.matching.model.service.MatchingService;
 import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.member.model.service.MemberService;
+import com.kh.futsal.team.model.dto.Team;
+import com.kh.futsal.team.model.service.TeamService;
 
 @WebServlet("/mypage/*")
 public class MypageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();
-
-       
+	private MatchingService matchingService = new MatchingService();
+    private TeamService teamService = new TeamService();   
+	
     public MypageController() {
         super();
         // TODO Auto-generated constructor stub
@@ -125,8 +134,25 @@ public class MypageController extends HttpServlet {
 	}
 	
 	private void myApplication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		String userId = member.getUserId();
 		
+		List<MatchMaster> matchList = null;
+		List<Team> teamInfos = new ArrayList<Team>();
+		
+		Map<String,Object> matchTeamList =  new HashMap<String, Object>();
+		
+		matchList = matchingService.matchGameList(userId);
+		
+		for (int i = 0; i < matchList.size(); i++) {
+			teamInfos.add(teamService.selectTeamByTmCode(matchList.get(i).getTmCode()));
+		}		
+		
+		matchTeamList.put("matchList", matchList);
+		matchTeamList.put("teamList",teamInfos);
+		
+		request.setAttribute("datas", matchTeamList);
+		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
 	}
 	
 	private void personalNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

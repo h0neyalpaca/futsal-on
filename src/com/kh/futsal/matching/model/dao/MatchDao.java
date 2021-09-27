@@ -9,7 +9,9 @@ import java.util.List;
 
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.exception.DataAccessException;
+import com.kh.futsal.matching.model.dto.MatchGame;
 import com.kh.futsal.matching.model.dto.MatchMaster;
+import com.kh.futsal.support.model.dto.Support;
 
 public class MatchDao {
 	JDBCTemplate template = JDBCTemplate.getInstance();
@@ -73,6 +75,57 @@ public class MatchDao {
 		return memberList;
 	}
 	
+	public List<String> matchGameList(String userId,Connection conn){
+		
+		List<String> gameList = new ArrayList<String>();	
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		String query = "select mm_idx from match_game where APPLICANT_CODE = ?";
+
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, userId);
+			rset = pstm.executeQuery();
+			
+			while(rset.next()) {
+				gameList.add(rset.getString("mm_idx"));
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		
+		
+		return gameList;
+	}
+	
+	public MatchMaster matchGame(String mmIdx, Connection conn) {
+		
+		String sql = "select * from match_master where mm_idx = ? ";
+		
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		MatchMaster matchMaster = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1,mmIdx);
+			rset = pstm.executeQuery();
+
+			if(rset.next()) {
+				matchMaster = convertRowToMatchList(rset);
+			}
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		return matchMaster;
+	}
+	
 	private MatchMaster convertRowToMatchList(ResultSet rset) throws SQLException {
 		MatchMaster match = new MatchMaster();
 		
@@ -84,14 +137,12 @@ public class MatchDao {
 		match.setRegDate(rset.getDate("REG_DATE"));
 		match.setTitle(rset.getString("TITLE"));
 		match.setExpense(rset.getString("EXPENSE"));
-		
+		match.setMatchNum(rset.getInt("MATCH_NUM"));
 		match.setGrade(rset.getString("GRADE"));
 		match.setContent(rset.getString("CONTENT"));
 		match.setTmMatch(rset.getInt("TM_MATCH"));
 		match.setMatchTime(rset.getString("MATCH_TIME"));
 		
 		return match;
-	}
-	
-	
+	}	
 }
