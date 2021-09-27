@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.notice.model.dto.Notice;
 import com.kh.futsal.notice.model.service.NoticeService;
 
@@ -58,34 +57,38 @@ public class NoticeController extends HttpServlet {
 
 	private void noticeUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Member member = (Member) request.getSession().getAttribute("authentication");
+		//Member member = (Member) request.getSession().getAttribute("authentication");
 		
 	
-		response.sendRedirect("/notice/notice-list");	
+		//response.sendRedirect("/notice/notice-list");	
 		
 		
 	}
 
 	private void noticeDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-//		String nwIdx = request.getParameter("nwIdx");
-//		Notice datas = noticeService.selectNoticeDetail(nwIdx);
-//		request.setAttribute("datas", datas);
+		Notice noticeDetail = new Notice();
+		
+		String nwIdx = request.getParameter("noticeNo");
+		//System.out.println("nwIdx : " + nwIdx);
+		noticeService.noticeViewCnt(nwIdx); //조회수 업데이트
+		
+		noticeDetail = noticeService.selectNoticeDetail(nwIdx);
+		System.out.println("noticeDetail : " + noticeDetail);
+
+		request.setAttribute("noticeDetail", noticeDetail);
 		
 		request.getRequestDispatcher("/notice/notice-detail").forward(request, response);
 		
 	}
 	
-	private void pageCalc() {
-		
-	}
+	
 	private void noticeList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//[1][2] -> [3][4]
-		// 3  3      3  2
-		// 1  4      7  10 (첫번째 페이지 번호)
+		// 3  3      3  1
 		
 		int curPage = 0; //현재 페이지 번호
-		int noticeSize = 3; //페이지당 게시물 수
+		int noticeSize = 3; //페이지당 게시물 수 
 		int pageSize = 2; //한 번에 표시할 페이지 수
 		int totalNoticeCnt = 0; //게시물 총 갯수
 		int totalPage = 0; //페이지 총 갯수
@@ -97,13 +100,15 @@ public class NoticeController extends HttpServlet {
 		
 		//게시물 총 개수
 		totalNoticeCnt = noticeService.selectNoticeCnt();
+		System.out.println("totalNoticeCnt : " + totalNoticeCnt);
 		//페이지 총 갯수
 		if(totalNoticeCnt % noticeSize > 0) {
-			totalPage = totalNoticeCnt/pageSize+1;
+			totalPage = totalNoticeCnt/noticeSize+1;
 		}else {
-			totalPage = totalNoticeCnt/pageSize;
+			totalPage = totalNoticeCnt/noticeSize;
 		}
-				
+		System.out.println("totalPage : " + totalPage);
+		
 		//현재 페이지 번호
 		String pageNum = request.getParameter("curPage");
 		if(pageNum == null) {

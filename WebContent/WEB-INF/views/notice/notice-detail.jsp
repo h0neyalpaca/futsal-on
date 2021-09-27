@@ -18,14 +18,14 @@
 					<div class="article-header">
 						<div class="article-title">
 							<div class="title-area">
-								<h2>회원가입 관련 공지입니다.</h2>
+								<h2>${noticeDetail.nwTitle}</h2>
 							</div>
 						</div>
 						<div class="article-info">
 							<div class="profile-area">
 								<p>관리자</p>
-								<span>2021.09.16</span>
-								<span>조회 30</span>
+								<span>${noticeDetail.regDate}</span>
+								<span>조회 ${noticeDetail.views}</span>
 							</div>
 						</div>
 					</div>
@@ -35,7 +35,7 @@
 						</div>
 					</div>
 					<div class="notice-list-button">
-						<a href="">목록</a>
+						<a href="/notice/notice-list?page=${curPage}">목록</a>
 					</div>
 
 					

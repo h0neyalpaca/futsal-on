@@ -13,6 +13,20 @@ public class NoticeService {
 	private NoticeDao noticeDao = new NoticeDao();
 	
 	
+	public void noticeViewCnt(String nwIdx) {
+		
+		Connection conn = template.getConnection();
+		
+		try {
+			noticeDao.noticeViewCnt(nwIdx, conn);
+			template.commit(conn);
+			
+		} finally {
+			template.close(conn);
+		}
+		
+	}
+	
 	public Notice selectNoticeDetail(String nwIdx) {
 		
 		Connection conn = template.getConnection();
@@ -70,7 +84,6 @@ public class NoticeService {
 		return res;
 	}
 
-	
 	
 
 }
