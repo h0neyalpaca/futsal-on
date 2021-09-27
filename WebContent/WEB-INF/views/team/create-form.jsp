@@ -28,8 +28,8 @@
 							<tr>
 								<th>팀 사진</th>
 								<td>
-									<input type="file" name="tmImage" id="teamFile" />
-									<span class="msg">500MB 이하의 jpg, gif, png 파일</span>
+									<input type="file" name="teamFile" id="teamFile" onchange="fileCheck(this.files)">
+									<span class="msg">JPG/GIF/PNG 파일만 업로드 가능</span>
 								</td>
 							</tr>
 							<tr>

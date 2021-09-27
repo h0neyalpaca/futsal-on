@@ -15,7 +15,7 @@
 			<div class="myteam-wrap">
 				<h2><i class="far fa-futbol"></i> 나의 팀</h2>
 				<div class="myteam-con">
-					<p>알파카 회원님은 아직 팀에 소속되어 있지 않습니다.<br />
+					<p>${authentication.userName} 회원님은 아직 팀에 소속되어 있지 않습니다.<br />
 					아래 메뉴에서 <strong>직접 팀을 생성하시거나, 기존의 팀에 참가</strong>하실 수 있습니다.</p>
 					<div class="btn-team-area">
 						<div class="btn-team create">

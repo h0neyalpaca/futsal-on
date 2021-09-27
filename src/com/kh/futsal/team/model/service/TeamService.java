@@ -51,6 +51,24 @@ public class TeamService {
 		}
 	}
 	
+	//팀 수정
+	public void updateTeam(Team team, List<FileDTO> fileDTOs) {
+		Connection conn = template.getConnection();
+		try {
+			td.updateTeam(team,conn); //팀테이블
+			for (FileDTO fileDTO : fileDTOs) {
+				td.deleteFile(team.getTmCode(),conn);
+				td.insertFile(fileDTO,team.getTmCode(),conn); //파일테이블
+			}
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		} finally {
+			template.close(conn);
+		}
+	}
+	
 	//팀원 등급 변경
 	public int updateGrade(String userId, String grade) {
 		Connection conn = template.getConnection();

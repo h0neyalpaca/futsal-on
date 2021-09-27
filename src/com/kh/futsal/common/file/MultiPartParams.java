@@ -13,8 +13,8 @@ public class MultiPartParams {
 	}
 
 	public String getParameter(String name) {
-		if(name.equals("com.kh.toy.files")) {
-			throw new RuntimeException("com.kh.toy.files는 사용할 수 없는 파라미터명 입니다");
+		if(name.equals("com.kh.futsal.files")) {
+			throw new RuntimeException("com.kh.futsal.files는 사용할 수 없는 파라미터명 입니다");
 		}
 		return (String) params.get(name).get(0);
 	}
@@ -22,8 +22,8 @@ public class MultiPartParams {
 	
 	public String[] getParameterValues(String name) {
 		
-		if(name.equals("com.kh.toy.files")) {
-			throw new RuntimeException("com.kh.toy.files는 사용할 수 없는 파라미터명 입니다");
+		if(name.equals("com.kh.futsal.files")) {
+			throw new RuntimeException("com.kh.futsal.files는 사용할 수 없는 파라미터명 입니다");
 		}
 		List<String> res = params.get(name);
 		return res.toArray(new String[res.size()]);
@@ -31,7 +31,7 @@ public class MultiPartParams {
 
 
 	public List<FileDTO> getFilesInfo() {
-		return params.get("com.kh.toy.files");
+		return params.get("com.kh.futsal.files");
 	}
 
 	
