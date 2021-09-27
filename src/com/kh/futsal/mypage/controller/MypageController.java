@@ -2,7 +2,12 @@ package com.kh.futsal.mypage.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,12 +79,41 @@ public class MypageController extends HttpServlet {
 		
 		String mgIdx = request.getParameter("mgIdx");
 		
-		matchingService.deleteMyApplicant(mgIdx);
+		boolean flag = checkDate(mgIdx, request, response);
+		if(flag) {
+			matchingService.deleteMyApplicant(mgIdx);
+			request.setAttribute("msg","신청이 취소되었습니다");
+		}else {
+			request.setAttribute("msg","경기시작이 얼마남지 않아 취소가 불가합니다");
+		}
 		
-		request.setAttribute("msg","신청이 취소되었습니다");
 	    request.setAttribute("url", "/mypage/my-application");
 	    request.getRequestDispatcher("/common/result").forward(request, response);
+	}
+	
+	private boolean checkDate(String mgIdx,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		MatchGame match = matchingService.selectMatch(mgIdx);
 		
+		String matchDay= match.getMatchDate();
+		int matchMonth = Integer.parseInt(matchDay.substring(5, 7));
+		int matchDate = Integer.parseInt(matchDay.substring(8, 10));
+		int matchHour = Integer.parseInt(matchDay.substring(11, 13));
+		
+		LocalDateTime today = LocalDateTime.now();
+		int month = today.getMonthValue();
+		int date =  today.getDayOfMonth();
+		int hour = today.getHour();
+		
+		if(matchMonth == month && matchDate == date) {
+			if((matchHour-4) <= hour) {
+				return false;
+			}
+		}else if(matchMonth == month && matchDate < date){
+			return false;
+		}else if(matchMonth > month){
+			return false;
+		}
+		return true;
 	}
 
 	private void nickCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

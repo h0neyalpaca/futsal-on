@@ -103,4 +103,20 @@ public class MatchingService {
 		
 		
 	}
+	
+	public MatchGame selectMatch(String mgIdx) {
+		
+		Connection conn = template.getConnection();
+		MatchGame match = null;
+		
+		try {
+			match = matchDao.selectMatch(mgIdx, conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+		
+		return match;
+	}
 }

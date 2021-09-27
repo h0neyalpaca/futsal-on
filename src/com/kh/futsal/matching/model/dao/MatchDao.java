@@ -129,6 +129,35 @@ public class MatchDao {
 		return matchMaster;
 	}
 	
+	public MatchGame selectMatch(String mgIdx, Connection conn) {
+		
+		String sql = "select * from match_game where mg_idx = ? ";
+		
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		MatchGame match = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1,mgIdx);
+			rset = pstm.executeQuery();
+
+			if(rset.next()) {
+				match = new MatchGame();
+				match.setApplicantCode(rset.getString("applicant_code"));
+				match.setMatchDate(rset.getString("match_date"));
+				match.setMgIdx(rset.getString("mg_idx"));
+				match.setMmIdx(rset.getString("mm_idx"));
+			}
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		return match;
+	}
+	
 	public void deleteMatchGame(String mgIdx, Connection conn) {
 		
 		String sql = "delete from match_game where mg_idx = ? ";
