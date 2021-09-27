@@ -62,8 +62,21 @@ public class MemberController extends HttpServlet {
 		case "result":
 			resultPage(request,response);
 			break;
+		case "kakaoLogin":
+			kakaoLogin(request,response);
+			break;
 		default:
 		}
+	}
+
+	private void kakaoLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String userId = request.getParameter("userId");
+		System.out.println(userId);
+		
+		Member member = new Member();
+		member.setUserId(userId);
+		
+		request.getSession().setAttribute("authentication", member);
 	}
 
 	private void userNickCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

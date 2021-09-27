@@ -15,7 +15,7 @@
 			<c:if test="${not empty authentication}">
 			<ul class="util-wrap">
 				<li><strong style="padding-right:3px">${authentication.userId}</strong>님 </li>
-				<li><a href="/member/logout">· 로그아웃</a></li>
+				<li><a href="/member/logout" onclick="kakaoLogout()">· 로그아웃</a></li>
 				<li><a href="/mypage/support/support-form">· 문의하기</a></li>
 			</ul>
 			</c:if>
