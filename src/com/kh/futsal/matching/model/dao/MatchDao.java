@@ -272,5 +272,25 @@ public class MatchDao {
 			template.close(rset, pstm);
 		}
 		return match;
+	}
+
+
+	public int matchRequset(int matchIdx, Connection conn) {
+		int res = 0;		
+		PreparedStatement pstm = null;
+		String query = "update match_master set state = 1 where MM_IDX = ?";
+		
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setInt(1, matchIdx);
+			
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
+		return res;
 	}	
 }

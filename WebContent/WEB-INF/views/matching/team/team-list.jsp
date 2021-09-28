@@ -11,7 +11,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<section>
-		<%@ include file="/WEB-INF/views/pop/team-info.jsp"%>
+		
 		<div class="section">
 			<div class="new-match-wrap">
 				<div class="sub-nav-wrap">
@@ -63,6 +63,7 @@
 					</div>
 				</div>
 				<c:forEach var="matchBox" items="${matchList}">
+				<%@ include file="/WEB-INF/views/pop/team-info.jsp"%>
 					<div class="match-box">
 						<div class="tit-area">
 							<div class="tit-info">
@@ -112,7 +113,11 @@
 									</span>
 									</div>
 								</div>
-								<div class="btn-appli">신청하기</div>
+								
+								<form action="/matching/team/subscription" method="post">
+								<input type="hidden" name="matchIdx" value="${matchBox.getMmIdx()}">
+								<div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()})">신청하기</div>
+								</form>
 							</div>
 						</div>
 						<div class="match-detail">
@@ -148,44 +153,22 @@
 
 				</c:forEach>
 				<!-- 하나의 매치 박스 -->
-				<div class="match-box">
-					<div class="tit-area">
-						<div class="tit-info">
-							<div class="state end">모집완료</div>
-							<div class="tit">
-								<strong>수원 화성 풋살파크 1구장 매치 모집</strong> 별점
-								★★★★★&nbsp;&nbsp;&nbsp;전적 10전 6승 4패
-							</div>
-						</div>
-						<div class="profile_n_appli">
-							<div class="profile">
-								<div class="profile-img"></div>
-								<div class="profile-name">
-									다인다색<span><i class="fas fa-search"></i>정보보기</span>
-								</div>
-							</div>
-							<div class="btn-appli">신청하기</div>
-						</div>
-					</div>
-					<div class="match-detail">
-						<ul>
-							<li><span class="tit">지역</span>[경기] 수원 화성 풀살파크 1구장 <a
-								class="view-map"><i class="fas fa-map-marker-alt"></i> 지도보기</a></li>
-							<li><span class="tit">매치날짜</span>2021-09-11 13:00</li>
-						</ul>
-						<ul>
-							<li><span class="tit">매치방식</span>6:6</li>
-							<li><span class="tit">실력</span>상</li>
-							<li><span class="tit">구장비</span>40,000원</li>
-						</ul>
-						<div class="txt">내용이 들어갑니다.</div>
-					</div>
-				</div>
+
 				<!-- End 매치 박스 -->
 			</div>
 		</div>
 	</section>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+	<script type="text/javascript">
+	let matchRequset = (e) => {
+		let sub = document.querySelector('#subscription');
+		if (window.confirm(e)) {
+			sub.submit();
+		}
+	}
+	
+	
+	</script>
 	<script>
 
 (() => {
@@ -214,6 +197,13 @@
 		})
 	})
 	
+/* 	document.querySelector('.btn-appli').addEventListener('click',e=>{
+		let sub = document.querySelector('#subscription');
+		if (window.confirm("매치를 신청합니까?")) {
+			sub.submit();
+		}
+	})
+	 */
 	
 	let popup = document.querySelectorAll(".profile-name");
 

@@ -151,5 +151,19 @@ public class MatchingService {
 		return match;
 	}
 
+	public int matchRequset(int matchIdx) {
+		Connection conn = template.getConnection();
+		int res = 0;
+		
+		try {
+			res = matchDao.matchRequset(matchIdx,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+		return res;
+	}
+
 
 }

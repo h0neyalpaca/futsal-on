@@ -47,6 +47,9 @@ public class MatchingController extends HttpServlet {
 		case "team-match-search":
 			teamMatchSearch(request,response);
 			break;
+		case "subscription":
+			MatchRequest(request,response);
+			break;
 		case "team-modify":
 			teamModify(request,response);
 			break;
@@ -63,6 +66,19 @@ public class MatchingController extends HttpServlet {
 
 		default:
 		}
+		
+	}
+
+	//매치신청
+	private void MatchRequest(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+		int matchIdx = Integer.parseInt(request.getParameter("matchIdx"));
+		System.out.println("매치 번호 나옴 : " + matchIdx);
+		
+		int res = 0;
+		
+		matchingService.matchRequset(matchIdx);
+		
+		
 		
 	}
 
