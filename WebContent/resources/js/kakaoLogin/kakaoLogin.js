@@ -6,6 +6,7 @@
     console.log(Kakao.isInitialized()); 
 
     function kakaoLogin() {
+       
         Kakao.Auth.login({
           success: function (res) {
             Kakao.API.request({
@@ -21,6 +22,7 @@
                 fetch("/member/kakaoLogin?userId="+userNickName)
                 .then(res => {
                     if(res.ok){
+                        pageChange();
                         return res.text();
                     } else {
                         throw new Error(res.status);
@@ -36,10 +38,14 @@
             console.log(error)
           },
         })
+
       }
 
       function pageChange() {
-        location.href='/index';
+        setTimeout(() => {
+            location.href='/index';    
+        }, 500);
+        
       }
 
       function kakaoLogout() {

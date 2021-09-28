@@ -7,7 +7,7 @@
 		<div class="header">
 			<c:if test="${empty authentication}">
 			<ul class="util-wrap">
-				<li><a href="/member/login/login-form">· 로그인</a></li>
+				<li><a href="/member/login-form">· 로그인</a></li>
 				<li><a href="/member/join-form">· 회원가입</a></li>
 				<li><a href="/mypage/support/support-form">· 문의하기</a></li>
 			</ul>
