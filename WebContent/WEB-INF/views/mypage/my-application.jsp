@@ -63,7 +63,9 @@
 									<c:when test="${match.localCode == 'LC37'}">[경북]</c:when>
 									<c:when test="${match.localCode == 'LC38'}">[경남]</c:when>
 									<c:when test="${match.localCode == 'LC39'}">[제주]</c:when>
-								</c:choose> ${match.address} <a class="view-map"><i class="fas fa-map-marker-alt"></i> 지도보기</a></li>
+								</c:choose> ${match.address} <a class="view-map" onclick="window.open('https://map.kakao.com/link/search/${match.address}', 'pop01', 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no');"> 
+									<i class="fas fa-map-marker-alt"></i> 지도보기
+								</a></li>
 								<li><span class="tit">매치날짜</span>${match.matchTime}</li>
 							</ul>
 							<ul>
