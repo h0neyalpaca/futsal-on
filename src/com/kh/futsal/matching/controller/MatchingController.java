@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kh.futsal.matching.model.dto.MatchMaster;
 import com.kh.futsal.matching.model.service.MatchingService;
+import com.kh.futsal.team.model.dto.Team;
 
 /**
  * Servlet implementation class MatchingController
@@ -139,7 +140,8 @@ public class MatchingController extends HttpServlet {
 		request.getRequestDispatcher("/matching/team/team-match-form").forward(request, response);
 	}
 	private void teamList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<MatchMaster> matchList = matchingService.matchListView(); 	
+		List<MatchMaster> matchList = matchingService.matchListView();
+		
 		request.setAttribute("matchList", matchList);
 		
 		

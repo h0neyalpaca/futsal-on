@@ -6,6 +6,7 @@ import java.util.List;
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.matching.model.dao.MatchDao;
 import com.kh.futsal.matching.model.dto.MatchMaster;
+import com.kh.futsal.team.model.dto.Team;
 
 public class MatchingService {
 	
@@ -64,5 +65,6 @@ public class MatchingService {
 		
 		return res;
 	}
+	
 
 }
