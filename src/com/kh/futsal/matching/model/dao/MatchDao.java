@@ -11,7 +11,6 @@ import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.exception.DataAccessException;
 import com.kh.futsal.matching.model.dto.MatchGame;
 import com.kh.futsal.matching.model.dto.MatchMaster;
-import com.kh.futsal.support.model.dto.Support;
 
 public class MatchDao {
 	JDBCTemplate template = JDBCTemplate.getInstance();
