@@ -223,6 +223,28 @@ public class MatchDao {
 		return matchMaster;
 	}
 	
+	public void deleteMatchGame(String mgIdx, Connection conn) {
+		
+		String sql = "delete from match_game where mg_idx = ? ";
+		
+		PreparedStatement pstm = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, mgIdx);
+			
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
+	}	
+	
+	
 	public MatchGame selectMatch(String mgIdx, Connection conn) {
 		
 		String sql = "select * from match_game where mg_idx = ? ";
@@ -250,29 +272,5 @@ public class MatchDao {
 			template.close(rset, pstm);
 		}
 		return match;
-	}
-	
-	public void deleteMatchGame(String mgIdx, Connection conn) {
-		
-		String sql = "delete from match_game where mg_idx = ? ";
-		
-		PreparedStatement pstm = null;
-		
-		try {
-			pstm = conn.prepareStatement(sql);
-			
-			pstm.setString(1, mgIdx);
-			
-			pstm.executeUpdate();
-			
-		} catch (SQLException e) {
-			throw new DataAccessException(e);
-		}finally {
-			template.close(pstm);
-		}
-		
 	}	
-	
-	
-	
 }
