@@ -194,6 +194,7 @@ public class MatchDao {
 		match.setContent(rset.getString("CONTENT"));
 		match.setTmMatch(rset.getInt("TM_MATCH"));
 		match.setMatchTime(rset.getString("MATCH_TIME"));
+		match.setMatchDate(rset.getString("MATCH_DATE"));
 		
 		return match;
 	}	

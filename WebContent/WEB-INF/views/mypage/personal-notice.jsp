@@ -22,27 +22,17 @@
 							<th style="width:60%">알림내용</th>
 							<th>날짜</th>
 						</tr>
-						<tr>
-							<td>읽음</td>
-							<td style="text-align:center;">
-								<a href="#">작성하신 용병 게시글에 신청자가 있습니다.</a>
-							</td>
-							<td>2021-08-25</td>
-						</tr>
-						<tr>
-							<td>읽음</td>
-							<td style="text-align:center;">
-								<a href="#">작성하신 용병 게시글에 신청자가 있습니다.</a>
-							</td>
-							<td>2021-08-25</td>
-						</tr>
-						<tr>
-							<td>읽음</td>
-							<td style="text-align:center;">
-								<a href="#">작성하신 용병 게시글에 신청자가 있습니다.</a>
-							</td>
-							<td>2021-08-25</td>
-						</tr>
+						<c:forEach items="${alarms}" var="alarm">
+							<c:if test="${alarm.isStart == 1}">
+								<tr>
+									<td>${alarm.state}</td>
+									<td style="text-align:center;">
+										<a href="#">${alarm.content}</a>
+									</td>
+									<td>${alarm.ntDate}</td>
+								</tr>
+							</c:if>
+						</c:forEach>
 					</table>
 					<ul class="pagenation">
 						<li><i class="far fa-arrow-alt-circle-left"></i></li>

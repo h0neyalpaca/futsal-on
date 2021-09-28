@@ -66,7 +66,7 @@
 								</c:choose> ${match.address} <a class="view-map" onclick="window.open('https://map.kakao.com/link/search/${match.address}', 'pop01', 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no');"> 
 									<i class="fas fa-map-marker-alt"></i> 지도보기
 								</a></li>
-								<li><span class="tit">매치날짜</span>${match.matchTime}</li>
+								<li><span class="tit">매치날짜</span>${match.matchDate}</li>
 							</ul>
 							<ul>
 								<li><span class="tit">매치방식</span>${match.tmMatch}:${match.tmMatch}</li>

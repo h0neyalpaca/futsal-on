@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.futsal.alarm.model.dto.Alarm;
+import com.kh.futsal.alarm.model.service.AlarmService;
 import com.kh.futsal.matching.model.dto.MatchGame;
 import com.kh.futsal.matching.model.dto.MatchMaster;
 import com.kh.futsal.matching.model.service.MatchingService;
@@ -32,6 +34,7 @@ public class MypageController extends HttpServlet {
 	private MemberService memberService = new MemberService();
 	private MatchingService matchingService = new MatchingService();
     private TeamService teamService = new TeamService();   
+    private AlarmService alarmService = new AlarmService();   
 	
     public MypageController() {
         super();
@@ -79,7 +82,7 @@ public class MypageController extends HttpServlet {
 		
 		String mgIdx = request.getParameter("mgIdx");
 		
-		boolean flag = checkDate(mgIdx, request, response);
+		boolean flag = checkDate(mgIdx);
 		if(flag) {
 			matchingService.deleteMyApplicant(mgIdx);
 			request.setAttribute("msg","신청이 취소되었습니다");
@@ -91,7 +94,7 @@ public class MypageController extends HttpServlet {
 	    request.getRequestDispatcher("/common/result").forward(request, response);
 	}
 	
-	private boolean checkDate(String mgIdx,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private boolean checkDate(String mgIdx) throws ServletException, IOException {
 		MatchGame match = matchingService.selectMatch(mgIdx);
 		
 		String matchDay= match.getMatchDate();
@@ -208,6 +211,12 @@ public class MypageController extends HttpServlet {
 	}
 	
 	private void personalNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		String userId = member.getUserId();
+		
+		List<Alarm> alarms = alarmService.selectNoticetList(userId);
+
+		request.setAttribute("alarms", alarms);
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
 	}
 
