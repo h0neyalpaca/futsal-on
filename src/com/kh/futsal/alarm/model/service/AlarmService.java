@@ -26,4 +26,19 @@ public class AlarmService {
 		return alarms;
 	}
 	
+	
+	public void updateAlarm(String ntIdx,String content) {
+		
+		Connection conn = template.getConnection();
+		
+		try {
+			alarmDao.updateAlarm(ntIdx,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+		
+	}
+	
 }

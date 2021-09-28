@@ -11,7 +11,6 @@ import com.kh.futsal.alarm.model.dto.Alarm;
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.exception.DataAccessException;
 import com.kh.futsal.matching.model.dto.MatchMaster;
-import com.kh.futsal.support.model.dto.Support;
 
 public class AlarmDao {
 	
@@ -19,6 +18,27 @@ public class AlarmDao {
 	
 	public AlarmDao() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	public void updateAlarm(String ntIdx, Connection conn) {
+		
+		String sql = "update notice set state = 1 where nt_idx = ? ";
+		
+		PreparedStatement pstm = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, ntIdx);
+			
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
 	}
 	
 	public void insertAlarm(MatchMaster matchMaster,String userId, Connection conn) {
