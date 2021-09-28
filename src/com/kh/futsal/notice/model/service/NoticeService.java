@@ -84,6 +84,34 @@ public class NoticeService {
 		return res;
 	}
 
+	public List<Notice> selectSearchList(int startNo, int endNo, String searchContent) {
+		
+		List<Notice> noticeList = null;
+		Connection conn = template.getConnection();
+		
+		try {
+			noticeList = noticeDao.selectSearchList(conn, startNo, endNo, searchContent);
+		} finally {
+			template.close(conn);
+		}
+		
+		
+		return noticeList;
+	}
+
+	public int selectSearchCnt(String searchContent) {
+		int res = 0;
+		Connection conn = template.getConnection();
+		
+		try {
+			res = noticeDao.selectSearchCnt(searchContent, conn);
+		} finally {
+			template.close(conn);
+		}
+		
+		return res;
+	}
+
 	
 
 }

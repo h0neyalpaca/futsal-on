@@ -17,13 +17,14 @@
 		<div class="join-wrap">
 			<h2><i class="fas fa-book-reader"></i> 공지사항</h2>
 			<div class="join-con">	
-				<form action="/notice" method="post">
+				<form action="/notice/notice-list" >
 					<div class="search">
 						<div class="search-inner">
-							<div class="search-input"><input type="text" ></div>
+							<div class="search-input"><input type="text" name ="searchNotice"></div>
 							<div class="search-button"><button><i class="fas fa-search"></i></button></div>
 						</div>
 					</div>
+				</form>
 					<table class="join-form">
 						<colgroup>
 							<col style="width: 88px;">
@@ -115,7 +116,7 @@
 							<tr>
 								
 					</table>
-				</form>
+				
 				
 								
 				<ul class="page-button">
