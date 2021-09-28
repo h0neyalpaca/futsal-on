@@ -171,6 +171,32 @@ public class MemberDao {
 		}		
 		
 	}
+	
+	public Member searchByIdPass(String userName, String email, Connection conn) {
+		
+		Member member = null;			
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		String query = "select * from member where user_name = ? and email = ?";
+		
+		try {			
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, userName);
+			pstm.setString(2, email);
+			rset = pstm.executeQuery();
+			
+			if(rset.next()) {
+				member = convertRowToMember(rset);
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(rset, pstm);
+		}
+		
+		return member;
+	}
 
 //github.com/h0neyalpaca/futsal-on.git
 	// 데이타베이스에서 받아온 resultset을 member에 담는 method
@@ -224,6 +250,8 @@ public class MemberDao {
 		
 		return res;
 	}
+
+	
 
 	
 

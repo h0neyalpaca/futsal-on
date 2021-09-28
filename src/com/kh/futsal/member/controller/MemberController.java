@@ -65,8 +65,39 @@ public class MemberController extends HttpServlet {
 		case "kakaoLogin":
 			kakaoLogin(request,response);
 			break;
+		case "search-id":
+			searchId(request,response);
+			break;
 		default:
 		}
+	}
+
+	private void searchId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String userName = request.getParameter("userName");
+		String email = request.getParameter("email");
+		
+		Member member = memberService.searchByIdPass(userName,email);
+		
+		if(member == null) {
+			response.sendRedirect("/member/lost-id?err=1");
+			return;
+		}
+		
+		String originId = member.getUserId();
+		String maskingId = "";
+		
+		if(originId.length() < 3) {
+			maskingId = originId.replaceAll("(?<=.{1}).", "*");
+		} else {
+			maskingId = originId.replaceAll("(?<=.{2}).", "*");
+		}
+		
+		member.setUserId(maskingId);
+		System.out.println(maskingId);
+		
+		request.setAttribute("member", member);
+		request.getRequestDispatcher("/member/login/lost-id").forward(request, response);
+		
 	}
 
 	private void kakaoLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

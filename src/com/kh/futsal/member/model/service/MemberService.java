@@ -117,5 +117,19 @@ public class MemberService {
 			template.close(conn);
 		}
 	}
+
+
+	public Member searchByIdPass(String userName, String email) {
+		Connection conn = template.getConnection();
+		Member member = null;
+		
+		try {
+			member = memberDao.searchByIdPass(userName,email,conn);
+		} finally {
+			template.close(conn);
+		}
+
+		return member;
+	}
 	
 }
