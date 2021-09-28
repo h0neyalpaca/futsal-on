@@ -43,6 +43,23 @@ public class MemberService {
 		sender.sendEmail(member.getEmail(), "환영합니다. " + member.getUserId() + "님", mailTemplate);
 		
 	}
+	
+	public void searchPassEmail(Member member, String randomPass) {
+		HttpConnector conn = new HttpConnector();
+		
+		
+		String queryString = conn.urlEncodedForm( RequestParams.builder()
+				.param("mail-template", "search-pass-email")
+				.param("temporary-password", randomPass)
+				.param("userId", member.getUserId())
+				.build()); 
+
+		String mailTemplate = conn.get("http://localhost:7070/mail?"+queryString);
+		MailSender sender = new MailSender();
+		sender.sendEmail(member.getEmail(), "환영합니다. " + member.getUserId() + "님", mailTemplate);
+		
+		
+	}
 
 
 	public int insertMember(Member member) {
@@ -118,18 +135,49 @@ public class MemberService {
 		}
 	}
 
-
-	public Member searchByIdPass(String userName, String email) {
+	public Member searchById(String userName, String email) {
 		Connection conn = template.getConnection();
 		Member member = null;
 		
 		try {
-			member = memberDao.searchByIdPass(userName,email,conn);
+			member = memberDao.searchById(userName,email,conn);
 		} finally {
 			template.close(conn);
 		}
 
 		return member;
+	}
+
+
+	public Member searchByPass(String userId, String email) {
+		Connection conn = template.getConnection();
+		Member member = null;
+		
+		try {
+			member = memberDao.searchByPass(userId,email,conn);
+		} finally {
+			template.close(conn);
+		}
+
+		return member;
+	}
+
+
+	public String changePass(String userId, String email) {
+		Connection conn = template.getConnection();
+		String randomPass = "";
+		
+		try {
+			randomPass = memberDao.changePass(userId,email,conn);
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			e.printStackTrace();
+		}finally {
+			template.close(conn);
+		}
+		
+		return randomPass;	
 	}
 	
 }

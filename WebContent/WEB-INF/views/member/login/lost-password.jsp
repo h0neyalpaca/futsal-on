@@ -15,7 +15,7 @@
 				<h2><i class="fas fa-user-shield"></i> 비밀번호 찾기</h2>
 				<div class="login-con">
 					<p>회원가입시 입력하신 아이디과 이메일을 입력하세요.</p>
-					<form action="/login/search-password" method="post">
+					<form action="/member/search-password" method="post">
 						<table class="login-search-form">
 							<tr>
 								<th>아이디</th>

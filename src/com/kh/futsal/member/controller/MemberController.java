@@ -68,15 +68,37 @@ public class MemberController extends HttpServlet {
 		case "search-id":
 			searchId(request,response);
 			break;
+		case "search-password":
+			searchPassword(request,response);
+			break;
 		default:
 		}
+	}
+
+	private void searchPassword(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String userId = request.getParameter("userId");
+		String email = request.getParameter("email");
+		
+		Member member = memberService.searchByPass(userId,email);
+		
+		if(member == null) {
+			response.sendRedirect("/member/lost-id?err=1");
+			return;
+		}
+		
+		String randomPass = memberService.changePass(userId,email);
+		memberService.searchPassEmail(member,randomPass);
+		
+		request.setAttribute("msg", "패스워드를 찾기 위한 이메일이 발송되었습니다.");
+		request.setAttribute("url", "/member/login-form");
+		request.getRequestDispatcher("/common/result").forward(request, response);	
 	}
 
 	private void searchId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userName = request.getParameter("userName");
 		String email = request.getParameter("email");
 		
-		Member member = memberService.searchByIdPass(userName,email);
+		Member member = memberService.searchById(userName,email);
 		
 		if(member == null) {
 			response.sendRedirect("/member/lost-id?err=1");
