@@ -45,12 +45,11 @@ public class MemberService {
 	}
 	
 	public void searchPassEmail(Member member, String randomPass) {
-		HttpConnector conn = new HttpConnector();
-		
+		HttpConnector conn = new HttpConnector();	
 		
 		String queryString = conn.urlEncodedForm( RequestParams.builder()
 				.param("mail-template", "search-pass-email")
-				.param("temporary-password", randomPass)
+				.param("password", randomPass)
 				.param("userId", member.getUserId())
 				.build()); 
 
@@ -58,9 +57,7 @@ public class MemberService {
 		MailSender sender = new MailSender();
 		sender.sendEmail(member.getEmail(), "환영합니다. " + member.getUserId() + "님", mailTemplate);
 		
-		
 	}
-
 
 	public int insertMember(Member member) {
 		

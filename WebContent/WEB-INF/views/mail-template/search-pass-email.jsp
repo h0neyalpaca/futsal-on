@@ -1,119 +1,86 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+   
 <!DOCTYPE html>
 <html>
 
 <head>
-<%@ include file="/WEB-INF/views/include/head.jsp" %>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
 
 <style type="text/css">
     @media screen {
         @font-face {
-            font-family: 'Lato';
-            font-style: normal;
-            font-weight: 400;
-            src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
-        }
-
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 100;
+        src: url(/fonts/NotoSansKr/NotoSansKR-Thin.woff2) format('woff2'),
+            url(/fonts/NotoSansKr/NotoSansKR-Thin.woff) format('woff'),
+            url(/fonts/NotoSansKr/NotoSansKR-Thin.otf) format('opentype');
+                    }
         @font-face {
-            font-family: 'Lato';
-            font-style: normal;
-            font-weight: 700;
-            src: local('Lato Bold'), local('Lato-Bold'), url(https://fonts.gstatic.com/s/lato/v11/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 300;
+        src: url(/fonts/NotoSansKr/NotoSansKR-Light.woff2) format('woff2'),
+            url(/fonts/NotoSansKr/NotoSansKR-Light.woff) format('woff'),
+            url(/fonts/NotoSansKr/NotoSansKR-Light.otf) format('opentype');
         }
-
         @font-face {
-            font-family: 'Lato';
-            font-style: italic;
-            font-weight: 400;
-            src: local('Lato Italic'), local('Lato-Italic'), url(https://fonts.gstatic.com/s/lato/v11/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 400;
+        src: url(/fonts/NotoSansKr/NotoSansKR-Regular.woff2) format('woff2'),
+                url(/fonts/NotoSansKr/NotoSansKR-Regular.woff) format('woff'),
+                url(/fonts/NotoSansKr/NotoSansKR-Regular.otf) format('opentype');
         }
-
         @font-face {
-            font-family: 'Lato';
-            font-style: italic;
-            font-weight: 700;
-            src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYELO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 500;
+        src: url(/fonts/NotoSansKr/NotoSansKR-Medium.woff2) format('woff2'),
+                url(/fonts/NotoSansKr/NotoSansKR-Medium.woff) format('woff'),
+                url(/fonts/NotoSansKr/NotoSansKR-Medium.otf) format('opentype');
         }
-    }
-
-    /* CLIENT-SPECIFIC STYLES */
-    body,
-    table,
-    td,
-    a {
-        -webkit-text-size-adjust: 100%;
-        -ms-text-size-adjust: 100%;
-    }
-
-    table,
-    td {
-        mso-table-lspace: 0pt;
-        mso-table-rspace: 0pt;
-    }
-
-    img {
-        -ms-interpolation-mode: bicubic;
-    }
-
-    /* RESET STYLES */
-    img {
-        border: 0;
-        height: auto;
-        line-height: 100%;
-        outline: none;
-        text-decoration: none;
-    }
-
-    table {
-        border-collapse: collapse !important;
-    }
+        @font-face {
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 700;
+        src: url(/fonts/NotoSansKr/NotoSansKR-Bold.woff2) format('woff2'),
+                url(/fonts/NotoSansKr/NotoSansKR-Bold.woff) format('woff'),
+                url(/fonts/NotoSansKr/NotoSansKR-Bold.otf) format('opentype');
+        }
+        @font-face {
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 900;
+        src: url(/fonts/NotoSansKr/NotoSansKR-Black.woff2) format('woff2'),
+                url(/fonts/NotoSansKr/NotoSansKR-Black.woff) format('woff'),
+                url(/fonts/NotoSansKr/NotoSansKR-Black.otf) format('opentype');
+        } 
+        }
 
     body {
-        height: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
+        background-color: #f4f4f4 ;
+        font-family: 'Noto Sans KR', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
     }
 
-    /* iOS BLUE LINKS */
-    a[x-apple-data-detectors] {
-        color: inherit !important;
-        text-decoration: none !important;
-        font-size: inherit !important;
-        font-family: inherit !important;
-        font-weight: inherit !important;
-        line-height: inherit !important;
-    }
-
-    /* MOBILE STYLES */
-    @media screen and (max-width:600px) {
-        h1 {
-            font-size: 32px !important;
-            line-height: 32px !important;
-        }
-    }
-
-    /* ANDROID CENTER FIX */
-    div[style*="margin: 16px 0;"] {
-        margin: 0 !important;
-    }
 </style>
 </head>
 
-<body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
-    <!-- HIDDEN PREHEADER TEXT -->
-    <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
+<body>
+
+    <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Noto Sans KR', sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;"> We're thrilled to have you here! Get ready to dive into your new account. </div>
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <!-- LOGO -->
         <tr>
-            <td bgcolor="#FFA73B" align="center">
+            <td bgcolor="#f4f4f4" align="center">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
                         <td align="center" valign="top" style="padding: 40px 10px 40px 10px;"> </td>
@@ -122,34 +89,31 @@
             </td>
         </tr>
         <tr>
-            <td bgcolor="#FFA73B" align="center" style="padding: 0px 10px 0px 10px;">
+            <td bgcolor="#f4f4f4" align="center" style="padding: 0px 20px;">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                     <tr>
-                        <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                            <h1 style="font-size: 48px; font-weight: 400; margin: 2;">Welcome!</h1> <img src=" https://img.icons8.com/clouds/100/000000/handshake.png" width="125" height="120" style="display: block; border: 0px;" />
+                        <td bgcolor="#ffffff" align="center" valign="top" style="padding: 0px;  color: #2a2a2a; font-family: 'Noto Sans KR', sans-serif; font-size: 48px; line-height: 48px;">
+                            <h1 style="font-size: 33px; font-weight: 600; margin: 50px; margin-bottom: 0;">${param.userId}님</h1>
+                            <h1 style="font-size: 33px; font-weight: 600; margin: 0;"><span style="color: #1c1350;">임시비밀번호</span>가 발급되었습니다.</h1>
                         </td>
                     </tr>
                 </table>
             </td>
         </tr>
-        <tr>
-            <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
+        <tr >
+            <td bgcolor="#f4f4f4" align="center" style="padding: 0px 20px; ">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                    <tr>
-                        <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;">${param.userId}님의 임시비밀번호 입니다.</p>
-                        </td>
-                    </tr>
                     <tr>
                         <td bgcolor="#ffffff" align="left">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
-                                        <table border="0" cellspacing="0" cellpadding="0">
+                                    <td bgcolor="#ffffff" align="center" style=" padding: 20px 30px 60px 30px; " >
+                                        <table border="0" cellspacing="0" cellpadding="0"  style="border-radius: 0px 0px 12px 12px;">
                                             <tr>
-                                                <td align="center" style="border-radius: 3px;" bgcolor="#FFA73B">
-                                                <a href="http://localhost:7070/member/login-form" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #FFA73B; display: inline-block;">
-                                                ${param.temporary-password}</a>
+                                                <td align="center" style="border-radius: 12px; background:linear-gradient(45deg, #000, #1c1350, #000);" >
+                                                <p style="font-size: 22px; color: #ffffff; text-decoration: none; padding: 15px 25px; font-weight: 600; border-radius: 13px; display: inline-block ; line-height: 25px;">
+                                                	 ${param.password}
+                                                 <p>
                                                 </td>
                                             </tr>
                                         </table>
@@ -157,48 +121,14 @@
                                 </tr>
                             </table>
                         </td>
-                    </tr> <!-- COPY -->
-                    <tr>
-                        <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 0px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;">If that doesn't work, copy and paste the following link in your browser:</p>
-                        </td>
-                    </tr> <!-- COPY -->
-                    <tr>
-                        <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;"><a href="#" target="_blank" style="color: #FFA73B;">https://bit.li.utlddssdstueincx</a></p>
-                        </td>
                     </tr>
                     <tr>
-                        <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;">If you have any questions, just reply to this email—we're always happy to help out.</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <p style="margin: 0;">Cheers,<br>BBB Team</p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td bgcolor="#f4f4f4" align="center" style="padding: 30px 10px 0px 10px;">
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                    <tr>
-                        <td bgcolor="#FFECD1" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                            <h2 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">Need more help?</h2>
-                            <p style="margin: 0;"><a href="#" target="_blank" style="color: #FFA73B;">We&rsquo;re here to help you out</a></p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                    <tr>
-                        <td bgcolor="#f4f4f4" align="left" style="padding: 0px 30px 30px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px;"> <br>
-                            <p style="margin: 0;">If these emails get annoying, please feel free to <a href="#" target="_blank" style="color: #111111; font-weight: 700;">unsubscribe</a>.</p>
+                        <td bgcolor="#f4f4f4" align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                                <tr>
+                                    <td align="center" valign="top" style="padding: 40px 10px 40px 10px;"> </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                 </table>
