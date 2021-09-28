@@ -188,6 +188,71 @@ public class NoticeDao {
 		return res;
 	}
 	
+	//검색해서 나오는 리스트
+	public List<Notice> selectSearchList(Connection conn, int startNo, int endNo, String searchContent) {
+		
+		List<Notice> noticeList = new ArrayList<Notice>();
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		
+		String sql = "select NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS" + 
+				"  from(" + 
+				"  select rownum rnum, news.*" + 
+				"  from(" + 
+				"  select * from news" + 
+				"  order by NW_IDX desc) news)" + 
+				"  where rnum BETWEEN ? and ? and is_del ='0'" + 
+				"  and NW_TITLE like '%'||?||'%'";
+
+
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, startNo); 
+			pstm.setInt(2, endNo); 
+			pstm.setString(3, searchContent); 
+			rset = pstm.executeQuery();
+			
+			while(rset.next()) {
+				noticeList.add(convertRowToNotice(rset));
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		
+		return noticeList;
+		
+	}
+
+	public int selectSearchCnt(String searchContent, Connection conn) {
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		int res = 0;
+		
+		String sql = "select count(*) from news" + 
+					 " where NW_TITLE like '%'||?||'%'";
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, searchContent);
+			rset=pstm.executeQuery();
+			
+			if(rset.next()) {
+				res = rset.getInt(1);
+			}
+			
+		}  catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		
+		return res;
+	}
+
+	
 	private Notice convertRowToNotice(ResultSet rset) throws SQLException {
 		Notice notice = new Notice();
 		notice.setNwIdx(rset.getString("nw_idx"));
@@ -223,4 +288,5 @@ public class NoticeDao {
 		return notice;
 	}
 
+	
 }

@@ -1,6 +1,7 @@
 package com.kh.futsal.notice.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -142,6 +143,7 @@ public class NoticeController extends HttpServlet {
 	
 	
 	private void noticeList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		//[1][2] -> [3][4]
 		// 3  3      3  1
 		
@@ -156,9 +158,30 @@ public class NoticeController extends HttpServlet {
 		int endPage = 0; //현제 페이지의 마지막 번호
 		
 		
-		//게시물 총 개수
-		totalNoticeCnt = noticeService.selectNoticeCnt();
-		System.out.println("totalNoticeCnt : " + totalNoticeCnt);
+		List<Notice> noticeList = new ArrayList<Notice>();
+		
+		
+		//totalNoticeCnt = noticeService.selectNoticeCnt();
+		
+		//사용자가 입력한 검색어
+		String searchContent = null;
+		
+		if(request.getParameter("searchNotice") != null) {
+			searchContent = request.getParameter("searchNotice");
+		}
+		System.out.println("searchContent : " + searchContent);
+		
+		
+		if(searchContent == null) { //아무것도 입력하지 않았다면
+			totalNoticeCnt = noticeService.selectNoticeCnt();
+			System.out.println("검색 전 totalNoticeCnt :" + totalNoticeCnt);
+		}else { //검색어를 입력했다면
+			totalNoticeCnt = noticeService.selectSearchCnt(searchContent);
+			System.out.println("검색 후 totalNoticeCnt :" + totalNoticeCnt);
+		}
+		
+		
+		
 		//페이지 총 갯수
 		if(totalNoticeCnt % noticeSize > 0) {
 			totalPage = totalNoticeCnt/noticeSize+1;
@@ -185,6 +208,9 @@ public class NoticeController extends HttpServlet {
 
 		//현제 페이지의 마지막 게시물 번호
 		endNo = startNo + noticeSize - 1;
+		if(endNo > totalNoticeCnt) {
+			endNo = totalNoticeCnt;
+		}
 		System.out.println("endNo : "+endNo);
 
 		
@@ -198,11 +224,18 @@ public class NoticeController extends HttpServlet {
 			endPage = totalPage;
 		}
 		System.out.println("endPage : "+endPage);
-
-		List<Notice> noticeList = noticeService.selectNoticeList(startNo, endNo);
+		
+		
 		List<Notice> mainNoticeList = noticeService.selectMainNoticeList();
 		
+		if(searchContent == null) { //아무것도 입력하지 않았다면
+			noticeList = noticeService.selectNoticeList(startNo, endNo);
+
+		}else { //검색어를 입력했다면
+			noticeList = noticeService.selectSearchList(startNo, endNo, searchContent);
+		}	
 		
+		System.out.println("noticeList : " + noticeList);
 		
 		request.setAttribute("noticeList", noticeList);
 		request.setAttribute("mainNoticeList", mainNoticeList);
