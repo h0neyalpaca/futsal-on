@@ -14,8 +14,10 @@ import com.kh.futsal.common.code.Config;
 import com.kh.futsal.common.file.FileDTO;
 import com.kh.futsal.common.file.FileUtil;
 import com.kh.futsal.common.file.MultiPartParams;
+import com.kh.futsal.matching.model.dto.MatchMaster;
 import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.member.model.service.MemberService;
+import com.kh.futsal.team.model.dto.ResultDTO;
 import com.kh.futsal.team.model.dto.Team;
 import com.kh.futsal.team.model.service.TeamService;
 
@@ -117,7 +119,10 @@ public class TeamController extends HttpServlet {
 	private void breakTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		List<Member> tmMembers = ts.selectTmMembers(request.getParameter("tmCode"));
-
+		
+		//List<MatchMaster> tmBoards = ts.selectTmBoards(request.getParameter("tmCode"));
+		
+		
 		int res = ts.updateDelDate(request.getParameter("tmCode"),tmMembers);
 		String msg = "처리 도중 오류가 발생하였습니다.";
 		if(res > 0) {
@@ -142,12 +147,14 @@ public class TeamController extends HttpServlet {
 	
 	//내가 작성한 글
 	private void teamBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Team team = (Team) request.getSession().getAttribute("team");
-		//request.setAttribute("tmBoards", ts.selectTmMembers(team.getTmCode()));
+		Team team = (Team) request.getSession().getAttribute("team");
+		request.setAttribute("tmBoards", ts.selectTmBoards(team.getTmCode()));
 		request.getRequestDispatcher("/team/managing/team-board").forward(request, response);
 		
 	}
 	private void totalScore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Team team = (Team) request.getSession().getAttribute("team");
+		request.setAttribute("results", ts.selectMatchGame(team.getTmCode()));
 		request.getRequestDispatcher("/team/managing/total-score").forward(request, response);
 	}
 	

@@ -11,7 +11,9 @@ import com.kh.futsal.common.code.member.MemberGrade;
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.exception.DataAccessException;
 import com.kh.futsal.common.file.FileDTO;
+import com.kh.futsal.matching.model.dto.MatchMaster;
 import com.kh.futsal.member.model.dto.Member;
+import com.kh.futsal.team.model.dto.ResultDTO;
 import com.kh.futsal.team.model.dto.Team;
 
 public class TeamDAO {
@@ -302,7 +304,7 @@ public class TeamDAO {
 	}
 
 	//팀코드로 팀원 리스트 호출
-	public List<Member> selectTmMembersByTeamCode(String tmCode, Connection conn) {
+	public List<Member> selectTmMembers(String tmCode, Connection conn) {
 		List<Member> tmMembers = new ArrayList<Member>();
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
@@ -321,6 +323,68 @@ public class TeamDAO {
 			template.close(rset,pstm);
 		}
 		return tmMembers;
+	}
+	
+	//tmCode로 경기결과 리스트 호출
+	public List<ResultDTO> selectMatchGame(String tmCode, Connection conn) {
+		List<ResultDTO> results = new ArrayList<ResultDTO>();
+		
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		try {
+			String sql = "select mg.mg_idx, mm.match_date, mm.match_time, mg.applicant_code, tm.tm_name as tm_name1, te.tm_name as tm_name2, rs.winner, rs.host_rating, rs.rival_rating "
+					+ "from match_master mm "
+					+ "join match_game mg using(mm_idx) "
+					+ "join team tm on (mm.tm_code = tm.tm_code) "
+					+ "join team te on (mg.applicant_code = te.tm_code) "
+					+ "left join result rs on (mg.mg_idx = rs.mg_idx) "
+					+ "where (mm.tm_code = ? or mg.applicant_code = ?) and mm.state = 1 order by mg.mg_idx desc ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, tmCode);
+			pstm.setString(2, tmCode);
+			rset = pstm.executeQuery();
+			while(rset.next()) {
+				ResultDTO resultDTO = new ResultDTO();
+				resultDTO.setMgIdx(rset.getString("MG_IDX"));
+				resultDTO.setMatchDate(rset.getString("MATCH_DATE"));
+				resultDTO.setMatchTime(rset.getString("MATCH_TIME"));
+				resultDTO.setApplicantCode(rset.getString("APPLICANT_CODE"));
+				resultDTO.setTmName(rset.getString("TM_NAME1"));
+				resultDTO.setApplicantName(rset.getString("TM_NAME2"));
+				resultDTO.setWinner(rset.getString("WINNER"));
+				resultDTO.setHostRating(rset.getInt("HOST_RATING"));
+				resultDTO.setRivalRating(rset.getInt("RIVAL_RATING"));
+				results.add(resultDTO);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			template.close(rset,pstm);
+		}
+		return results;
+	}
+
+	//팀코드로 팀이 올린 게시글 호출
+	public List<MatchMaster> selectTmBoards(String tmCode, Connection conn) {
+		List<MatchMaster> tmBoards = new ArrayList<MatchMaster>();
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		try {
+			String sql = "SELECT * FROM MATCH_MASTER WHERE TM_CODE = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, tmCode);
+			rset = pstm.executeQuery();
+			while(rset.next()) {
+				tmBoards.add(convertRowToMatchMaster(rset));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			template.close(rset,pstm);
+		}
+		return tmBoards;
 	}
 	
 	private Member convertRowToMember(ResultSet rset) throws SQLException {
@@ -346,5 +410,22 @@ public class TeamDAO {
 		return team;
 	}
 
+	private MatchMaster convertRowToMatchMaster(ResultSet rset) throws SQLException {
+		MatchMaster matchMaster = new MatchMaster();
+		matchMaster.setMmIdx(rset.getString("MM_IDX"));
+		matchMaster.setUserId(rset.getString("USER_ID"));
+		matchMaster.setTmCode(rset.getString("TM_CODE"));
+		matchMaster.setLocalCode(rset.getString("LOCAL_CODE"));
+		matchMaster.setAddress(rset.getString("ADDRESS"));
+		matchMaster.setRegDate(rset.getDate("REG_DATE"));
+		matchMaster.setTitle(rset.getString("TITLE"));
+		matchMaster.setExpense(rset.getString("EXPENSE"));
+		matchMaster.setGrade(rset.getString("GRADE"));
+		matchMaster.setContent(rset.getString("CONTENT"));
+		matchMaster.setTmMatch(rset.getInt("TM_MATCH"));
+		matchMaster.setMatchTime(rset.getString("MATCH_TIME"));
+		matchMaster.setMatchDate(rset.getString("MATCH_DATE"));
+		return matchMaster;
+	}
 
 }

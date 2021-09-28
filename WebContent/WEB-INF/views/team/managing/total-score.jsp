@@ -32,31 +32,93 @@
 							<th>상대팀</th>
 							<th>경기 결과</th>
 							<th>경기 만족도</th>
-							<th></th>
-						</tr>
-						<tr>
-							<td>2021-09-16</td>
-							<td>지구방위대</td>
-							<td>
-								<div class="selectbox">
-									<select>
-										<option value="" disabled selected>= 결과 =</option>
-										<option value="">승</option>
-										<option value="">패</option>
-									</select>
-								</div>
-							</td>
-							<td class="star"><i class="fas fa-star full-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></td>
-							<td><button class="btn-change-grade">저장</button></td>
-						</tr>
-						<tr>
-							<td>2021-09-10</td>
-							<td>K축구</td>
-							<td>
-								승
-							</td>
-							<td class="star"><i class="fas fa-star full-star"></i><i class="fas fa-star full-star"></i><i class="fas fa-star full-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></td>
-						</tr>
+							<th>등록</th>
+						<c:if test="${empty results}">
+							<tr><td colspan="5"><br>완료된 매치가 없습니다.<br><br></td></tr>
+						</c:if>
+						<c:forEach items="${results}" var="results" varStatus="status">
+							<tr>
+								<td>${results.matchDate} ${results.matchTime}</td>
+								<td>${results.applicantName eq team.tmName ? results.tmName : results.applicantName}</td>
+								<td>
+									<c:if test="${authentication.grade=='ME03'}">
+										<c:choose>
+											<c:when test="${empty results.winner and results.tmName eq team.tmName}">
+												<div class="selectbox">
+													<select>
+														<option value="" disabled selected>= 결과 =</option>
+														<option value="">승</option>
+														<option value="">패</option>
+													</select>
+												</div>
+											</c:when>
+											<c:when test="${empty results.winner and results.applicantName eq team.tmName}">
+												미등록
+											</c:when>
+											<c:when test="${not empty results.winner}">
+												${results.winner eq team.tmCode?'승':'패'}
+											</c:when>
+										</c:choose>
+									</c:if>
+									<c:if test="${authentication.grade!='ME03'}">
+										${empty results.winner?'미등록':results.winner eq team.tmCode?'승':'패'}
+									</c:if>
+								</td>
+								<td class="star">
+									<c:if test="${authentication.grade=='ME03'}">
+										<c:choose>
+											<c:when test="${results.rivalRating==0 and results.tmName eq team.tmName}">
+												<div class="selectbox">
+													<select name="rivalRating">
+														<option value="" disabled selected>= 만족도 =</option>
+														<option value="5">5</option>
+														<option value="4">4</option>
+														<option value="3">3</option>
+														<option value="2">2</option>
+														<option value="1">1</option>
+													</select>
+												</div>
+											</c:when>
+											<c:when test="${results.hostRating==0 and results.applicantName eq team.tmName}">
+												<div class="selectbox">
+													<select name="hostRating">
+														<option value="" disabled selected>= 만족도 =</option>
+														<option value="5">5</option>
+														<option value="4">4</option>
+														<option value="3">3</option>
+														<option value="2">2</option>
+														<option value="1">1</option>
+													</select>
+												</div>
+											</c:when>
+										</c:choose>
+									</c:if>
+									<c:if test="${results.rivalRating!=0 and results.tmName eq team.tmName}">
+											<c:forEach var="i" begin="1" end="5">
+												<c:if test="${i<=results.rivalRating}"><i class="fas fa-star full-star"></i></c:if>
+												<c:if test="${i>results.rivalRating}"><i class="far fa-star"></i></c:if>
+											</c:forEach>
+									</c:if>
+									<c:if test="${results.hostRating!=0 and results.applicantName eq team.tmName}">
+										<c:forEach var="i" begin="1" end="5">
+											<c:if test="${i<=results.hostRating}"><i class="fas fa-star full-star"></i></c:if>
+											<c:if test="${i>results.hostRating}"><i class="far fa-star"></i></c:if>
+										</c:forEach>
+									</c:if>
+									<c:if test="${authentication.grade!='ME03'}">
+										<c:if test="${results.rivalRating==0 and results.tmName eq team.tmName}">미등록</c:if>
+										<c:if test="${results.hostRating==0 and results.applicantName eq team.tmName}">미등록</c:if>
+									</c:if>
+								</td>
+								<td>
+									<c:if test="${authentication.grade=='ME03'}">
+										<c:if test="${(results.tmName eq team.tmName and results.rivalRating==0) or (results.tmName eq team.tmName and empty results.winner) or (results.applicantName eq team.tmName and results.hostRating==0)}">
+											<button class="btn-change-grade">저장</button>
+										</c:if>
+									</c:if>
+								</td>
+							</tr>
+						</c:forEach>
 					</table>
 					
 					<form action="/myteam/modify-score" method="post">
@@ -64,7 +126,7 @@
 					</form>
 					
 					<!-- 멤버 화면 -->
-					<table class="team-member-form">
+					<table class="team-member-form" style="display:none;">
 						<tr>
 							<th>경기일자</th>
 							<th>상대팀</th>

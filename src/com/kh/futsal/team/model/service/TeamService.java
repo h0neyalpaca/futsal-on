@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.file.FileDTO;
+import com.kh.futsal.matching.model.dto.MatchMaster;
 import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.team.model.dao.TeamDAO;
+import com.kh.futsal.team.model.dto.ResultDTO;
 import com.kh.futsal.team.model.dto.Team;
 
 public class TeamService {
@@ -196,11 +198,35 @@ public class TeamService {
 		Connection conn = template.getConnection();
 		List<Member> tmMembers = null;
 		try {
-			tmMembers = td.selectTmMembersByTeamCode(tmCode, conn);
+			tmMembers = td.selectTmMembers(tmCode, conn);
 		} finally {
 			template.close(conn);
 		}
 		return tmMembers;
+	}
+
+	//tmCode로 경기결과 리스트 호출
+	public List<ResultDTO> selectMatchGame(String tmCode) {
+		Connection conn = template.getConnection();
+		List<ResultDTO> results = null;
+		try {
+			results = td.selectMatchGame(tmCode, conn);
+		} finally {
+			template.close(conn);
+		}
+		return results;
+	}
+	
+	//tmCode로 팀이 올린 게시글 호출
+	public List<MatchMaster> selectTmBoards(String tmCode) {
+		Connection conn = template.getConnection();
+		List<MatchMaster> tmBoards = null;
+		try {
+			tmBoards = td.selectTmBoards(tmCode, conn);
+		} finally {
+			template.close(conn);
+		}
+		return tmBoards;
 	}
 
 	
