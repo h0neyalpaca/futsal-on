@@ -60,21 +60,85 @@
 					</div>
 				</div>
 				<c:forEach var="matchBox" items="${matchList}">
-				<div class="match-box">
-					<div class="tit-area">	
-						<div class="tit-info">
-							<div class="state recruiting">모집중</div>
-							<div class="tit">
-								<strong>${matchBox.getTitle()}</strong>
-								별점 ★★★★★&nbsp;&nbsp;&nbsp;전적 10전 6승 4패
+					<div class="match-box">
+						<div class="tit-area">
+							<div class="tit-info">
+								<c:choose>
+									<c:when test="${matchBox.getState() == 1}">
+										<div class="state end">모집완료</div>
+									</c:when>
+									<c:when test="${matchBox.getState() == 0}">
+										<div class="state recruiting">모집중</div>
+									</c:when>
+								</c:choose>
+								<div class="tit">
+									<strong>${matchBox.getTitle()}</strong>
+									<c:choose>
+										<c:when test="${matchBox.getTmScore() == 5}">
+										별점 ★★★★★&nbsp;&nbsp;&nbsp;
+										</c:when>
+										<c:when test="${matchBox.getTmScore() == 4}">
+								      	 별점 ★★★★ &nbsp;&nbsp;&nbsp;&nbsp;
+								         </c:when>
+										<c:when test="${matchBox.getTmScore() == 3}">
+								               별점 ★★★&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								         </c:when>
+										<c:when test="${matchBox.getTmScore() == 2}">
+								              별점 ★★&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								         </c:when>
+										<c:when test="${matchBox.getTmScore() == 1}">
+								       	별점 ★&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								         </c:when>
+									</c:choose>
+									<c:set var="lose"
+										value="${matchBox.getGameCnt() - matchBox.getTmWin()}"></c:set>
+									전적 ${matchBox.getGameCnt()}전${matchBox.getTmWin()}승<c:out value="${lose}"></c:out>패
+
+								</div>
+							</div>
+							<!-- 팝업창 -->
+
+							<!-- 팝업창 끝 -->
+							<div class="profile_n_appli">
+								<div class="profile">
+									<div class="profile-img"></div>
+									<div class="profile-name">
+									${matchBox.getTmName()}
+									<span>
+										<i class="fas fa-search"></i>정보보기
+									</span>
+									</div>
+								</div>
+								<div class="btn-appli">신청하기</div>
 							</div>
 						</div>
-						<div class="profile_n_appli">
-							<div class="profile">
-								<div class="profile-img"></div>
-								<div class="profile-name">다인다색<span><i class="fas fa-search"></i>정보보기</span></div>
-							</div>
-							<div class="btn-appli">신청하기</div>
+						<div class="match-detail">
+							<ul>
+								<li><span class="tit">지역</span>[${matchBox.getLocalCode()}]
+									${matchBox.getAddress()} <a class="view-map"
+									onclick="window.open('https://map.kakao.com/link/search/${matchBox.getAddress()}', 'pop01', 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no');">
+										<i class="fas fa-map-marker-alt"></i> 지도보기
+								</a></li>
+								<li><span class="tit">매치날짜</span>${matchBox.getMatchDate()}
+									${matchBox.getMatchTime()}</li>
+							</ul>
+							<ul>
+								<li><span class="tit">매치방식</span>${matchBox.getTmMatch()}:${matchBox.getTmMatch()}</li>
+								<li><span class="tit">실력</span> <c:choose>
+										<c:when test="${matchBox.getGrade() eq 'high'}">
+										상
+										</c:when>
+										<c:when test="${matchBox.getGrade() eq 'middle'}">
+								      	중
+								         </c:when>
+										<c:when test="${matchBox.getGrade() eq 'low'}">
+								               하
+								         </c:when>
+										<c:otherwise>${matchBox.getGrade()}</c:otherwise>
+									</c:choose></li>
+								<li><span class="tit">구장비</span>${matchBox.getExpense()}원</li>
+							</ul>
+							<div class="txt">${matchBox.getContent()}</div>
 						</div>
 					</div>
 					<div class="match-detail">
