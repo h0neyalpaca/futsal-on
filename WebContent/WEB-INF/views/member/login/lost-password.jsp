@@ -13,6 +13,7 @@
 		<div class="section">
 			<div class="login-wrap search-page">
 				<h2><i class="fas fa-user-shield"></i> 비밀번호 찾기</h2>
+				<c:if test="${empty member and empty param.err}">
 				<div class="login-con">
 					<p>회원가입시 입력하신 아이디과 이메일을 입력하세요.</p>
 					<form action="/member/search-password" method="post">
@@ -35,6 +36,33 @@
 						</table>
 					</form>
 				</div>
+				</c:if>
+				
+				<c:if test="${not empty param.err}">
+				<div class="login-con">
+					<p>회원가입시 입력하신 아이디과 이메일을 입력하세요.</p>
+					<p style="color:red;">입력하신 정보는 존재하지 않습니다.</p>
+					<form action="/member/search-password" method="post">
+						<table class="login-search-form">
+							<tr>
+								<th>아이디</th>
+								<td><input type="text" name="userId" id="userId" size="10" required /></td>
+							</tr>
+							<tr>
+								<th>이메일</th>
+								<td>
+									<input type="email" name="email" required />
+								</td>
+							</tr>
+							<tr class="no-border">
+								<td class="btn-search" colspan="2">
+									<input type="submit" value="임시 비밀번호 발급" />
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+				</c:if>
 			</div>
 		</div>
 	</section>

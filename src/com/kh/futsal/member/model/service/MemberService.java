@@ -55,7 +55,7 @@ public class MemberService {
 
 		String mailTemplate = conn.get("http://localhost:7070/mail?"+queryString);
 		MailSender sender = new MailSender();
-		sender.sendEmail(member.getEmail(), "환영합니다. " + member.getUserId() + "님", mailTemplate);
+		sender.sendEmail(member.getEmail(),member.getUserId() + "님 비밀번호 안내메일입니다.", mailTemplate);
 		
 	}
 

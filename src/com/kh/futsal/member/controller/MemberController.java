@@ -82,7 +82,7 @@ public class MemberController extends HttpServlet {
 		Member member = memberService.searchByPass(userId,email);
 		
 		if(member == null) {
-			response.sendRedirect("/member/lost-id?err=1");
+			response.sendRedirect("/member/lost-password?err=1");
 			return;
 		}
 		
