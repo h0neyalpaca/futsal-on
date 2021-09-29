@@ -57,7 +57,7 @@
 							</tr>
 						</c:forEach>
 					</table>
-					<ul class="pagenation">
+					<!-- <ul class="pagenation">
 						<li><i class="far fa-arrow-alt-circle-left"></i></li>
 						<li class="selected">1</li>
 						<li>2</li>
@@ -65,7 +65,7 @@
 						<li>4</li>
 						<li>5</li>
 						<li><i class="far fa-arrow-alt-circle-right"></i></li>
-					</ul>
+					</ul> -->
 				</div>
 		</div>
 	</section>
