@@ -127,6 +127,8 @@ public class MatchDao {
 		match.setTmMatch(rset.getInt("TM_MATCH"));
 		match.setMatchTime(rset.getString("MATCH_TIME"));
 		match.setMatchDate(rset.getString("MATCH_DATE"));
+		match.setState(rset.getInt("STATE"));
+
 		
 		return match;
 	}	

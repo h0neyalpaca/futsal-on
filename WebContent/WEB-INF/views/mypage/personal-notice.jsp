@@ -25,9 +25,12 @@
 						<c:forEach items="${alarms}" var="alarm">
 							<c:if test="${alarm.isStart == 1}">
 								<tr>
-									<td>${alarm.state}</td>
+									<td><c:choose>
+										<c:when test="${alarm.state == 0}">안읽음</c:when>
+										<c:when test="${alarm.state == 1}">읽음</c:when>
+										</c:choose></td>
 									<td style="text-align:center;">
-										<a href="/mypage/my-application">${alarm.content}</a>
+										<a href="/mypage/alarm-check?ntIdx=${alarm.ntIdx}">${alarm.content}</a>
 									</td>
 									<td>${alarm.ntDate}</td>
 								</tr>

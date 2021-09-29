@@ -41,6 +41,27 @@ public class AlarmDao {
 		
 	}
 	
+	public void updateAlarmIsStart(String ntIdx, Connection conn) {
+		
+		String sql = "update notice set IS_START = 1 where nt_idx = ? ";
+		
+		PreparedStatement pstm = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, ntIdx);
+			
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
+	}
+	
 	public void insertAlarm(MatchMaster matchMaster,String userId, Connection conn) {
 		
 		PreparedStatement pstm = null;
@@ -62,7 +83,7 @@ public class AlarmDao {
 		
 	}
 	
-	public List<Alarm> selectSupportList (String userId, Connection conn){
+	public List<Alarm> selectAlarmList (String userId, Connection conn){
 		
 		String sql = "select * from notice where user_id = ?";
 		
@@ -79,7 +100,7 @@ public class AlarmDao {
 				Alarm alarm = new Alarm();
 				alarm.setContent(rset.getString("content"));
 				alarm.setNtDate(rset.getString("nt_date"));
-				alarm.setIsStart(rset.getInt("in_start"));
+				alarm.setIsStart(rset.getInt("is_start"));
 				alarm.setMatchTime(rset.getString("match_time"));
 				alarm.setMmIdx(rset.getString("mm_idx"));
 				alarm.setNtIdx(rset.getString("nt_idx"));

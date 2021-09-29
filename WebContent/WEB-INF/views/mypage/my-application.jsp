@@ -22,7 +22,10 @@
 						<div class="match-box use-mypage">
 						<div class="tit-area">
 							<div class="tit-info">
-								<div class="state recruiting">모집중</div>
+							<c:choose>
+								<c:when test="${match.state == 0}"><div class="state recruiting">모집중</div></c:when>
+								<c:when test="${match.state == 1}"><div class="state recruiting" style="background-color: gray;">게임완료</div></c:when>
+							</c:choose>
 								<div class="tit">
 									<strong>${match.title}</strong>
 									별점<c:choose>
@@ -39,7 +42,10 @@
 								<div class="profile">
 									<div class="profile-name">${match.matchNum}명남음</div>
 								</div>
-								<div class="btn-appli" onclick="location.href='/mypage/my-application-delete?mgIdx=${datas.mgList[status.index].mgIdx}';">신청취소</div>
+								<c:choose>
+										<c:when test="${match.state == 0}"><div class="btn-appli" onclick="location.href='/mypage/my-application-delete?mgIdx=${datas.mgList[status.index].mgIdx}';">신청취소</div></c:when>
+										<c:when test="${match.state == 1}"><div  class="btn-appli">게임 종료</div></c:when>		
+							</c:choose>
 							</div>
 						</div>
 						<div class="match-detail">

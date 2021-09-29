@@ -76,6 +76,9 @@ public class MypageController extends HttpServlet {
 		case "nick-check":
 			nickCheck(request,response);
 			break;
+		case "alarm-check":
+			alarmCheck(request,response);
+			break;
 		default:
 		}
 	}
@@ -236,11 +239,27 @@ public class MypageController extends HttpServlet {
 	}
 
 	private void checkAlarmState(Alarm alarm) {
+		
 		String alarmDate = alarm.getNtDate();
-		String alarmTime = alarm.getMatchTime();
-		
+		int alarmTime = Integer.parseInt(alarm.getMatchTime().substring(0, 2));
+				
 		LocalDateTime today = LocalDateTime.now();
+		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm");
+		String todayTime = today.format(Formatter);
 		
+		String day = todayTime.substring(0,8);
+		int time =  Integer.parseInt(todayTime.substring(9,11));
+		
+		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
+			alarmService.updateAlarmIsStart(alarm.getNtIdx());
+		}
+	}
+	
+	private void alarmCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String ntIdx = request.getParameter("ntIdx");
+		
+		alarmService.updateAlarm(ntIdx);
+		response.sendRedirect("/mypage/my-application");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
