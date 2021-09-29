@@ -22,19 +22,30 @@
 							<th style="width:60%">알림내용</th>
 							<th>날짜</th>
 						</tr>
-						<c:forEach items="${alarms}" var="alarm">
-							<c:if test="${alarm.isStart == 1}">
+						<c:forEach items="${alarms}" var="alarm" varStatus="status">
+							<c:if test="${alarm.isStart == 1 && alarm.state == 0}">
 								<tr>
-									<td>${alarm.state}</td>
+									<td>안읽음</td>
 									<td style="text-align:center;">
-										<a href="/mypage/my-application">${alarm.content}</a>
+										<a href="/mypage/alarm-check?ntIdx=${alarm.ntIdx}">${alarm.content}</a>
 									</td>
-									<td>${alarm.ntDate}</td>
+									<td>${alarm.ntDate}<br>${times[status.index]}</td>
+								</tr>
+							</c:if>
+						</c:forEach>
+						<c:forEach items="${alarms}" var="alarm" varStatus="status">
+							<c:if test="${alarm.isStart == 1 && alarm.state == 1}">
+								<tr>
+									<td>읽음</td>
+									<td style="text-align:center;">
+										<a href="/mypage/alarm-check?ntIdx=${alarm.ntIdx}">${alarm.content}</a>
+									</td>
+									<td>${alarm.ntDate}<br>${times[status.index]}</td>
 								</tr>
 							</c:if>
 						</c:forEach>
 					</table>
-					<ul class="pagenation">
+					<!-- <ul class="pagenation">
 						<li><i class="far fa-arrow-alt-circle-left"></i></li>
 						<li class="selected">1</li>
 						<li>2</li>
@@ -42,7 +53,7 @@
 						<li>4</li>
 						<li>5</li>
 						<li><i class="far fa-arrow-alt-circle-right"></i></li>
-					</ul>
+					</ul> -->
 				</div>
 			</div>
 		</div>

@@ -19,7 +19,7 @@ public class AlarmService {
 		 List<Alarm> alarms = null;
 
 		try {
-			alarms = alarmDao.selectSupportList(userId, conn);
+			alarms = alarmDao.selectAlarmList(userId, conn);
 		} finally {
 			template.close(conn);
 		}
@@ -27,12 +27,26 @@ public class AlarmService {
 	}
 	
 	
-	public void updateAlarm(String ntIdx,String content) {
+	public void updateAlarm(String ntIdx) {
 		
 		Connection conn = template.getConnection();
 		
 		try {
 			alarmDao.updateAlarm(ntIdx,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+		
+	}
+	
+	public void updateAlarmIsStart(String ntIdx) {
+		
+		Connection conn = template.getConnection();
+		
+		try {
+			alarmDao.updateAlarmIsStart(ntIdx,conn);
 			
 			template.commit(conn);
 		}finally {

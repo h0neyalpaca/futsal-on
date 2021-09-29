@@ -1,6 +1,5 @@
 package com.kh.futsal.alarm.model.dto;
 
-import java.util.Date;
 
 public class Alarm {
 	

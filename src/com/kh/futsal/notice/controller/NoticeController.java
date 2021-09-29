@@ -73,13 +73,19 @@ public class NoticeController extends HttpServlet {
 		
 		Notice noticeDetail = new Notice();
 		
-		String nwIdx = request.getParameter("noticeNo");
-		//System.out.println("nwIdx : " + nwIdx);
+		String nwIdx = request.getParameter("noticeNo"); //클릭한 게시물
+		System.out.println("nwIdx : " + nwIdx);
+		String curPage = request.getParameter("curPage");
+		System.out.println("curPage : " + curPage);
+
+		String prevNwIdx = request.getParameter("noticeNo"); //이전 게시물
+		String nextNwIdx = request.getParameter("noticeNo"); //다음 게시물
+		
 		
 		//로그인되어있는 id 가져오기
 		HttpSession session = request.getSession();
 		Member member = (Member) session.getAttribute("authentication");
-		System.out.println("member : " + member);
+		//System.out.println("member : " + member);
 	
 		//기존에 존재하던 쿠키 가져오기
 		Cookie[] cookies = request.getCookies();
@@ -91,7 +97,7 @@ public class NoticeController extends HttpServlet {
 		//로그인이 되있는 경우 userId와 nwIdx로 된 쿠키를 가져옴
 		if(cookies != null && cookies.length > 0 && member != null){ //cookie 존재하고 로그인되어있다면
 			for (int i = 0; i < cookies.length; i++) {
-				System.out.println("로그인 된 cookies[i].getName() : "+cookies[i].getName()); //cookieleader1001
+				//System.out.println("로그인 된 cookies[i].getName() : "+cookies[i].getName()); //cookieleader1001
 				if(cookies[i].getName().equals("cookie" + member.getUserId() + nwIdx)){ //cookie가 현재 로그인되어있는 id, 클릭한 nwIdx와 일치하다면
 					nullCookie = cookies[i]; 
 				}
@@ -101,12 +107,11 @@ public class NoticeController extends HttpServlet {
 		//로그인 되지 않았다면 게시글 번호로만 된 쿠키 가져오기
 		if(cookies != null && cookies.length > 0 && member == null){ //cookie가 있고 로그인되지 않았다면
 			for (int i = 0; i < cookies.length; i++) {
-				System.out.println("로그인되지 않은 cookies[i].getName() : " + cookies[i].getName()); //cookie1000
+				//System.out.println("로그인되지 않은 cookies[i].getName() : " + cookies[i].getName()); //cookie1000
 				
 				if(cookies[i].getName().equals("cookie" + nwIdx)){ //클릭한 nwIdx와 같은 nwIdx를 가진 cookie가 존재한다면 
 					nullCookie = cookies[i]; //nullCookie를 cookie+nwIdx로 채운다.
 					System.out.println("nullCookie : " + nullCookie.getName());
-					
 				}
 			}
 		}
@@ -133,10 +138,13 @@ public class NoticeController extends HttpServlet {
 	
 		//nwIdx에 따른 게시판 상세페이지	
 		noticeDetail = noticeService.selectNoticeDetail(nwIdx);
+		
+		
 		System.out.println("noticeDetail : " + noticeDetail);
 
 		request.setAttribute("noticeDetail", noticeDetail);
-		
+		request.setAttribute("curPage", curPage);
+
 		request.getRequestDispatcher("/notice/notice-detail").forward(request, response);
 		
 	}
@@ -195,6 +203,7 @@ public class NoticeController extends HttpServlet {
 		if(pageNum == null) {
 			pageNum = "1";
 		}		
+		System.out.println("pageNum : " + pageNum);
 		curPage = Integer.parseInt(pageNum);
 		if(curPage > totalPage) {
 			curPage = totalPage;

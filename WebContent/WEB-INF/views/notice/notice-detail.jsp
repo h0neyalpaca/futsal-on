@@ -35,15 +35,15 @@
 						</div>
 					</div>
 					<div class="notice-list-button">
-						<a href="/notice/notice-list?page=${curPage}">목록</a>
+						<a href="/notice/notice-list?curPage=${curPage}">목록</a>
 					</div>
 
 					
 				</div>
 				<div class="join-con list-wrap">
 					<ul class="prev-next-list">
-						<li><div class="prev"><a href=""><span>이전글</span><span>이용방법 안내</span></a></div></li>
-						<li><div class="next"><a href=""><span>다음글</span><span>공공장소 이용방법 안내</span></div></a></li>
+						<li><div class="prev"><a href="/notice/notice-detail?curPage=${curPage}&noticeNo=${notice.nwIdx}"><span>이전글</span><span>${noticeDetail.nwTitle}</span></a></div></li>
+						<li><div class="next"><a href="/notice/notice-detail?curPage=${curPage}&noticeNo=${notice.nwIdx}"><span>다음글</span><span>${noticeDetail.nwTitle}</span></a></div></li>
 					</ul>
 				</div>
 			</div>

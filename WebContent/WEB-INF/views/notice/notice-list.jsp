@@ -20,7 +20,7 @@
 				<form action="/notice/notice-list" >
 					<div class="search">
 						<div class="search-inner">
-							<div class="search-input"><input type="text" name ="searchNotice"></div>
+							<div class="search-input"><input type="text" name ="searchNotice" ></div>
 							<div class="search-button"><button><i class="fas fa-search"></i></button></div>
 						</div>
 					</div>

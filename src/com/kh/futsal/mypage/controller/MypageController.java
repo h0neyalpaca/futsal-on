@@ -76,6 +76,9 @@ public class MypageController extends HttpServlet {
 		case "nick-check":
 			nickCheck(request,response);
 			break;
+		case "alarm-check":
+			alarmCheck(request,response);
+			break;
 		default:
 		}
 	}
@@ -101,27 +104,15 @@ public class MypageController extends HttpServlet {
 		MatchGame match = matchingService.selectMatch(mgIdx);
 		
 		String matchDayTime= match.getMatchDate();
-		String matchDay = matchDayTime.substring(0,8);
-		int matchTime = Integer.parseInt(matchDayTime.substring(9,11));
+		String matchDay = matchDayTime.substring(0,10);
+		int matchTime = Integer.parseInt(matchDayTime.substring(11,13));
 		
 		LocalDateTime today = LocalDateTime.now();
-		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm");
+		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		String todayTime = today.format(Formatter);
 		
-		String day = todayTime.substring(0,8);
-		int time =  Integer.parseInt(todayTime.substring(9,11));
-		
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd");
-			Date matchDate = sdf.parse(matchDay);
-			Date toDate = sdf.parse(day);
-			
-			if(matchDate.before(toDate)){
-				return false;
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		String day = todayTime.substring(0,10);
+		int time =  Integer.parseInt(todayTime.substring(11,13));
 		
 		if(matchDay.equals(day)) {
 			if((matchTime -4) <= time) {
@@ -225,22 +216,42 @@ public class MypageController extends HttpServlet {
 	private void personalNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		String userId = member.getUserId();
+		List<String> times = new ArrayList<String>();
 		
 		List<Alarm> alarms = alarmService.selectNoticetList(userId);
 		for (int i = 0; i < alarms.size(); i++) {
-			checkAlarmState(alarms.get(i));
+			times.add(checkAlarmState(alarms.get(i)));
 		}
 
 		request.setAttribute("alarms", alarms);
+		request.setAttribute("times",times);
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
 	}
 
-	private void checkAlarmState(Alarm alarm) {
+	private String checkAlarmState(Alarm alarm) {
+		
 		String alarmDate = alarm.getNtDate();
-		String alarmTime = alarm.getMatchTime();
-		
+		int alarmTime = Integer.parseInt(alarm.getMatchTime().substring(0, 2));
+				
 		LocalDateTime today = LocalDateTime.now();
+		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String todayTime = today.format(Formatter);
 		
+		String day = todayTime.substring(0,10);
+		int time =  Integer.parseInt(todayTime.substring(11,13));
+		
+		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
+			alarmService.updateAlarmIsStart(alarm.getNtIdx());
+		}
+		
+		return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
+	}
+	
+	private void alarmCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String ntIdx = request.getParameter("ntIdx");
+		
+		alarmService.updateAlarm(ntIdx);
+		response.sendRedirect("/mypage/my-application");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
