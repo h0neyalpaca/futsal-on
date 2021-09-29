@@ -24,7 +24,7 @@
 							<div class="search-button"><button><i class="fas fa-search"></i></button></div>
 						</div>
 					</div>
-				</form>
+				
 					<table class="join-form">
 						<colgroup>
 							<col style="width: 88px;">
@@ -133,7 +133,7 @@
 						<li><a href="/notice/notice-list?curPage=${endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
 					</c:if>
 				</ul>
-				
+				</form>
 				</div>
 				
 			</div>

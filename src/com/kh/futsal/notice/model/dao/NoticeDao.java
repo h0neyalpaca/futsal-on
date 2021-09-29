@@ -201,16 +201,17 @@ public class NoticeDao {
 				"  select rownum rnum, news.*" + 
 				"  from(" + 
 				"  select * from news" + 
+				"  where NW_TITLE like '%'||?||'%'" + 
 				"  order by NW_IDX desc) news)" + 
-				"  where rnum BETWEEN ? and ? and is_del ='0'" + 
-				"  and NW_TITLE like '%'||?||'%'";
+				"  where rnum BETWEEN ? and ? and is_del ='0'";
 
 
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setInt(1, startNo); 
-			pstm.setInt(2, endNo); 
-			pstm.setString(3, searchContent); 
+			pstm.setString(1, searchContent); 
+			pstm.setInt(2, startNo); 
+			pstm.setInt(3, endNo); 
+			
 			rset = pstm.executeQuery();
 			
 			while(rset.next()) {

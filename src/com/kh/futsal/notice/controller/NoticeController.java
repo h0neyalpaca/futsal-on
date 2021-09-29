@@ -169,7 +169,7 @@ public class NoticeController extends HttpServlet {
 		if(request.getParameter("searchNotice") != null) {
 			searchContent = request.getParameter("searchNotice");
 		}
-		System.out.println("searchContent : " + searchContent);
+		
 		
 		
 		if(searchContent == null) { //아무것도 입력하지 않았다면
@@ -235,6 +235,7 @@ public class NoticeController extends HttpServlet {
 			noticeList = noticeService.selectSearchList(startNo, endNo, searchContent);
 		}	
 		
+		System.out.println("searchContent : " + searchContent);
 		System.out.println("noticeList : " + noticeList);
 		
 		request.setAttribute("noticeList", noticeList);
