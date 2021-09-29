@@ -6,6 +6,7 @@ public class MatchGame {
 	private String mmIdx;
 	private String applicantCode;
 	private String matchDate;
+	private String userId;
 	public String getMgIdx() {
 		return mgIdx;
 	}
@@ -30,11 +31,18 @@ public class MatchGame {
 	public void setMatchDate(String matchDate) {
 		this.matchDate = matchDate;
 	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	@Override
 	public String toString() {
 		return "MatchGame [mgIdx=" + mgIdx + ", mmIdx=" + mmIdx + ", applicantCode=" + applicantCode + ", matchDate="
-				+ matchDate + "]";
+				+ matchDate + ", userId=" + userId + "]";
 	}
+	
 	
 	
 }

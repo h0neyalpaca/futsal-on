@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -81,15 +83,16 @@ public class MypageController extends HttpServlet {
 	private void myApplicationDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String mgIdx = request.getParameter("mgIdx");
+		System.out.println(mgIdx);
 		
 		boolean flag = checkDate(mgIdx);
-		if(flag) {
-			matchingService.deleteMyApplicant(mgIdx);
-			request.setAttribute("msg","신청이 취소되었습니다");
-		}else {
-			request.setAttribute("msg","경기시작이 얼마남지 않아 취소가 불가합니다");
-		}
 		
+		 if(flag) { 
+			 matchingService.deleteMyApplicant(mgIdx);
+			 request.setAttribute("msg","신청이 취소되었습니다"); 
+		}else {
+			request.setAttribute("msg","경기시작이 얼마남지 않아 취소가 불가합니다"); 
+		}
 	    request.setAttribute("url", "/mypage/my-application");
 	    request.getRequestDispatcher("/common/result").forward(request, response);
 	}
@@ -97,24 +100,33 @@ public class MypageController extends HttpServlet {
 	private boolean checkDate(String mgIdx) throws ServletException, IOException {
 		MatchGame match = matchingService.selectMatch(mgIdx);
 		
-		String matchDay= match.getMatchDate();
-		int matchMonth = Integer.parseInt(matchDay.substring(5, 7));
-		int matchDate = Integer.parseInt(matchDay.substring(8, 10));
-		int matchHour = Integer.parseInt(matchDay.substring(11, 13));
+		String matchDayTime= match.getMatchDate();
+		String matchDay = matchDayTime.substring(0,8);
+		int matchTime = Integer.parseInt(matchDayTime.substring(9,11));
 		
 		LocalDateTime today = LocalDateTime.now();
-		int month = today.getMonthValue();
-		int date =  today.getDayOfMonth();
-		int hour = today.getHour();
+		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm");
+		String todayTime = today.format(Formatter);
 		
-		if(matchMonth == month && matchDate == date) {
-			if((matchHour-4) <= hour) {
+		String day = todayTime.substring(0,8);
+		int time =  Integer.parseInt(todayTime.substring(9,11));
+		
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd");
+			Date matchDate = sdf.parse(matchDay);
+			Date toDate = sdf.parse(day);
+			
+			if(matchDate.before(toDate)){
 				return false;
 			}
-		}else if(matchMonth == month && matchDate < date){
-			return false;
-		}else if(matchMonth > month){
-			return false;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		if(matchDay.equals(day)) {
+			if((matchTime -4) <= time) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -215,9 +227,20 @@ public class MypageController extends HttpServlet {
 		String userId = member.getUserId();
 		
 		List<Alarm> alarms = alarmService.selectNoticetList(userId);
+		for (int i = 0; i < alarms.size(); i++) {
+			checkAlarmState(alarms.get(i));
+		}
 
 		request.setAttribute("alarms", alarms);
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
+	}
+
+	private void checkAlarmState(Alarm alarm) {
+		String alarmDate = alarm.getNtDate();
+		String alarmTime = alarm.getMatchTime();
+		
+		LocalDateTime today = LocalDateTime.now();
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

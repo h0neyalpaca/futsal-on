@@ -78,7 +78,7 @@ public class AlarmDao {
 			while(rset.next()) {
 				Alarm alarm = new Alarm();
 				alarm.setContent(rset.getString("content"));
-				alarm.setNtDate(rset.getDate("nt_date"));
+				alarm.setNtDate(rset.getString("nt_date"));
 				alarm.setIsStart(rset.getInt("in_start"));
 				alarm.setMatchTime(rset.getString("match_time"));
 				alarm.setMmIdx(rset.getString("mm_idx"));

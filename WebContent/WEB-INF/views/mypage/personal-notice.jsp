@@ -27,7 +27,7 @@
 								<tr>
 									<td>${alarm.state}</td>
 									<td style="text-align:center;">
-										<a href="#">${alarm.content}</a>
+										<a href="/mypage/my-application">${alarm.content}</a>
 									</td>
 									<td>${alarm.ntDate}</td>
 								</tr>

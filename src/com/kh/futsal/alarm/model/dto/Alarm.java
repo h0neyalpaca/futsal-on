@@ -7,7 +7,7 @@ public class Alarm {
 	private String ntIdx;
 	private String mmIdx;
 	private int state;
-	private Date ntDate;
+	private String ntDate;
 	private String content;
 	private String userId;
 	private String matchTime;
@@ -30,10 +30,10 @@ public class Alarm {
 	public void setState(int state) {
 		this.state = state;
 	}
-	public Date getNtDate() {
+	public String getNtDate() {
 		return ntDate;
 	}
-	public void setNtDate(Date ntDate) {
+	public void setNtDate(String ntDate) {
 		this.ntDate = ntDate;
 	}
 	public String getContent() {

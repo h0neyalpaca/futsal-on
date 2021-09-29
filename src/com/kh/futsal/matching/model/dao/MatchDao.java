@@ -175,7 +175,7 @@ public class MatchDao {
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-		String query = "select mm_idx, mg_idx from match_game where APPLICANT_CODE = ?";
+		String query = "select mm_idx, mg_idx from match_game where user_id = ?";
 
 		try {
 			pstm = conn.prepareStatement(query);
