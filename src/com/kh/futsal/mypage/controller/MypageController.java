@@ -193,21 +193,19 @@ public class MypageController extends HttpServlet {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		String userId = member.getUserId();
 		
-		List<MatchMaster> matchList = matchingService.matchGameList(userId);
-		List<Team> teamInfos = new ArrayList<Team>();
 		List<MatchGame> mgList = matchingService.matchMgList(userId);
+		List<MatchMaster> matchList = matchingService.matchGameList(mgList);
+		List<Team> teamInfos = new ArrayList<Team>();
 		
 		Map<String,Object> matchTeamList =  new HashMap<String, Object>();
-		
 		
 		for (int i = 0; i < matchList.size(); i++) {
 			teamInfos.add(teamService.selectTeamByTmCode(matchList.get(i).getTmCode()));
 		}		
 		
-		
+		matchTeamList.put("mgList",mgList);
 		matchTeamList.put("matchList", matchList);
 		matchTeamList.put("teamList",teamInfos);
-		matchTeamList.put("mgList",mgList);
 		
 		request.setAttribute("datas", matchTeamList);
 		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
@@ -222,7 +220,7 @@ public class MypageController extends HttpServlet {
 		for (int i = 0; i < alarms.size(); i++) {
 			times.add(checkAlarmState(alarms.get(i)));
 		}
-
+		System.out.println(alarms);
 		request.setAttribute("alarms", alarms);
 		request.setAttribute("times",times);
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
@@ -255,7 +253,6 @@ public class MypageController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

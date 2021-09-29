@@ -85,7 +85,7 @@ public class AlarmDao {
 	
 	public List<Alarm> selectAlarmList (String userId, Connection conn){
 		
-		String sql = "select * from notice where user_id = ?";
+		String sql = "select * from notice where user_id = ? order by state";
 		
 		PreparedStatement pstm = null;
 		ResultSet rset = null;

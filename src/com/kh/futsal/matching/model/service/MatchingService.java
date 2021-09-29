@@ -83,26 +83,17 @@ public class MatchingService {
 		return res;
 	}
 	
-	public List<MatchMaster> matchGameList(String userId) {
+	public List<MatchMaster> matchGameList(List<MatchGame> mgList) {
 		
-		List<MatchGame> mmIdxList = new ArrayList<MatchGame>();
 		List<MatchMaster> res = new ArrayList<MatchMaster>();
-		
 		Connection conn = template.getConnection();
-		
 		try {
-			
-			mmIdxList = matchDao.matchGameList(userId, conn);
-			
-			for (int i = 0; i < mmIdxList.size(); i++) {
-				res.add(matchDao.matchGame(mmIdxList.get(i).getMmIdx(), conn));
+			for (int i = 0; i < mgList.size(); i++) {
+				res.add(matchDao.matchGame(mgList.get(i).getMmIdx(), conn));
 			}
-			
-			
 		} finally {
 			template.close(conn);
 		}
-		
 		return res;
 	}
 	

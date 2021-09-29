@@ -120,7 +120,7 @@ public class MatchDao {
 		match.setMmIdx(rset.getString("MM_IDX"));
 		match.setUserId(rset.getString("USER_ID"));
 		match.setTmCode(rset.getString("TM_CODE"));
-		match.setLocalCode(rset.getString("LOCAL_CODE"));
+		match.setLocalCode(rset.getString("LOCAL_CITY"));
 		match.setAddress(rset.getString("ADDRESS"));
 		match.setRegDate(rset.getDate("REG_DATE"));
 		match.setTitle(rset.getString("TITLE"));
@@ -181,7 +181,7 @@ public class MatchDao {
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-		String query = "select mm_idx, mg_idx from match_game where user_id = ?";
+		String query = "select mm_idx, mg_idx from match_game where user_id = ? order by state";
 
 		try {
 			pstm = conn.prepareStatement(query);
@@ -206,7 +206,7 @@ public class MatchDao {
 	
 	public MatchMaster matchGame(String mmIdx, Connection conn) {
 		
-		String sql = "select * from match_master where mm_idx = ? ";
+		String sql = "select * from match_master left outer join location on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE where mm_idx = ? ";
 		
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
