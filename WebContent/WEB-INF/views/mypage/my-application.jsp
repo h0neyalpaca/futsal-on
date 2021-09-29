@@ -48,21 +48,11 @@
 								<li><span class="tit">지역</span>
 								<c:choose>
 									<c:when test="${match.localCode == 'LC11'}">[서울]</c:when>
-									<c:when test="${match.localCode == 'LC21'}">[부산]</c:when>
-									<c:when test="${match.localCode == 'LC22'}">[대구]</c:when>
-									<c:when test="${match.localCode == 'LC23'}">[인천]</c:when>
-									<c:when test="${match.localCode == 'LC24'}">[광주]</c:when>
-									<c:when test="${match.localCode == 'LC25'}">[대전]</c:when>
-									<c:when test="${match.localCode == 'LC26'}">[울산]</c:when>
-									<c:when test="${match.localCode == 'LC29'}">[세종]</c:when>
 									<c:when test="${match.localCode == 'LC31'}">[경기]</c:when>
 									<c:when test="${match.localCode == 'LC32'}">[강원]</c:when>
-									<c:when test="${match.localCode == 'LC33'}">[충북]</c:when>
-									<c:when test="${match.localCode == 'LC34'}">[충남]</c:when>
-									<c:when test="${match.localCode == 'LC35'}">[전북]</c:when>
-									<c:when test="${match.localCode == 'LC36'}">[전남]</c:when>
-									<c:when test="${match.localCode == 'LC37'}">[경북]</c:when>
-									<c:when test="${match.localCode == 'LC38'}">[경남]</c:when>
+									<c:when test="${match.localCode == 'LC33'}">[충청]</c:when>
+									<c:when test="${match.localCode == 'LC35'}">[전라]</c:when>
+									<c:when test="${match.localCode == 'LC37'}">[경상]</c:when>
 									<c:when test="${match.localCode == 'LC39'}">[제주]</c:when>
 								</c:choose> ${match.address} <a class="view-map" onclick="window.open('https://map.kakao.com/link/search/${match.address}', 'pop01', 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no');"> 
 									<i class="fas fa-map-marker-alt"></i> 지도보기
@@ -110,21 +100,11 @@
 								<li><span class="tit">지역</span>
 								<c:choose>
 									<c:when test="${match.localCode == 'LC11'}">[서울]</c:when>
-									<c:when test="${match.localCode == 'LC21'}">[부산]</c:when>
-									<c:when test="${match.localCode == 'LC22'}">[대구]</c:when>
-									<c:when test="${match.localCode == 'LC23'}">[인천]</c:when>
-									<c:when test="${match.localCode == 'LC24'}">[광주]</c:when>
-									<c:when test="${match.localCode == 'LC25'}">[대전]</c:when>
-									<c:when test="${match.localCode == 'LC26'}">[울산]</c:when>
-									<c:when test="${match.localCode == 'LC29'}">[세종]</c:when>
 									<c:when test="${match.localCode == 'LC31'}">[경기]</c:when>
 									<c:when test="${match.localCode == 'LC32'}">[강원]</c:when>
-									<c:when test="${match.localCode == 'LC33'}">[충북]</c:when>
-									<c:when test="${match.localCode == 'LC34'}">[충남]</c:when>
-									<c:when test="${match.localCode == 'LC35'}">[전북]</c:when>
-									<c:when test="${match.localCode == 'LC36'}">[전남]</c:when>
-									<c:when test="${match.localCode == 'LC37'}">[경북]</c:when>
-									<c:when test="${match.localCode == 'LC38'}">[경남]</c:when>
+									<c:when test="${match.localCode == 'LC33'}">[충청]</c:when>
+									<c:when test="${match.localCode == 'LC35'}">[전라]</c:when>
+									<c:when test="${match.localCode == 'LC37'}">[경상]</c:when>
 									<c:when test="${match.localCode == 'LC39'}">[제주]</c:when>
 								</c:choose> ${match.address} <a class="view-map" onclick="window.open('https://map.kakao.com/link/search/${match.address}', 'pop01', 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no');"> 
 									<i class="fas fa-map-marker-alt"></i> 지도보기
