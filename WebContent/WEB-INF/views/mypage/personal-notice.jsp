@@ -29,7 +29,7 @@
 									<td style="text-align:center;">
 										<a href="/mypage/alarm-check?ntIdx=${alarm.ntIdx}">${alarm.content}</a>
 									</td>
-									<td>${alarm.ntDate}</td>
+									<td>${alarm.ntDate}<br>${time}</td>
 								</tr>
 							</c:if>
 						</c:forEach>
@@ -40,7 +40,7 @@
 									<td style="text-align:center;">
 										<a href="/mypage/alarm-check?ntIdx=${alarm.ntIdx}">${alarm.content}</a>
 									</td>
-									<td>${alarm.ntDate}</td>
+									<td>${alarm.ntDate}<br>${time}</td>
 								</tr>
 							</c:if>
 						</c:forEach>

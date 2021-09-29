@@ -228,17 +228,19 @@ public class MypageController extends HttpServlet {
 	private void personalNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		String userId = member.getUserId();
+		String time = null;
 		
 		List<Alarm> alarms = alarmService.selectNoticetList(userId);
 		for (int i = 0; i < alarms.size(); i++) {
-			checkAlarmState(alarms.get(i));
+			time = checkAlarmState(alarms.get(i));
 		}
 
 		request.setAttribute("alarms", alarms);
+		request.setAttribute("time",time);
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
 	}
 
-	private void checkAlarmState(Alarm alarm) {
+	private String checkAlarmState(Alarm alarm) {
 		
 		String alarmDate = alarm.getNtDate();
 		int alarmTime = Integer.parseInt(alarm.getMatchTime().substring(0, 2));
@@ -253,6 +255,8 @@ public class MypageController extends HttpServlet {
 		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
 			alarmService.updateAlarmIsStart(alarm.getNtIdx());
 		}
+		
+		return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
 	}
 	
 	private void alarmCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
