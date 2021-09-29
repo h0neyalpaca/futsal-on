@@ -20,22 +20,26 @@ public class MatchDao {
 		PreparedStatement pstm = null;
 		
 		String query = "INSERT INTO MATCH_MASTER (MM_IDX, USER_ID, TM_CODE, LOCAL_CODE, ADDRESS, REG_DATE, TITLE,EXPENSE, GRADE, CONTENT, TM_MATCH, MATCH_TIME,MATCH_DATE)"
-					 + " VALUES(SC_MM_IDX.nextval,'leader','TEAMCODE',?,?,sysdate,?, ?, ?, ?,?, ?,?)";
+					 + " VALUES(SC_MM_IDX.nextval,?,?,?,?,sysdate,?, ?, ?, ?,?, ?,?)";
 		
 		 
 		
 		try {
 			pstm = conn.prepareStatement(query);
-			pstm.setString(1, matchMaster.getLocalCode());
-			pstm.setString(2, matchMaster.getAddress());
-			pstm.setString(3, matchMaster.getTitle());
 			
-			pstm.setString(4, matchMaster.getExpense());
-			pstm.setString(5, matchMaster.getGrade());
-			pstm.setString(6, matchMaster.getContent());
-			pstm.setInt(7, matchMaster.getTmMatch());
-			pstm.setString(8, matchMaster.getMatchTime());
-			pstm.setString(9, matchMaster.getMatchDate());
+			pstm.setString(1, matchMaster.getUserId());
+			pstm.setString(2, matchMaster.getTmCode());
+			
+			pstm.setString(3, matchMaster.getLocalCode());
+			pstm.setString(4, matchMaster.getAddress());
+			pstm.setString(5, matchMaster.getTitle());
+			
+			pstm.setString(6, matchMaster.getExpense());
+			pstm.setString(7, matchMaster.getGrade());
+			pstm.setString(8, matchMaster.getContent());
+			pstm.setInt(9, matchMaster.getTmMatch());
+			pstm.setString(10, matchMaster.getMatchTime());
+			pstm.setString(11, matchMaster.getMatchDate());
 			
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
@@ -275,14 +279,91 @@ public class MatchDao {
 	}
 
 
-	public int matchRequset(int matchIdx, Connection conn) {
+	public int matchRequset(String matchIdx, Connection conn) {
 		int res = 0;		
 		PreparedStatement pstm = null;
 		String query = "update match_master set state = 1 where MM_IDX = ?";
 		
 		try {
 			pstm = conn.prepareStatement(query);
-			pstm.setInt(1, matchIdx);
+			pstm.setString(1, matchIdx);
+			
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
+		return res;
+	}
+
+
+	public String checkRequset(String userId, Connection conn) {
+		String id = null;	
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		String query = "select TM_CODE"
+				+ " FROM MEMBER"
+				+ " WHERE USER_ID =?";
+				
+				
+		
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, userId);
+			
+			rset = pstm.executeQuery();
+			if(rset.next()) {
+				id = rset.getString("TM_CODE");
+			}
+			
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		
+		return id;
+	}
+
+
+	public int matchGameRegister(MatchGame matchGame, Connection conn) {
+		int res = 0;		
+		PreparedStatement pstm = null;
+		
+		String query = "INSERT INTO MATCH_GAME (MG_IDX, MM_IDX, MATCH_DATE, STATE, APPLICANT_CODE)"
+					 + " VALUES(SC_MG_IDX.nextval,?,?,1,?)";
+		
+		 
+		
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, matchGame.getMmIdx());
+			pstm.setString(2, matchGame.getMatchDate());
+			pstm.setString(3, matchGame.getApplicantCode());
+							
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		
+		return res;
+	}
+
+
+	public int matchUpdate(String teamCode, Connection conn) {
+		int res = 0;		
+		PreparedStatement pstm = null;
+		String query = "update TEAM set GAME_CNT = GAME_CNT+1 where TM_CODE = ?";
+		
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, teamCode);
 			
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {

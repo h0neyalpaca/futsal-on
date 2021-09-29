@@ -70,6 +70,7 @@
 						</dl>
 						<div class="textarea-wrap">
 							<textarea name="content" cols="100" rows="20" placeholder="내용을 입력해주세요." style="resize: none;"></textarea>
+							<input type="hidden" name="userId" value="${authentication.userId}">
 						</div>
 						<input type="submit" value="등록">
 					</form>

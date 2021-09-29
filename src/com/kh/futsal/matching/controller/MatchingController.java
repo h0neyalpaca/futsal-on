@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.futsal.matching.model.dto.MatchGame;
 import com.kh.futsal.matching.model.dto.MatchMaster;
 import com.kh.futsal.matching.model.service.MatchingService;
 
@@ -71,14 +72,47 @@ public class MatchingController extends HttpServlet {
 
 	//매치신청
 	private void MatchRequest(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-		int matchIdx = Integer.parseInt(request.getParameter("matchIdx"));
-		System.out.println("매치 번호 나옴 : " + matchIdx);
-		
 		int res = 0;
+		String matchIdx = request.getParameter("matchIdx");
+		String userId = request.getParameter("userId");
+		String tmCode = request.getParameter("tmCode");
+		String matchDate = request.getParameter("matchDate");
+		//신청자와 주최자가 같을경우
+		System.out.println(matchDate);
 		
+		//팀코드로 비교 후 같은 팀이면 에러처리
+		String requsetTeamCode = matchingService.checkRequset(userId);
+		System.out.println(requsetTeamCode);
+		if (requsetTeamCode.equals(tmCode)) {
+			response.sendRedirect("matching/team/team-list?err=1");
+			return;
+		}
+		MatchGame matchGame = new MatchGame();
+		matchGame.setMmIdx(matchIdx);
+		matchGame.setMatchDate(matchDate);
+		matchGame.setApplicantCode(requsetTeamCode);
+		
+		
+
+		//매치게임에 등록
+		if (res == matchingService.matchGameRegister(matchGame)) {
+			request.setAttribute("msg", "에러가 발생했습니다.");
+			request.setAttribute("url", "/index");
+			request.getRequestDispatcher("/common/result").forward(request, response);
+		}
+		
+		//모집상태 변경
 		matchingService.matchRequset(matchIdx);
 		
+		//team에 전적수 추가
+		//신청팀 전적 추가
+		matchingService.matchUpdate(requsetTeamCode);
+		//주최팀 전적 추가
+		matchingService.matchUpdate(tmCode);
 		
+		request.setAttribute("msg", "매치가 성사되었습니다.");
+		request.setAttribute("url", "/index");
+		request.getRequestDispatcher("/common/result").forward(request, response);
 		
 	}
 
@@ -102,7 +136,8 @@ public class MatchingController extends HttpServlet {
 		String localCode = request.getParameter("localCode");
 		String detailAddress = request.getParameter("detailAddress");
 		int size = Integer.parseInt(request.getParameter("size"));
-		
+		String userId = request.getParameter("userId");
+		String teamCode = matchingService.checkRequset(userId);
 		
 		String expense = request.getParameter("cost");
 		String grade = request.getParameter("level");
@@ -119,6 +154,8 @@ public class MatchingController extends HttpServlet {
 		sb.append(matchTime);
 		
 		MatchMaster matchMaster = new MatchMaster();
+		matchMaster.setUserId(userId);
+		matchMaster.setTmCode(teamCode);
 		matchMaster.setLocalCode(localCode);
 		matchMaster.setAddress(detailAddress);
 		matchMaster.setExpense(expense);

@@ -151,7 +151,7 @@ public class MatchingService {
 		return match;
 	}
 
-	public int matchRequset(int matchIdx) {
+	public int matchRequset(String matchIdx) {
 		Connection conn = template.getConnection();
 		int res = 0;
 		
@@ -162,6 +162,60 @@ public class MatchingService {
 		}finally {
 			template.close(conn);
 		}
+		return res;
+	}
+
+	public String checkRequset(String userId) {
+		Connection conn = template.getConnection();
+		String id = null;
+		
+		try {
+			id = matchDao.checkRequset(userId,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+		return id;
+	}
+
+	public int matchGameRegister(MatchGame matchGame) {
+		Connection conn = template.getConnection();
+		int res = 0;
+		
+		try {
+			//매치글쓰기
+			res = matchDao.matchGameRegister(matchGame, conn);
+			//방금 가입한 회원의 아이디로 정보를 다시 조회			
+			
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		}finally {
+			template.close(conn);
+		}
+		
+		return res;
+	}
+
+	public int matchUpdate(String teamCode) {
+		Connection conn = template.getConnection();
+		int res = 0;
+		
+		try {
+			//전적 추가
+			res = matchDao.matchUpdate( teamCode,conn);
+			//방금 가입한 회원의 아이디로 정보를 다시 조회			
+			
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		}finally {
+			template.close(conn);
+		}
+		
 		return res;
 	}
 

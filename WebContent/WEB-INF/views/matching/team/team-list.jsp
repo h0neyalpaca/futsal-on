@@ -9,6 +9,11 @@
 	href="${request.contextPath}/resources/css/matching/matching-team.css" />
 </head>
 <body>
+	<c:if test="${not empty param.err}">
+		<script type="text/javascript">
+				alert("같은 팀을 상대로 신청하실 수 없습니다.");
+		</script>
+	</c:if>
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 	<section>
 		
@@ -62,6 +67,7 @@
 						<a href="#">최신순</a> <a href="#">별점순</a>
 					</div>
 				</div>
+				
 				<c:forEach var="matchBox" items="${matchList}">
 				<%@ include file="/WEB-INF/views/pop/team-info.jsp"%>
 					<div class="match-box">
@@ -113,11 +119,16 @@
 									</span>
 									</div>
 								</div>
+								<c:choose>
+									<c:when test="${matchBox.getState() == 1}">
+										<div class="btn-appli" onclick="expiration()">신청하기</div>
+									</c:when>
+									<c:when test="${matchBox.getState() == 0}">
+										<div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()},'${matchBox.getTmCode()}','${authentication.userId}','${matchBox.getMatchDate()}')">신청하기</div>
+									</c:when>
+								</c:choose>
 								
-								<form action="/matching/team/subscription" method="post">
-								<input type="hidden" name="matchIdx" value="${matchBox.getMmIdx()}">
-								<div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()})">신청하기</div>
-								</form>
+								
 							</div>
 						</div>
 						<div class="match-detail">
@@ -153,18 +164,22 @@
 
 				</c:forEach>
 				<!-- 하나의 매치 박스 -->
-
+				
 				<!-- End 매치 박스 -->
 			</div>
 		</div>
 	</section>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 	<script type="text/javascript">
-	let matchRequset = (e) => {
-		let sub = document.querySelector('#subscription');
-		if (window.confirm(e)) {
-			sub.submit();
+	let matchRequset = (idx,tmCode,user,date) => {
+		if (window.confirm("매치를 신청하시겠습니까?")) {
+			console.dir(tmCode);
+			location.href="/matching/team/subscription?matchIdx="+idx+"&tmCode="+tmCode+"&userId="+user+"&matchDate="+date;
 		}
+	}
+	
+	let expiration = () =>{
+		alert("모집이 완료된 매치입니다.");
 	}
 	
 	
@@ -197,13 +212,7 @@
 		})
 	})
 	
-/* 	document.querySelector('.btn-appli').addEventListener('click',e=>{
-		let sub = document.querySelector('#subscription');
-		if (window.confirm("매치를 신청합니까?")) {
-			sub.submit();
-		}
-	})
-	 */
+
 	
 	let popup = document.querySelectorAll(".profile-name");
 
