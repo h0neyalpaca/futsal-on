@@ -69,7 +69,7 @@ public class AlarmDao {
 		try {
 			pstm = conn.prepareStatement(query);
 			pstm.setString(1, matchMaster.getMatchDate());
-			pstm.setString(2, "신청하신 매치가 4시간 후에 시작됩니다");
+			pstm.setString(2, "신청하신 ["+ matchMaster.getTitle()+"]이 4시간 후에 시작됩니다");
 			pstm.setString(3, userId);
 			pstm.setString(4, matchMaster.getMatchTime());
 			pstm.setString(5, matchMaster.getMmIdx());
