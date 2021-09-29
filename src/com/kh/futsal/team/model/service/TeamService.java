@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.file.FileDTO;
@@ -99,6 +98,48 @@ public class TeamService {
 					template.commit(conn);
 				}
 			}
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		} finally {
+			template.close(conn);
+		}
+		return res;
+	}
+	
+	//경기결과 업데이트
+	public int updateWinner(String mgIdx, String wnrCode, String lsrCode) {
+		Connection conn = template.getConnection();
+		int res = 0;
+		try {
+			if(td.selectResultByMgIdx(mgIdx,conn) > 0) {
+				res = td.updateWinner(mgIdx,lsrCode,conn);
+			} else {
+				res = td.insertWinner(mgIdx,wnrCode,conn);
+			}
+			td.updateTeamScore(wnrCode,lsrCode, conn);
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		} finally {
+			template.close(conn);
+		}
+		return res;
+	}
+	
+	//상대팀 평가 업데이트
+	public int updateRslt(String mgIdx, String target, int rating) {
+		Connection conn = template.getConnection();
+		int res = 0;
+		try {
+			if(td.selectResultByMgIdx(mgIdx,conn) > 0) {
+				res = td.updateRslt(mgIdx,target,rating,conn);
+			} else {
+				res = td.insertRslt(mgIdx,target,rating,conn);
+			}
+			System.out.println("service : " + res);
+			template.commit(conn);
 		} catch (Exception e) {
 			template.rollback(conn);
 			throw e;

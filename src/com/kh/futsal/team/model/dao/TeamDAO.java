@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kh.futsal.common.code.member.MemberGrade;
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.exception.DataAccessException;
 import com.kh.futsal.common.file.FileDTO;
@@ -58,7 +57,7 @@ public class TeamDAO {
 			pstm.setString(2, fileDTO.getOriginFileName());
 			pstm.setString(3, fileDTO.getRenameFileName());
 			pstm.setString(4, fileDTO.getSavePath());
-			pstm.executeUpdate();
+			res = pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
 		} finally {
@@ -180,7 +179,112 @@ public class TeamDAO {
 		}
 		return res;
 	}
+	
+	public int insertWinner(String mgIdx, String winner, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "INSERT INTO RESULT"+
+					"(TH_IDX,WINNER,MG_IDX) "+
+					"VALUES(SC_TH_IDX.NEXTVAL,?,?) ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, winner);
+			pstm.setString(2, mgIdx);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+	
+	public int updateWinner(String mgIdx, String winner, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "UPDATE RESULT SET WINNER = ? WHERE MG_IDX = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, winner);
+			pstm.setString(2, mgIdx);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+	
+	public int insertRslt(String mgIdx, String target, int rating, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "";
+			if(target.equals("host")) {
+				sql = "INSERT INTO RESULT (TH_IDX,MG_IDX,HOST_RATING) VALUES(SC_TH_IDX.NEXTVAL,?,?) ";
+			} else {
+				sql = "INSERT INTO RESULT (TH_IDX,MG_IDX,RIVAL_RATING) VALUES(SC_TH_IDX.NEXTVAL,?,?) ";
+			}
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, mgIdx);
+			pstm.setInt(2, rating);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+	
+	public int updateRslt(String mgIdx, String target, int rating, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "";
+			if(target.equals("host")) {
+				sql = "UPDATE RESULT SET HOST_RATING = ? WHERE MG_IDX = ? ";
+			} else {
+				sql = "UPDATE RESULT SET RIVAL_RATING = ? WHERE MG_IDX = ? ";
+			}
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, rating);
+			pstm.setString(2, mgIdx);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
 
+	public int updateTeamScore(String wnrTmCode, String lsrTmCode, Connection conn) {
+		int res = 0;
+		System.out.println("w:"+wnrTmCode);
+		System.out.println("l:"+lsrTmCode);
+		PreparedStatement pstm = null;
+		try {
+			String sql = "UPDATE TEAM SET TM_WIN = TM_WIN+1 WHERE TM_CODE = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, wnrTmCode);
+			res = pstm.executeUpdate();
+			if(res < 1) {
+				return res;
+			}
+			sql = "UPDATE TEAM SET TM_LOSE = TM_LOSE+1 WHERE TM_CODE = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, lsrTmCode);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+	
 	//회원정보에서 팀 정보를 삭제(팀추방 ,팀탈퇴,팀해체)
 	public int updateMemberForLeaveTeam(String userId, Connection conn) {
 		int res = 0;
@@ -333,7 +437,7 @@ public class TeamDAO {
 		ResultSet rset = null;
 		
 		try {
-			String sql = "select mg.mg_idx, mm.match_date, mm.match_time, mg.applicant_code, tm.tm_name as tm_name1, te.tm_name as tm_name2, rs.winner, rs.host_rating, rs.rival_rating "
+			String sql = "select rs.th_idx, mg.mg_idx, mm.match_date, mm.match_time, tm.tm_code as host_code, tm.tm_name as host_name, te.tm_code as rival_code, te.tm_name as rival_name, rs.winner, rs.host_rating, rs.rival_rating "
 					+ "from match_master mm "
 					+ "join match_game mg using(mm_idx) "
 					+ "join team tm on (mm.tm_code = tm.tm_code) "
@@ -345,17 +449,7 @@ public class TeamDAO {
 			pstm.setString(2, tmCode);
 			rset = pstm.executeQuery();
 			while(rset.next()) {
-				ResultDTO resultDTO = new ResultDTO();
-				resultDTO.setMgIdx(rset.getString("MG_IDX"));
-				resultDTO.setMatchDate(rset.getString("MATCH_DATE"));
-				resultDTO.setMatchTime(rset.getString("MATCH_TIME"));
-				resultDTO.setApplicantCode(rset.getString("APPLICANT_CODE"));
-				resultDTO.setTmName(rset.getString("TM_NAME1"));
-				resultDTO.setApplicantName(rset.getString("TM_NAME2"));
-				resultDTO.setWinner(rset.getString("WINNER"));
-				resultDTO.setHostRating(rset.getInt("HOST_RATING"));
-				resultDTO.setRivalRating(rset.getInt("RIVAL_RATING"));
-				results.add(resultDTO);
+				results.add(convertRowToResult(rset));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -365,6 +459,29 @@ public class TeamDAO {
 		return results;
 	}
 
+	//mgIdx로 경기결과가 있는지 확인
+	public int selectResultByMgIdx(String mgIdx, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		try {
+			String sql = "SELECT TH_IDX FROM RESULT WHERE MG_IDX = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, mgIdx);
+			rset = pstm.executeQuery();
+			if(rset.next()) {
+				res += 1;
+			}
+			System.out.println("res : " +res);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			template.close(rset,pstm);
+		}
+		
+		return res;
+	}
+	
 	//팀코드로 팀이 올린 게시글 호출
 	public List<MatchMaster> selectTmBoards(String tmCode, Connection conn) {
 		List<MatchMaster> tmBoards = new ArrayList<MatchMaster>();
@@ -405,6 +522,7 @@ public class TeamDAO {
 		team.setGameCnt(rset.getInt("GAME_CNT"));
 		team.setTmScore(rset.getInt("TM_SCORE"));
 		team.setTmWin(rset.getInt("TM_WIN"));
+		team.setTmLose(rset.getInt("TM_LOSE"));
 		team.setRegDate(rset.getDate("REG_DATE"));
 		team.setDelDate(rset.getDate("DEL_DATE"));
 		return team;
@@ -427,5 +545,29 @@ public class TeamDAO {
 		matchMaster.setMatchDate(rset.getString("MATCH_DATE"));
 		return matchMaster;
 	}
+	
+	private ResultDTO convertRowToResult(ResultSet rset) throws SQLException {
+		ResultDTO resultDTO = new ResultDTO();
+		resultDTO.setThIdx(rset.getString("TH_IDX"));
+		resultDTO.setMgIdx(rset.getString("MG_IDX"));
+		resultDTO.setMatchDate(rset.getString("MATCH_DATE"));
+		resultDTO.setMatchTime(rset.getString("MATCH_TIME"));
+		String[] dateArr = rset.getString("MATCH_DATE").split("-");
+		String[] timeArr = rset.getString("MATCH_TIME").split(":");
+		String date = "";
+		String time = "";
+		for (int i = 0; i < dateArr.length; i++) {date += dateArr[i];}
+		for (int i = 0; i < timeArr.length; i++) {time += timeArr[i];}
+		resultDTO.setMatchSchedule(date+time);
+		resultDTO.setHostCode(rset.getString("HOST_CODE"));
+		resultDTO.setHostName(rset.getString("HOST_NAME"));
+		resultDTO.setRivalCode(rset.getString("RIVAL_CODE"));
+		resultDTO.setRivalName(rset.getString("RIVAL_NAME"));
+		resultDTO.setWinner(rset.getString("WINNER"));
+		resultDTO.setHostRating(rset.getInt("HOST_RATING"));
+		resultDTO.setRivalRating(rset.getInt("RIVAL_RATING"));
+		return resultDTO;
+	}
+
 
 }

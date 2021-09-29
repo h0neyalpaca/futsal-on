@@ -2,7 +2,12 @@ package com.kh.futsal.team.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -82,6 +87,12 @@ public class TeamController extends HttpServlet {
 		case "total-score":
 			totalScore(request,response);
 			break;
+		case "update-winner":
+			updateWinner(request,response);
+			break;
+		case "update-rating":
+			updateRating(request,response);
+			break;
 		case "team-board":
 			teamBoard(request,response);
 			break;
@@ -150,10 +161,46 @@ public class TeamController extends HttpServlet {
 		Team team = (Team) request.getSession().getAttribute("team");
 		request.setAttribute("tmBoards", ts.selectTmBoards(team.getTmCode()));
 		request.getRequestDispatcher("/team/managing/team-board").forward(request, response);
-		
 	}
+	
+	//상대팀 평가 저장
+	private void updateRating(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int res = ts.updateRslt(request.getParameter("mgIdx"),request.getParameter("target"),Integer.parseInt(request.getParameter("rating")));
+		System.out.println("controller : " + res);
+		
+		String msg = "처리 도중 오류가 발생하였습니다.";
+		if(res > 0) {
+			msg = "평가 등록이 완료되었습니다.";
+		}
+		response.setContentType("text/html;charset=UTF-8");
+		response.setHeader("cache-control", "no-cache, no-store");
+		PrintWriter pw= response.getWriter();
+		pw.print(msg);
+	}
+	
+	//경기 승패 저장
+	private void updateWinner(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int res = ts.updateWinner(request.getParameter("mgIdx"),request.getParameter("winner"),request.getParameter("loser"));
+		
+		String msg = "처리 도중 오류가 발생하였습니다.";
+		if(res > 0) {
+			msg = "결과 등록이 완료되었습니다.";
+		}
+		response.setContentType("text/html;charset=UTF-8");
+		response.setHeader("cache-control", "no-cache, no-store");
+		PrintWriter pw= response.getWriter();
+		pw.print(msg);
+	}
+	
 	private void totalScore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Team team = (Team) request.getSession().getAttribute("team");
+		Date date = new Date();
+		
+		SimpleDateFormat nDate, nTime;
+		nDate = new SimpleDateFormat("yyyyMMdd");
+		nTime = new SimpleDateFormat("HHmm");
+		String nowDate = nDate.format(date) + nTime.format(date);
+		request.setAttribute("nowDate",Long.parseLong(nowDate));
 		request.setAttribute("results", ts.selectMatchGame(team.getTmCode()));
 		request.getRequestDispatcher("/team/managing/total-score").forward(request, response);
 	}
