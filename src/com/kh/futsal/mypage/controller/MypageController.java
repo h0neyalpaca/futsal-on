@@ -104,27 +104,15 @@ public class MypageController extends HttpServlet {
 		MatchGame match = matchingService.selectMatch(mgIdx);
 		
 		String matchDayTime= match.getMatchDate();
-		String matchDay = matchDayTime.substring(0,8);
-		int matchTime = Integer.parseInt(matchDayTime.substring(9,11));
+		String matchDay = matchDayTime.substring(0,10);
+		int matchTime = Integer.parseInt(matchDayTime.substring(11,13));
 		
 		LocalDateTime today = LocalDateTime.now();
-		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm");
+		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		String todayTime = today.format(Formatter);
 		
-		String day = todayTime.substring(0,8);
-		int time =  Integer.parseInt(todayTime.substring(9,11));
-		
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd");
-			Date matchDate = sdf.parse(matchDay);
-			Date toDate = sdf.parse(day);
-			
-			if(matchDate.before(toDate)){
-				return false;
-			}
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		String day = todayTime.substring(0,10);
+		int time =  Integer.parseInt(todayTime.substring(11,13));
 		
 		if(matchDay.equals(day)) {
 			if((matchTime -4) <= time) {
@@ -246,11 +234,11 @@ public class MypageController extends HttpServlet {
 		int alarmTime = Integer.parseInt(alarm.getMatchTime().substring(0, 2));
 				
 		LocalDateTime today = LocalDateTime.now();
-		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm");
+		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		String todayTime = today.format(Formatter);
 		
-		String day = todayTime.substring(0,8);
-		int time =  Integer.parseInt(todayTime.substring(9,11));
+		String day = todayTime.substring(0,10);
+		int time =  Integer.parseInt(todayTime.substring(11,13));
 		
 		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
 			alarmService.updateAlarmIsStart(alarm.getNtIdx());
