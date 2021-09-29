@@ -22,25 +22,25 @@
 							<th style="width:60%">알림내용</th>
 							<th>날짜</th>
 						</tr>
-						<c:forEach items="${alarms}" var="alarm">
+						<c:forEach items="${alarms}" var="alarm" varStatus="status">
 							<c:if test="${alarm.isStart == 1 && alarm.state == 0}">
 								<tr>
 									<td>안읽음</td>
 									<td style="text-align:center;">
 										<a href="/mypage/alarm-check?ntIdx=${alarm.ntIdx}">${alarm.content}</a>
 									</td>
-									<td>${alarm.ntDate}<br>${time}</td>
+									<td>${alarm.ntDate}<br>${times[status.index]}</td>
 								</tr>
 							</c:if>
 						</c:forEach>
-						<c:forEach items="${alarms}" var="alarm">
+						<c:forEach items="${alarms}" var="alarm" varStatus="status">
 							<c:if test="${alarm.isStart == 1 && alarm.state == 1}">
 								<tr>
 									<td>읽음</td>
 									<td style="text-align:center;">
 										<a href="/mypage/alarm-check?ntIdx=${alarm.ntIdx}">${alarm.content}</a>
 									</td>
-									<td>${alarm.ntDate}<br>${time}</td>
+									<td>${alarm.ntDate}<br>${times[status.index]}</td>
 								</tr>
 							</c:if>
 						</c:forEach>

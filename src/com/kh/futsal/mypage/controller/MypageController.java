@@ -228,15 +228,15 @@ public class MypageController extends HttpServlet {
 	private void personalNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		String userId = member.getUserId();
-		String time = null;
+		List<String> times = new ArrayList<String>();
 		
 		List<Alarm> alarms = alarmService.selectNoticetList(userId);
 		for (int i = 0; i < alarms.size(); i++) {
-			time = checkAlarmState(alarms.get(i));
+			times.add(checkAlarmState(alarms.get(i)));
 		}
 
 		request.setAttribute("alarms", alarms);
-		request.setAttribute("time",time);
+		request.setAttribute("times",times);
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
 	}
 
