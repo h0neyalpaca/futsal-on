@@ -81,8 +81,8 @@ public class MypageController extends HttpServlet {
 
 		String mgIdx = request.getParameter("mgIdx");
 		MatchGame match = matchingService.selectMatch(mgIdx);
-		
-		boolean flag = checkDate(mgIdx);
+
+		boolean flag = checkDate(match);
 		
 		if(flag) { 
 			 matchingService.deleteMyApplicant(mgIdx,match);
@@ -94,19 +94,14 @@ public class MypageController extends HttpServlet {
 	    request.getRequestDispatcher("/common/result").forward(request, response);
 	}
 	
-	private boolean checkDate(String mgIdx) throws ServletException, IOException {
-		MatchGame match = matchingService.selectMatch(mgIdx);
-		
+	private boolean checkDate(MatchGame match){
 		String matchDayTime= match.getMatchDate();
 		String matchDay = matchDayTime.substring(0,10);
 		int matchTime = Integer.parseInt(matchDayTime.substring(11,13));
 		
-		LocalDateTime today = LocalDateTime.now();
-		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String todayTime = today.format(Formatter);
-		
-		String day = todayTime.substring(0,10);
-		int time =  Integer.parseInt(todayTime.substring(11,13));
+		String today = getToday();
+		String day = today.substring(0,10);
+		int time =  Integer.parseInt(today.substring(11,13));
 		
 		if(matchDay.equals(day)) {
 			if((matchTime -4) <= time) {
@@ -115,7 +110,7 @@ public class MypageController extends HttpServlet {
 		}
 		return true;
 	}
-
+	
 	private void nickCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nickName = request.getParameter("nickName");
 		Member member = memberService.selectMemberByNick(nickName);
@@ -194,7 +189,6 @@ public class MypageController extends HttpServlet {
 			teamInfos.add(team);
 		}		
 		
-		System.out.println(teamInfos);
 		matchTeamList.put("mgList",mgList);
 		matchTeamList.put("matchList", matchList);
 		matchTeamList.put("teamList",teamInfos);
@@ -217,15 +211,12 @@ public class MypageController extends HttpServlet {
 	}
 
 	private String checkAlarmState(Alarm alarm) {
-		
 		String alarmDate = alarm.getNtDate();
 		int alarmTime = Integer.parseInt(alarm.getMatchTime().substring(0, 2));
 				
-		LocalDateTime today = LocalDateTime.now();
-		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String todayTime = today.format(Formatter);
-		String day = todayTime.substring(0,10);
-		int time =  Integer.parseInt(todayTime.substring(11,13));
+		String today = getToday();
+		String day = today.substring(0,10);
+		int time =  Integer.parseInt(today.substring(11,13));
 		
 		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
 			alarmService.updateAlarmIsStart(alarm.getNtIdx());
@@ -239,6 +230,13 @@ public class MypageController extends HttpServlet {
 		response.sendRedirect("/mypage/my-application");
 	}
 
+	private String getToday() {
+		LocalDateTime today = LocalDateTime.now();
+		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String todayTime = today.format(Formatter);
+		return todayTime;
+	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}

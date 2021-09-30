@@ -254,7 +254,7 @@ public class MatchDao {
 	
 	public MatchGame selectMatch(String mgIdx, Connection conn) {
 		
-		String sql = "select * from match_game where mg_idx = ? ";
+		String sql = "select g.applicant_code,m.match_date,m.match_time,g.mm_idx,g.mg_idx,g.user_id from match_game g join match_master m on g.mm_idx = m.mm_idx where mg_idx = ? ";
 		
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
@@ -268,7 +268,7 @@ public class MatchDao {
 			if(rset.next()) {
 				match = new MatchGame();
 				match.setApplicantCode(rset.getString("applicant_code"));
-				match.setMatchDate(rset.getString("match_date"));
+				match.setMatchDate(rset.getString("match_date")+" "+rset.getString("match_time"));
 				match.setMgIdx(rset.getString("mg_idx"));
 				match.setMmIdx(rset.getString("mm_idx"));
 				match.setUserId(rset.getString("user_id"));
