@@ -89,6 +89,7 @@
 							<col style="width: 118px;">
 							<col style="width: 68px;">
 						</colgroup>
+						
 						<c:forEach var ="notice" items="${noticeList}" > 
 						<tbody class="notice">
 							<tr>
@@ -98,7 +99,7 @@
 									<div class="board-wrap">
 										<div class="board-list">
 											<div class="inner-list">
-												<a href="/notice/notice-detail?curPage=${curPage}&noticeNo=${notice.nwIdx}">${notice.nwTitle}</a>
+												<a href="/notice/notice-detail?curPage=${page.curPage}&noticeNo=${notice.nwIdx}">${notice.nwTitle}</a>
 											</div>
 										</div>
 									</div>
@@ -121,17 +122,17 @@
 								
 				<ul class="page-button">
 				
-					<c:if test="${curPage> pageSize }"> 
-							<li><a class="prev-noti" href="/notice/notice-list?page=${endPage-1}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
+					<c:if test="${page.curPage> page.pageSize }"> 
+							<li><a class="prev-noti" href="/notice/notice-list?page=${page.endPage-1}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
 					</c:if>
 				
-					<c:forEach var="page" begin="${startPage}" end="${endPage}">
-							<li class="page-num ${page==curPage ? "active":""}"><a href="notice-list?curPage=${page}">${page}</a></li>
 
+					<c:forEach var="page" begin="${page.startPage}" end="${page.endPage}">
+							<li class="page-num ${page==curPage ? "active":""}"><a href="notice-list?curPage=${page}">${page}</a></li>
 					</c:forEach>
 						
-					<c:if test="${endPage<totalPage }">
-						<li><a class="next-noti" href="/notice/notice-list?curPage=${endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
+					<c:if test="${page.endPage<page.totalPage }">
+						<li><a class="next-noti" href="/notice/notice-list?curPage=${page.endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
 					</c:if>
 				</ul>
 				</form>

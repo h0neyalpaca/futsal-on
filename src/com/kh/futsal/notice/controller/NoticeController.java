@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.kh.futsal.common.pagination.PageInfo;
+import com.kh.futsal.common.pagination.Pagination;
 import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.notice.model.dto.Notice;
 import com.kh.futsal.notice.model.service.NoticeService;
@@ -158,34 +160,16 @@ public class NoticeController extends HttpServlet {
 	
 	private void noticeList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//[1][2] -> [3][4]
-		// 3  3      3  1
-		
-		int curPage = 0; //현재 페이지 번호
-		int noticeSize = 3; //페이지당 게시물 수 
-		int pageSize = 2; //한 번에 표시할 페이지 수
-		int totalNoticeCnt = 0; //게시물 총 갯수
-		int totalPage = 0; //페이지 총 갯수
-		int startNo = 0; //현재 페이지의 첫 게시물 번호
-		int endNo = 0; //현제 페이지의 마지막 게시물 번호
-		int startPage = 0; //현재 페이지의 시작 번호
-		int endPage = 0; //현제 페이지의 마지막 번호
-		
-		
-		List<Notice> noticeList = new ArrayList<Notice>();
-		
-		
-		//totalNoticeCnt = noticeService.selectNoticeCnt();
+		int curPage = 0;
+		int totalNoticeCnt = 0;
 		
 		//사용자가 입력한 검색어
 		String searchContent = null;
-		
 		if(request.getParameter("searchNotice") != null) {
 			searchContent = request.getParameter("searchNotice");
 		}
-		
-		
-		
+				
+		//불러올 총 게시물 list 수
 		if(searchContent == null) { //아무것도 입력하지 않았다면
 			totalNoticeCnt = noticeService.selectNoticeCnt();
 			System.out.println("검색 전 totalNoticeCnt :" + totalNoticeCnt);
@@ -193,74 +177,40 @@ public class NoticeController extends HttpServlet {
 			totalNoticeCnt = noticeService.selectSearchCnt(searchContent);
 			System.out.println("검색 후 totalNoticeCnt :" + totalNoticeCnt);
 		}
-		
-		
-		
-		//페이지 총 갯수
-		if(totalNoticeCnt % noticeSize > 0) {
-			totalPage = totalNoticeCnt/noticeSize+1;
-		}else {
-			totalPage = totalNoticeCnt/noticeSize;
-		}
-		System.out.println("totalPage : " + totalPage);
-		
+
 		//현재 페이지 번호
 		String pageNum = request.getParameter("curPage");
 		if(pageNum == null) {
 			pageNum = "1";
-		}		
-		System.out.println("pageNum : " + pageNum);
-		curPage = Integer.parseInt(pageNum);
-		if(curPage > totalPage) {
-			curPage = totalPage;
-		}
-		System.out.println("curPage : "+curPage);
-		
-		//현재 페이지의 첫 게시물 번호
-		startNo = (curPage-1) * noticeSize +1;
-		System.out.println("startNo : "+startNo);
-		System.out.println("noticeSize : "+noticeSize);
 
-		//현제 페이지의 마지막 게시물 번호
-		endNo = startNo + noticeSize - 1;
-		if(endNo > totalNoticeCnt) {
-			endNo = totalNoticeCnt;
 		}
-		System.out.println("endNo : "+endNo);
 
+		curPage =  Integer.parseInt(pageNum);
+		System.out.println("curPage :" + curPage);	
 		
-		//페이지블록의 첫번째 페이지 번호
-		startPage = (curPage-1)/pageSize*pageSize+1;
-		System.out.println("startPage : "+startPage);
-
-		//페이지블록의 마지막 페이지 번호
-		endPage = startPage + pageSize - 1;
-		if(endPage > totalPage) {
-			endPage = totalPage;
-		}
-		System.out.println("endPage : "+endPage);
-		
+		PageInfo page = Pagination.getPageInfo(curPage, totalNoticeCnt);
 		
 		List<Notice> mainNoticeList = noticeService.selectMainNoticeList();
-		
+		List<Notice> noticeList = new ArrayList<Notice>();
 		if(searchContent == null) { //아무것도 입력하지 않았다면
-			noticeList = noticeService.selectNoticeList(startNo, endNo);
+			noticeList = noticeService.selectNoticeList(page);
 
 		}else { //검색어를 입력했다면
-			noticeList = noticeService.selectSearchList(startNo, endNo, searchContent);
+			noticeList = noticeService.selectSearchList(page, searchContent);
 		}	
 		
 		System.out.println("searchContent : " + searchContent);
 		System.out.println("noticeList : " + noticeList);
+		System.out.println("startNo : " + page.getStartNo());
+		System.out.println("endNo : " + page.getEndNo());
+		System.out.println("startPage : " + page.getStartPage());
+		System.out.println("endPage : " + page.getEndPage());
+		System.out.println("curPage : " + page.getCurPage());
 		
 		request.setAttribute("noticeList", noticeList);
 		request.setAttribute("mainNoticeList", mainNoticeList);
+		request.setAttribute("page", page);
 		
-		request.setAttribute("startPage", startPage);
-		request.setAttribute("endPage", endPage);
-		request.setAttribute("curPage", curPage);
-		request.setAttribute("totalPage", totalPage);
-		request.setAttribute("pageSize", pageSize);
 		
 		request.getRequestDispatcher("/notice/notice-list").forward(request, response);
 		

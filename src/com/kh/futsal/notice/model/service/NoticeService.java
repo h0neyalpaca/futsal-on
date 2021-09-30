@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.kh.futsal.common.db.JDBCTemplate;
+import com.kh.futsal.common.pagination.PageInfo;
 import com.kh.futsal.notice.model.dao.NoticeDao;
 import com.kh.futsal.notice.model.dto.Notice;
 
@@ -79,13 +80,13 @@ public class NoticeService {
 	}
 
 
-	public List<Notice> selectNoticeList(int startNo, int endNo) {
+	public List<Notice> selectNoticeList(PageInfo page) {
 
 		List<Notice> noticeList = null;
 		Connection conn = template.getConnection();
 		
 		try {
-			noticeList = noticeDao.selectNoticeList(conn, startNo, endNo);
+			noticeList = noticeDao.selectNoticeList(conn, page);
 		} finally {
 			template.close(conn);
 		}
@@ -108,13 +109,13 @@ public class NoticeService {
 		return res;
 	}
 
-	public List<Notice> selectSearchList(int startNo, int endNo, String searchContent) {
+	public List<Notice> selectSearchList(PageInfo page, String searchContent) {
 		
 		List<Notice> noticeList = null;
 		Connection conn = template.getConnection();
 		
 		try {
-			noticeList = noticeDao.selectSearchList(conn, startNo, endNo, searchContent);
+			noticeList = noticeDao.selectSearchList(conn, page, searchContent);
 		} finally {
 			template.close(conn);
 		}

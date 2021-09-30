@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.exception.DataAccessException;
+import com.kh.futsal.common.pagination.PageInfo;
 import com.kh.futsal.notice.model.dto.Notice;
 
 public class NoticeDao {
@@ -186,7 +187,8 @@ public class NoticeDao {
 		
 	}
 	
-	public List<Notice> selectNoticeList(Connection conn, int startNo, int endNo){
+	
+	public List<Notice> selectNoticeList(Connection conn, PageInfo page){
 		
 		List<Notice> noticeList = new ArrayList<Notice>();
 		PreparedStatement pstm = null;
@@ -204,8 +206,8 @@ public class NoticeDao {
 
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setInt(1, startNo); 
-			pstm.setInt(2, endNo); 
+			pstm.setInt(1, page.getStartNo()); 
+			pstm.setInt(2, page.getEndNo()); 
 			rset = pstm.executeQuery();
 			
 			while(rset.next()) {
@@ -248,7 +250,7 @@ public class NoticeDao {
 	}
 	
 	//검색해서 나오는 리스트
-	public List<Notice> selectSearchList(Connection conn, int startNo, int endNo, String searchContent) {
+	public List<Notice> selectSearchList(Connection conn, PageInfo page, String searchContent) {
 		
 		List<Notice> noticeList = new ArrayList<Notice>();
 		PreparedStatement pstm = null;
@@ -268,9 +270,9 @@ public class NoticeDao {
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, searchContent); 
-			pstm.setInt(2, startNo); 
-			pstm.setInt(3, endNo); 
-			
+			pstm.setInt(2, page.getStartNo()); 
+			pstm.setInt(3, page.getEndNo()); 
+		
 			rset = pstm.executeQuery();
 			
 			while(rset.next()) {
