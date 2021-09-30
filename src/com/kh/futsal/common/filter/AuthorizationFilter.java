@@ -172,9 +172,9 @@ public class AuthorizationFilter implements Filter {
 		if(member == null) {
 			throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
 		}
-		
 		TeamService ts = new TeamService();
 		Team team = ts.selectTeamByUserId(member.getUserId());
+		team.setTmScore(ts.selectTmAvgRating(team.getTmCode()));
 		httpRequest.getSession().setAttribute("team", team);
 
 		MemberGrade grade = MemberGrade.valueOf(member.getGrade());

@@ -28,19 +28,13 @@
 								</c:choose>
 								<div class="tit">
 									<strong>${match.title}</strong>
-									별점<c:choose>
-										<c:when test="${datas.teamList[status.index].tmScore == 0}">☆☆☆☆☆</c:when>
-										<c:when test="${datas.teamList[status.index].tmScore == 1}">★☆☆☆☆</c:when>
-										<c:when test="${datas.teamList[status.index].tmScore == 2}">★★☆☆☆</c:when>
-										<c:when test="${datas.teamList[status.index].tmScore == 3}">★★★☆☆</c:when>
-										<c:when test="${datas.teamList[status.index].tmScore == 4}">★★★★☆</c:when>
-										<c:when test="${datas.teamList[status.index].tmScore == 5}">★★★★★</c:when>
-									</c:choose>&nbsp;&nbsp;&nbsp;전적  ${datas.teamList[status.index].gameCnt}전  ${datas.teamList[status.index].tmWin}승 ${datas.teamList[status.index].gameCnt - datas.teamList[status.index].tmWin}패
+									${datas.teamList[status.index].tmName}&nbsp;&nbsp;&nbsp;
+									별점(${datas.teamList[status.index].tmScore})&nbsp;&nbsp;&nbsp;전적  ${datas.teamList[status.index].gameCnt}전  ${datas.teamList[status.index].tmWin}승 ${datas.teamList[status.index].gameCnt - datas.teamList[status.index].tmWin}패
 								</div>
 							</div>
 							<div class="profile_n_appli">
 								<div class="profile">
-									<div class="profile-name">${match.matchNum}명남음</div>
+									<div class="profile-name">${match.matchNum}명남음</div><br>
 								</div>
 								<c:choose>
 									<c:when test="${match.state == 0}"><div class="btn-appli" onclick="location.href='/mypage/my-application-delete?mgIdx=${datas.mgList[status.index].mgIdx}';">신청취소</div></c:when>

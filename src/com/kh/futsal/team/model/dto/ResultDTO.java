@@ -6,7 +6,6 @@ public class ResultDTO {
 	private String mgIdx; //매치게임번호
 	private String matchDate; //매치일자
 	private String matchTime; //매치시간
-	private String matchSchedule; //매치일자+시간
 	private String rivalCode; //상대팀 코드
 	private String rivalName; //상대팀명
 	private String hostCode; //주최팀 코드
@@ -14,6 +13,7 @@ public class ResultDTO {
 	private String winner; //승자
 	private int hostRating; //주최팀 만족도
 	private int rivalRating; //상대팀 만족도
+	
 	public String getThIdx() {
 		return thIdx;
 	}
@@ -37,12 +37,6 @@ public class ResultDTO {
 	}
 	public void setMatchTime(String matchTime) {
 		this.matchTime = matchTime;
-	}
-	public String getMatchSchedule() {
-		return matchSchedule;
-	}
-	public void setMatchSchedule(String matchSchedule) {
-		this.matchSchedule = matchSchedule;
 	}
 	public String getRivalCode() {
 		return rivalCode;
@@ -87,16 +81,26 @@ public class ResultDTO {
 		this.rivalRating = rivalRating;
 	}
 	
-	public long getDateParseInt() {
-		return Long.parseLong(matchSchedule);
+	public long getMatchSchedule() {
+		String date = "";
+		String time = "";
+		String[] dateArr = getMatchDate().split("-");
+		String[] timeArr = getMatchTime().split(":");
+		for (int i = 0; i < dateArr.length; i++) {
+			date += dateArr[i];
+		}
+		for (int i = 0; i < timeArr.length; i++) {
+			time += timeArr[i];
+		}
+		return Long.parseLong(date+time);
 	}
 	
 	@Override
 	public String toString() {
 		return "ResultDTO [thIdx=" + thIdx + ", mgIdx=" + mgIdx + ", matchDate=" + matchDate + ", matchTime="
-				+ matchTime + ", matchSchedule=" + matchSchedule + ", rivalCode=" + rivalCode + ", rivalName="
-				+ rivalName + ", hostCode=" + hostCode + ", hostName=" + hostName + ", winner=" + winner
-				+ ", hostRating=" + hostRating + ", rivalRating=" + rivalRating + "]";
+				+ matchTime + ", rivalCode=" + rivalCode + ", rivalName=" + rivalName + ", hostCode=" + hostCode
+				+ ", hostName=" + hostName + ", winner=" + winner + ", hostRating=" + hostRating + ", rivalRating="
+				+ rivalRating + "]";
 	}
 }
 	
