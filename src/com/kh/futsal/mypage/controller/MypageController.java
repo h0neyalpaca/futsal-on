@@ -86,12 +86,13 @@ public class MypageController extends HttpServlet {
 	private void myApplicationDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String mgIdx = request.getParameter("mgIdx");
+		MatchGame match = matchingService.selectMatch(mgIdx);
 		System.out.println(mgIdx);
 		
 		boolean flag = checkDate(mgIdx);
 		
 		 if(flag) { 
-			 matchingService.deleteMyApplicant(mgIdx);
+			 matchingService.deleteMyApplicant(mgIdx,match);
 			 request.setAttribute("msg","신청이 취소되었습니다"); 
 		}else {
 			request.setAttribute("msg","경기시작이 얼마남지 않아 취소가 불가합니다"); 

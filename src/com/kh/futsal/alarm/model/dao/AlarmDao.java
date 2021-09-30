@@ -41,6 +41,7 @@ public class AlarmDao {
 		
 	}
 	
+	
 	public void updateAlarmIsStart(String ntIdx, Connection conn) {
 		
 		String sql = "update notice set IS_START = 1 where nt_idx = ? ";
@@ -116,6 +117,35 @@ public class AlarmDao {
 		return alarms;
 	}
 	
+	public void deleteAlarm(String ntIdx, Connection conn) {
+		
+		String sql = "delete notice where mm_idx = ? ";
+		PreparedStatement pstm = null;
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, ntIdx);
+			pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+	}
 	
+	public void deleteAlarm(String userId,String mmIdx, Connection conn) {
+		
+		String sql = "delete notice where user_id = ? and mm_idx = ?";
+		PreparedStatement pstm = null;
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, userId);
+			pstm.setString(1, mmIdx);
+			pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+	}
 	
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kh.futsal.alarm.model.dao.AlarmDao;
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.matching.model.dao.MatchDao;
 import com.kh.futsal.matching.model.dto.MatchGame;
@@ -14,6 +15,7 @@ public class MatchingService {
 	
 	JDBCTemplate template = JDBCTemplate.getInstance();
 	MatchDao matchDao = new MatchDao();
+	AlarmDao alarmDao = new AlarmDao();
 	
 	public int matchRegister(MatchMaster matchMaster) {
 		Connection conn = template.getConnection();
@@ -112,12 +114,13 @@ public class MatchingService {
 		return mgList;
 	}
 
-	public void deleteMyApplicant(String mgIdx) {
+	public void deleteMyApplicant(String mgIdx,MatchGame match) {
 		
 		Connection conn = template.getConnection();
 		
 		try {
 			matchDao.deleteMatchGame(mgIdx,conn);
+			alarmDao.deleteAlarm(match.getUserId(), match.getMmIdx(),conn);
 			
 			template.commit(conn);
 		}finally {
