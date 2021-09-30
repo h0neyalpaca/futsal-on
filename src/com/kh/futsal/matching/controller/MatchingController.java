@@ -167,7 +167,9 @@ public class MatchingController extends HttpServlet {
 		matchMaster.setContent(content);
 		
 		matchingService.matchRegister(matchMaster);
-		request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
+		request.setAttribute("msg", "매치글 작성이 완료되었습니다.");
+		request.setAttribute("url", "/matching/team/team-list");
+		request.getRequestDispatcher("/common/result").forward(request, response);
 	
 	}
 
