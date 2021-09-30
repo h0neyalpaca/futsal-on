@@ -136,6 +136,30 @@ public class MatchDao {
 		
 		return match;
 	}	
+	
+	
+	private MatchMaster convertRowToMatchListWithLocalCode(ResultSet rset) throws SQLException {
+		MatchMaster match = new MatchMaster();
+		
+		match.setMmIdx(rset.getString("MM_IDX"));
+		match.setUserId(rset.getString("USER_ID"));
+		match.setTmCode(rset.getString("TM_CODE"));
+		match.setLocalCode(rset.getString("LOCAL_CODE"));
+		match.setAddress(rset.getString("ADDRESS"));
+		match.setRegDate(rset.getDate("REG_DATE"));
+		match.setTitle(rset.getString("TITLE"));
+		match.setExpense(rset.getString("EXPENSE"));
+		match.setMatchNum(rset.getInt("MATCH_NUM"));
+		match.setGrade(rset.getString("GRADE"));
+		match.setContent(rset.getString("CONTENT"));
+		match.setTmMatch(rset.getInt("TM_MATCH"));
+		match.setMatchTime(rset.getString("MATCH_TIME"));
+		match.setMatchDate(rset.getString("MATCH_DATE"));
+		match.setState(rset.getInt("STATE"));
+
+		
+		return match;
+	}	
 
 
 	public List matchListSearch(Connection conn, String localCode, String date, String level) {
@@ -368,6 +392,93 @@ public class MatchDao {
 		try {
 			pstm = conn.prepareStatement(query);
 			pstm.setString(1, teamCode);
+			
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
+		return res;
+	}
+
+
+	public MatchMaster getMatchModify(String matchIdx, Connection conn) {
+		MatchMaster getModify = new MatchMaster();	
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		String query = "select * from MATCH_MASTER where MM_IDX = ?";
+		
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1,matchIdx);
+			
+			rset = pstm.executeQuery();
+			if (rset.next()) {
+				getModify = convertRowToMatchListWithLocalCode(rset);
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		
+		return getModify;
+	}
+
+
+	public int matchModify(MatchMaster matchMaster, Connection conn) {
+		int res = 0;		
+		PreparedStatement pstm = null;
+		String query = "update MATCH_MASTER "
+				+ "set "
+				+ "LOCAL_CODE = ?,"
+				+ "ADDRESS = ?,"
+				+ "TITLE = ?,"
+				+ "GRADE = ?,"
+				+ "CONTENT = ?,"
+				+ "EXPENSE = ?,"
+				+ "TM_MATCH = ?,"
+				+ "MATCH_TIME = ?,"
+				+ "MATCH_DATE = ?"
+				+ " where MM_IDX = ?";
+		
+		
+		
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, matchMaster.getLocalCode());
+			pstm.setString(2, matchMaster.getAddress());
+			pstm.setString(3, matchMaster.getTitle());
+			pstm.setString(4, matchMaster.getGrade());
+			pstm.setString(5, matchMaster.getContent());
+			pstm.setString(6, matchMaster.getExpense());
+			pstm.setInt(7, matchMaster.getTmMatch());
+			pstm.setString(8, matchMaster.getMatchTime());
+			pstm.setString(9, matchMaster.getMatchDate());
+			pstm.setString(10, matchMaster.getMmIdx());
+			
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
+		return res;
+	}
+
+
+	public int matchDel(String matchIdx, Connection conn) {
+		int res = 0;		
+		PreparedStatement pstm = null;
+		String query = "DELETE FROM MATCH_MASTER WHERE MM_IDX = ?";
+				
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, matchIdx);
 			
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {

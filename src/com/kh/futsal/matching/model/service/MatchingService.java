@@ -201,5 +201,64 @@ public class MatchingService {
 		return res;
 	}
 
+	public MatchMaster getMatchModify(String matchIdx) {
+		Connection conn = template.getConnection();
+		MatchMaster res = null;
+		try {
+			//매치글쓰기
+			res = matchDao.getMatchModify(matchIdx, conn);
+			//방금 가입한 회원의 아이디로 정보를 다시 조회			
+			
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		}finally {
+			template.close(conn);
+		}
+		
+		return res;
+	}
+
+	public int matchModify(MatchMaster matchMaster) {
+		Connection conn = template.getConnection();
+		int res = 0;
+		try {
+			//매치글쓰기
+			res = matchDao.matchModify(matchMaster, conn);
+			//방금 가입한 회원의 아이디로 정보를 다시 조회			
+			
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		}finally {
+			template.close(conn);
+		}
+		
+		return res;
+	}
+
+	public int matchDel(String matchIdx) {
+		Connection conn = template.getConnection();
+		int res = 0;
+		try {
+			//매치글 삭제
+			res = matchDao.matchDel(matchIdx, conn);
+					
+			
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		}finally {
+			template.close(conn);
+		}
+		
+		return res;
+	}
+
+	
+
 
 }

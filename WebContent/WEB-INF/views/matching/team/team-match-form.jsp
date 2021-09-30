@@ -39,7 +39,6 @@
 								<input type="text" class="keyword" name="detailAddress"/><i class="fas fa-search" id="search"></i>
 								<span id="checkAddress" class="validMsg"></span>
 								<div id="map" style="width:200px;height:150px;"></div>
-								
 							</dd>
 						</dl>
 						<dl>
@@ -98,7 +97,7 @@
 <script type="text/javascript">
 (() => {
 	
-	  document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);;
+	document.getElementById('currentDate').value = new Date().toISOString().substring(0, 10);;
 	
 	document.querySelector('.matchRegion').addEventListener('click', e => {
 		let region = document.getElementsByName('localCode');

@@ -33,8 +33,8 @@
 										<div class="profile-img"></div>
 										<div class="profile-name"><span><i class="fas fa-search"></i>정보보기</span></div>
 									</div>
-									<div class="btn-appli">수정하기</div>
-									<div class="btn-appli">삭제하기</div>
+									<div class="btn-appli" onclick="teamMatchingModify(${tmBoards.getMmIdx()})">수정하기</div>
+									<div class="btn-appli" onclick="teamMatchingDel(${tmBoards.getMmIdx()})">삭제하기</div>
 								</div>
 							</div>
 							<div class="match-detail">
@@ -122,4 +122,25 @@
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 </body>
+<script type="text/javascript">
+
+
+let teamMatchingModify = (idx) => {
+	if (window.confirm("매치글을 수정하시겠습니까?")) {
+		console.dir(idx);
+		location.href="/matching/team/team-modify?matchIdx="+idx;
+	}
+	
+	// +"&tmCode="+tmCode+"&userId="+user+"&matchDate="+date
+}
+let teamMatchingDel = (idx) => {
+	
+	if (window.confirm("매치글을 수정하시겠습니까?")) {
+		location.href="/matching/team/team-modify-register?matchIdx="+idx+"&modify=삭제";
+	}
+	
+}
+
+
+</script>
 </html>

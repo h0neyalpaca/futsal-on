@@ -54,6 +54,9 @@ public class MatchingController extends HttpServlet {
 		case "team-modify":
 			teamModify(request,response);
 			break;
+		case "team-modify-register":
+			teamModifyRegister(request,response);
+			break;
 		case "mercenary-list":
 			mercenaryList(request,response);
 			break;
@@ -70,6 +73,62 @@ public class MatchingController extends HttpServlet {
 		
 	}
 
+	private void teamModifyRegister(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+		String delAndModify = request.getParameter("modify");
+		String matchIdx = request.getParameter("matchIdx");
+		int res = 0;
+		System.out.println("동작");
+		if (delAndModify.equals("수정")) {
+			
+			String localCode = request.getParameter("localCode");
+			String detailAddress = request.getParameter("detailAddress");
+			int size = Integer.parseInt(request.getParameter("size"));
+			
+			String expense = request.getParameter("cost");
+			String grade = request.getParameter("level");
+			String content = request.getParameter("content");
+			
+			String matchDate = request.getParameter("date");
+			String matchTime = request.getParameter("time");
+			
+			
+			MatchMaster matchMaster = new MatchMaster();
+			
+			matchMaster.setLocalCode(localCode);
+			matchMaster.setAddress(detailAddress);
+			matchMaster.setMmIdx(matchIdx);
+			matchMaster.setExpense(expense);
+			matchMaster.setGrade(grade);
+			matchMaster.setTmMatch(size);
+			matchMaster.setTitle(detailAddress+" 매치 상대 구합니다!");
+			matchMaster.setMatchTime(matchTime);
+			matchMaster.setMatchDate(matchDate);
+			matchMaster.setContent(content);
+			if (res == matchingService.matchModify(matchMaster)) {
+				request.setAttribute("msg", "오류가 발생하였습니다.");
+				request.setAttribute("url", "/team/managing/team-board");
+				request.getRequestDispatcher("/common/result").forward(request, response);
+			}
+			
+			request.setAttribute("msg", "매치글 수정을 완료하였습니다.");
+			request.setAttribute("url", "/team/managing/team-board");
+			request.getRequestDispatcher("/common/result").forward(request, response);
+		}else if (delAndModify.equals("삭제")) {			
+			if (res == matchingService.matchDel(matchIdx)) {
+				request.setAttribute("msg", "오류가 발생하였습니다.");
+				request.setAttribute("url", "/team/managing/team-board");
+				request.getRequestDispatcher("/common/result").forward(request, response);
+			}
+			request.setAttribute("msg", "매치글 삭제를 완료하였습니다.");
+			request.setAttribute("url", "/team/managing/team-board");
+			request.getRequestDispatcher("/common/result").forward(request, response);
+		}
+		
+
+		
+	}
+
+
 	//매치신청
 	private void MatchRequest(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		int res = 0;
@@ -77,6 +136,10 @@ public class MatchingController extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String tmCode = request.getParameter("tmCode");
 		String matchDate = request.getParameter("matchDate");
+		String matchTime = request.getParameter("matchTime");
+		StringBuffer sb = new StringBuffer();
+		sb.append(matchDate);
+		sb.append(" "+matchTime);
 		//신청자와 주최자가 같을경우
 		System.out.println(matchDate);
 		
@@ -89,7 +152,7 @@ public class MatchingController extends HttpServlet {
 		}
 		MatchGame matchGame = new MatchGame();
 		matchGame.setMmIdx(matchIdx);
-		matchGame.setMatchDate(matchDate);
+		matchGame.setMatchDate(sb.toString());
 		matchGame.setApplicantCode(requsetTeamCode);
 		
 		
@@ -139,6 +202,7 @@ public class MatchingController extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String teamCode = matchingService.checkRequset(userId);
 		
+		
 		String expense = request.getParameter("cost");
 		String grade = request.getParameter("level");
 		String content = request.getParameter("content");
@@ -154,6 +218,7 @@ public class MatchingController extends HttpServlet {
 		sb.append(matchTime);
 		
 		MatchMaster matchMaster = new MatchMaster();
+		
 		matchMaster.setUserId(userId);
 		matchMaster.setTmCode(teamCode);
 		matchMaster.setLocalCode(localCode);
@@ -188,7 +253,22 @@ public class MatchingController extends HttpServlet {
 	}
 	
 	private void teamModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String matchIdx = request.getParameter("matchIdx");
+		System.out.println(matchIdx);
+		//매치 번호를 이용해서 글의 정보를 가져온다.
+		MatchMaster matchModify = matchingService.getMatchModify(matchIdx);
+		
+		if (matchModify == null) {
+			request.setAttribute("msg", "에러가 발생했습니다.");
+			request.setAttribute("url", "/index");
+			request.getRequestDispatcher("/common/result").forward(request, response);
+		}
+		//가져온 정보를 뿌려준다
+		request.setAttribute("matchIdx", matchIdx);
+		request.setAttribute("matchModify", matchModify);
 		request.getRequestDispatcher("/matching/team/team-modify").forward(request, response);
+		
+		
 	}
 	private void teamMathForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/matching/team/team-match-form").forward(request, response);
