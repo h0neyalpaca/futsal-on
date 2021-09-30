@@ -209,26 +209,39 @@
 	color: #483D8B;
 }
 /* ------------------테이블 */
+
 /* -------------------페이지버튼 */
 
 .page-button {
-	margin-top: 30px;
-	display: flex;
-	justify-content: center;
-	font-size: 16px;
-	text-align: center;
+	margin-top:20px;
+	display:flex;
+	justify-content:center;
 }
 
-.page-num {
-	border: 1px solid #837ab9;
-	border-radius: 50%;
+/* 숫자 */
+.page-num *{ 
+	font-size:1.2em;
+	padding:8px;
+	cursor:pointer;
+	color:#aaa;
 }
 
-.page-button span {
-	display: inline-block;
-	width: 27px;
-	height: 27px;
-	line-height: 27px;
+
+.page-button i{
+	font-size:1.2em;
+	color:#888;
+	padding:6px;
+	align-content: center;	
+}
+
+.page-num>a:hover, .page-button i:hover{ 
+	color:#483D8B;
+	font-weight: bold;
+}
+
+.active{
+	color:#483D8B;
+	font-weight: bold;
 }
 
 /* -------------------페이지버튼 */
