@@ -115,7 +115,6 @@ public class MatchingService {
 	}
 
 	public void deleteMyApplicant(String mgIdx,MatchGame match) {
-		
 		Connection conn = template.getConnection();
 		
 		try {
@@ -126,18 +125,13 @@ public class MatchingService {
 		}finally {
 			template.close(conn);
 		}
-		
-		
 	}
 	
 	public MatchGame selectMatch(String mgIdx) {
-		
 		Connection conn = template.getConnection();
 		MatchGame match = null;
-		
 		try {
 			match = matchDao.selectMatch(mgIdx,conn);
-			
 			template.commit(conn);
 		}finally {
 			template.close(conn);
@@ -148,7 +142,6 @@ public class MatchingService {
 	public int matchRequset(String matchIdx) {
 		Connection conn = template.getConnection();
 		int res = 0;
-		
 		try {
 			res = matchDao.matchRequset(matchIdx,conn);
 			
@@ -162,7 +155,6 @@ public class MatchingService {
 	public String checkRequset(String userId) {
 		Connection conn = template.getConnection();
 		String id = null;
-		
 		try {
 			id = matchDao.checkRequset(userId,conn);
 			
@@ -176,7 +168,6 @@ public class MatchingService {
 	public int matchGameRegister(MatchGame matchGame) {
 		Connection conn = template.getConnection();
 		int res = 0;
-		
 		try {
 			//매치글쓰기
 			res = matchDao.matchGameRegister(matchGame, conn);
@@ -196,12 +187,10 @@ public class MatchingService {
 	public int matchUpdate(String teamCode) {
 		Connection conn = template.getConnection();
 		int res = 0;
-		
 		try {
 			//전적 추가
 			res = matchDao.matchUpdate( teamCode,conn);
 			//방금 가입한 회원의 아이디로 정보를 다시 조회			
-			
 			template.commit(conn);
 		} catch (Exception e) {
 			template.rollback(conn);
@@ -209,7 +198,6 @@ public class MatchingService {
 		}finally {
 			template.close(conn);
 		}
-		
 		return res;
 	}
 

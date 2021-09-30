@@ -10,20 +10,14 @@ import oracle.ucp.jdbc.PoolDataSourceFactory;
 
 public class JDBCTemplate {
    
-   //Singleton 패턴
-   //해당 클래스의 인스턴스가 하나만 생성되어야 할 때 사용하는 디자인패턴
    private static JDBCTemplate instance;
    private static PoolDataSource pds;
    
-   //생성자를 private으로 처리해 외부에서 JDBCTemplate을 생성하는 것을 차단.
    private JDBCTemplate() {
       try {
-         //1. oracle jdbc Driver를 JVM에 등록
          Class.forName("oracle.jdbc.driver.OracleDriver");
          
          final String DB_URL="jdbc:oracle:thin:@dbfutsal_high?TNS_ADMIN=C:/CODE/Wallet_DBfutsal";
-   	     // Use the TNS Alias name along with the TNS_ADMIN - For ATP and ADW
-   	     // final static String DB_URL="jdbc:oracle:thin:@dbname_alias?TNS_ADMIN=/Users/test/wallet_dbname";
    	     final String DB_USER = "ADMIN";
    	     final String DB_PASSWORD = "sY8@88iytBRU4GJ";
    	     final String CONN_FACTORY_CLASS_NAME="oracle.jdbc.pool.OracleDataSource";
@@ -63,10 +57,8 @@ public class JDBCTemplate {
       }
    }
 
-   //외부에서 JDBCTemplate의 인스턴스를 생성하지 않고도 사용할 수 있는
-   //JDBCTemplate의 인스턴스를 반환받는 용도의 메서드
+  
    public static JDBCTemplate getInstance() {
-      //instance 변수가 초기화 된적이 없다면 
       if(instance == null) {
          instance = new JDBCTemplate();
       }
@@ -74,14 +66,12 @@ public class JDBCTemplate {
       return instance;
    }
    
-   //2. 데이터베이스와 연결 수립
    public Connection getConnection() {
      	  
       Connection conn = null;
       
       try {
          conn = pds.getConnection();
-         //트랜잭션관리를 개발자가 하기 위해 Auto Commit 설정 끄기
          conn.setAutoCommit(false);
          
       } catch (SQLException e) {
@@ -92,7 +82,6 @@ public class JDBCTemplate {
       return conn;
    }
    
-   //3. commit / rollback
    public void commit(Connection conn) {
       try {
          conn.commit();
@@ -111,7 +100,6 @@ public class JDBCTemplate {
       }
    }
    
-   //4. 시스템 자원(Connection, Statement, ResultSet) 반환
    public void close(Connection conn) {
       try {
          if(conn != null && !conn.isClosed()) {

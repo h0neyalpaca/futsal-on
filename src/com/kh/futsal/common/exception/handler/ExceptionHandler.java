@@ -28,10 +28,7 @@ public class ExceptionHandler extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 
-		//서블릿컨테이너는 HandlableException이 발생하면 요청을 ExceptionHandler으로 재지정
-		//이때 ExceptionHandler 서비스 메서드로 넘겨주는 request의 속성(javax.servlet.error.exception)에 발생한 예외 객체를 함께 넘겨준다
-		//발생한 예외 객체를 함께 넘겨준다
+	
 		HandlableException e = (HandlableException) request.getAttribute("javax.servlet.error.exception");
 		
 		request.setAttribute("msg", e.error.MSG);

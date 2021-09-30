@@ -1,15 +1,9 @@
 package com.kh.futsal.mypage.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,14 +78,13 @@ public class MypageController extends HttpServlet {
 	}
 
 	private void myApplicationDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		String mgIdx = request.getParameter("mgIdx");
 		MatchGame match = matchingService.selectMatch(mgIdx);
-		System.out.println(mgIdx);
 		
 		boolean flag = checkDate(mgIdx);
 		
-		 if(flag) { 
+		if(flag) { 
 			 matchingService.deleteMyApplicant(mgIdx,match);
 			 request.setAttribute("msg","신청이 취소되었습니다"); 
 		}else {
@@ -125,7 +118,6 @@ public class MypageController extends HttpServlet {
 
 	private void nickCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nickName = request.getParameter("nickName");
-		
 		Member member = memberService.selectMemberByNick(nickName);
 		
 		if(member == null) {
@@ -133,7 +125,6 @@ public class MypageController extends HttpServlet {
 		}else {
 			response.getWriter().print("disable");
 		}
-		
 	}
 
 	private void pwCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -163,7 +154,6 @@ public class MypageController extends HttpServlet {
 	
 	private void leaveId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/leave-id").forward(request, response);
-		
 	}
 	
 	private void mypageModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -174,7 +164,6 @@ public class MypageController extends HttpServlet {
 		if(!request.getParameter("new-password").equals("")) {
 			member.setPassword(request.getParameter("new-password"));
 		}
-		
 		member.setUserNick(request.getParameter("nickName"));
 		member.setTell(request.getParameter("tell"));
 		member.setCapacity(request.getParameter("capacity"));
@@ -197,7 +186,6 @@ public class MypageController extends HttpServlet {
 		List<MatchGame> mgList = matchingService.matchMgList(userId);
 		List<MatchMaster> matchList = matchingService.matchGameList(mgList);
 		List<Team> teamInfos = new ArrayList<Team>();
-		
 		Map<String,Object> matchTeamList =  new HashMap<String, Object>();
 		
 		for (int i = 0; i < matchList.size(); i++) {
@@ -207,7 +195,6 @@ public class MypageController extends HttpServlet {
 		matchTeamList.put("mgList",mgList);
 		matchTeamList.put("matchList", matchList);
 		matchTeamList.put("teamList",teamInfos);
-		
 		request.setAttribute("datas", matchTeamList);
 		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
 	}
@@ -221,7 +208,6 @@ public class MypageController extends HttpServlet {
 		for (int i = 0; i < alarms.size(); i++) {
 			times.add(checkAlarmState(alarms.get(i)));
 		}
-		System.out.println(alarms);
 		request.setAttribute("alarms", alarms);
 		request.setAttribute("times",times);
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
@@ -235,20 +221,17 @@ public class MypageController extends HttpServlet {
 		LocalDateTime today = LocalDateTime.now();
 		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		String todayTime = today.format(Formatter);
-		
 		String day = todayTime.substring(0,10);
 		int time =  Integer.parseInt(todayTime.substring(11,13));
 		
 		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
 			alarmService.updateAlarmIsStart(alarm.getNtIdx());
 		}
-		
 		return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
 	}
 	
 	private void alarmCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String ntIdx = request.getParameter("ntIdx");
-		
 		alarmService.updateAlarm(ntIdx);
 		response.sendRedirect("/mypage/my-application");
 	}

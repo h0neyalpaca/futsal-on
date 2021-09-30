@@ -181,7 +181,7 @@ public class MatchDao {
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-		String query = "select mm_idx, mg_idx from match_game where user_id = ? order by state";
+		String query = "select mm_idx, mg_idx, user_id from match_game where user_id = ? order by state";
 
 		try {
 			pstm = conn.prepareStatement(query);
@@ -192,6 +192,7 @@ public class MatchDao {
 				MatchGame match = new MatchGame();
 				match.setMmIdx(rset.getString("mm_idx"));
 				match.setMgIdx(rset.getString("mg_idx"));
+				match.setUserId(rset.getString("user_id"));
 				gameList.add(match);
 			}
 		} catch (SQLException e) {
@@ -270,6 +271,7 @@ public class MatchDao {
 				match.setMatchDate(rset.getString("match_date"));
 				match.setMgIdx(rset.getString("mg_idx"));
 				match.setMmIdx(rset.getString("mm_idx"));
+				match.setUserId(rset.getString("user_id"));
 			}
 			
 		} catch (SQLException e) {

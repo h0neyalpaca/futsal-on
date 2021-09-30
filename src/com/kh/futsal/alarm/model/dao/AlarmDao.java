@@ -23,36 +23,27 @@ public class AlarmDao {
 	public void updateAlarm(String ntIdx, Connection conn) {
 		
 		String sql = "update notice set state = 1 where nt_idx = ? ";
-		
 		PreparedStatement pstm = null;
 		
 		try {
 			pstm = conn.prepareStatement(sql);
-			
 			pstm.setString(1, ntIdx);
-			
 			pstm.executeUpdate();
-			
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
 		}finally {
 			template.close(pstm);
 		}
-		
 	}
 	
 	
 	public void updateAlarmIsStart(String ntIdx, Connection conn) {
 		
 		String sql = "update notice set IS_START = 1 where nt_idx = ? ";
-		
 		PreparedStatement pstm = null;
-		
 		try {
 			pstm = conn.prepareStatement(sql);
-			
 			pstm.setString(1, ntIdx);
-			
 			pstm.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -60,7 +51,6 @@ public class AlarmDao {
 		}finally {
 			template.close(pstm);
 		}
-		
 	}
 	
 	public void insertAlarm(MatchMaster matchMaster,String userId, Connection conn) {
@@ -70,7 +60,7 @@ public class AlarmDao {
 		try {
 			pstm = conn.prepareStatement(query);
 			pstm.setString(1, matchMaster.getMatchDate());
-			pstm.setString(2, "신청하신 ["+ matchMaster.getTitle()+"]이 4시간 후에 시작됩니다");
+			pstm.setString(2, "신청하신 ["+ matchMaster.getTitle()+"]가 4시간 후에 시작됩니다");
 			pstm.setString(3, userId);
 			pstm.setString(4, matchMaster.getMatchTime());
 			pstm.setString(5, matchMaster.getMmIdx());
@@ -87,11 +77,9 @@ public class AlarmDao {
 	public List<Alarm> selectAlarmList (String userId, Connection conn){
 		
 		String sql = "select * from notice where user_id = ? order by state";
-		
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		List<Alarm> alarms = new ArrayList<Alarm>();
-		
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, userId);
@@ -117,6 +105,7 @@ public class AlarmDao {
 		return alarms;
 	}
 	
+	//게시글 자체를 지웠을 때 용
 	public void deleteAlarm(String ntIdx, Connection conn) {
 		
 		String sql = "delete notice where mm_idx = ? ";
@@ -132,6 +121,7 @@ public class AlarmDao {
 		}
 	}
 	
+	//매치 신청을 취소 했을 때 용
 	public void deleteAlarm(String userId,String mmIdx, Connection conn) {
 		
 		String sql = "delete notice where user_id = ? and mm_idx = ?";
@@ -139,7 +129,7 @@ public class AlarmDao {
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, userId);
-			pstm.setString(1, mmIdx);
+			pstm.setString(2, mmIdx);
 			pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(e);

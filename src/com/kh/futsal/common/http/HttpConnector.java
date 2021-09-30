@@ -39,7 +39,7 @@ public class HttpConnector {
 		
 		try {
 			HttpURLConnection conn = getConnection(url, "GET");
-			setHeaders(headers, conn);//외부로 부터 전달받은 http 헤더를 적용
+			setHeaders(headers, conn);
 			responseBody = getResponseBody(conn);
 		} catch (IOException e) {
 			throw new HandlableException(ErrorCode.HTTP_CONNECT_ERROR,e);
@@ -54,7 +54,7 @@ public class HttpConnector {
 		
 		try {
 			HttpURLConnection conn = getConnection(url, "GET");
-			setHeaders(headers, conn);//외부로 부터 전달받은 http 헤더를 적용
+			setHeaders(headers, conn);
 			responseBody = getResponseBody(conn);
 			datas = gson.fromJson(responseBody, JsonElement.class);
 			
@@ -127,7 +127,6 @@ public class HttpConnector {
 		HttpURLConnection conn = (HttpURLConnection) u.openConnection();
 		conn.setRequestMethod(method);
 		
-		//post 방식일 경우 HttpURLConnection의 출력스트림 사용여부를 true로 지정
 		if(method.equals("POST")) {
 			conn.setDoOutput(true);
 		}
