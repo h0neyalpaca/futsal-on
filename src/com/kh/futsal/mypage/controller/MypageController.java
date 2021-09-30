@@ -189,9 +189,12 @@ public class MypageController extends HttpServlet {
 		Map<String,Object> matchTeamList =  new HashMap<String, Object>();
 		
 		for (int i = 0; i < matchList.size(); i++) {
-			teamInfos.add(teamService.selectTeamByTmCode(matchList.get(i).getTmCode()));
+			Team team = teamService.selectTeamByTmCode(matchList.get(i).getTmCode());
+			team.setTmScore(teamService.selectTmAvgRating(matchList.get(i).getTmCode()));
+			teamInfos.add(team);
 		}		
 		
+		System.out.println(teamInfos);
 		matchTeamList.put("mgList",mgList);
 		matchTeamList.put("matchList", matchList);
 		matchTeamList.put("teamList",teamInfos);
