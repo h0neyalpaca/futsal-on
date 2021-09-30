@@ -38,6 +38,8 @@
 								</td>
 							</tr>
 						</c:if>
+						<tr><th>팀 전적</th><td>${team.gameCnt}전 ${team.tmWin}승 ${team.tmLose}패</td></tr>
+						<tr><th>팀 평점</th><td>${team.tmScore}점</td></tr>
 						<tr>
 							<th>실력</th>
 							<td>

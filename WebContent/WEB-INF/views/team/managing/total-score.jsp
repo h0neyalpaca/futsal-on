@@ -19,9 +19,14 @@
 					<%@ include file="/WEB-INF/views/team/include/team_tab.jsp" %>
 					
 					<div class="rating_area">
-						<p><strong>${team.tmName}</strong> 팀 전적 ${team.gameCnt}전 ${team.tmWin}승 ${team.tmLose}패</p>
+						<p><strong>${team.tmName}</strong>팀 전적 ${team.gameCnt}전 ${team.tmWin}승 ${team.tmLose}패 / 평균 평점 ${team.tmScore}</p>
 						<div class="our_rating star">
-							<i class="fas fa-star full-star"></i><i class="fas fa-star full-star"></i><i class="fas fa-star full-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+								<c:forEach var="i" begin="1" end="${team.tmScore}">
+									<i class="fas fa-star full-star"></i> 
+								</c:forEach>
+							<c:if test="${team.tmScore%1!=0}">
+								<i class="fas fa-star-half-alt"></i>
+							</c:if>
 						</div>
 					</div>
 					
@@ -42,7 +47,7 @@
 								<td>
 									<c:if test="${authentication.grade=='ME03'}">
 										<c:choose>
-											<c:when test="${empty results.winner and results.dateParseInt lt nowDate}">
+											<c:when test="${empty results.winner and results.matchSchedule lt nowDate}">
 												<div class="selectbox">
 													<select>
 														<option value="" disabled selected>= 결과 =</option>
@@ -52,7 +57,7 @@
 												</div>
 												<button class="btn-change-grade" onclick="updateWinner(this, '${results.mgIdx}', '${results.hostCode}', '${results.rivalCode}', '${team.tmCode}');">저장</button>
 											</c:when>
-											<c:when test="${empty results.winner and results.dateParseInt gt nowDate}">
+											<c:when test="${empty results.winner and results.matchSchedule gt nowDate}">
 												경기예정
 											</c:when>
 											<c:when test="${not empty results.winner}">
@@ -67,7 +72,7 @@
 								<td class="star">
 									<c:if test="${authentication.grade=='ME03'}">
 										<c:if test="${(results.rivalRating==0 and results.hostName eq team.tmName) or (results.hostRating==0 and results.rivalName eq team.tmName)}">
-											<c:if test="${results.dateParseInt lt nowDate}">
+											<c:if test="${results.matchSchedule lt nowDate}">
 												<div class="selectbox">
 													<select name="${results.hostName eq team.tmName?'rivalRating':'hostRating'}">
 														<option value="" disabled selected>= 평가 =</option>
@@ -80,21 +85,19 @@
 												</div>
 												<button class="btn-change-grade" onclick="updateRslt(this, '${results.mgIdx}', '${results.hostCode}', '${results.rivalCode}', '${team.tmCode}');">저장</button>
 											</c:if>
-											<c:if test="${results.dateParseInt gt nowDate}">
+											<c:if test="${results.matchSchedule gt nowDate}">
 												경기예정
 											</c:if>
 										</c:if>
 									</c:if>
 									<c:if test="${results.rivalRating!=0 and results.hostName eq team.tmName}">
-											<c:forEach var="i" begin="1" end="5">
-												<c:if test="${i<=results.rivalRating}"><i class="fas fa-star full-star"></i></c:if>
-												<c:if test="${i>results.rivalRating}"><i class="far fa-star"></i></c:if>
+											<c:forEach var="i" begin="1" end="${results.rivalRating}">
+												<i class="fas fa-star full-star"></i>
 											</c:forEach>
 									</c:if>
 									<c:if test="${results.hostRating!=0 and results.rivalName eq team.tmName}">
-										<c:forEach var="i" begin="1" end="5">
-											<c:if test="${i<=results.hostRating}"><i class="fas fa-star full-star"></i></c:if>
-											<c:if test="${i>results.hostRating}"><i class="far fa-star"></i></c:if>
+										<c:forEach var="i" begin="1" end="${results.hostRating}">
+											<i class="fas fa-star full-star"></i>
 										</c:forEach>
 									</c:if>
 									<c:if test="${authentication.grade!='ME03'}">

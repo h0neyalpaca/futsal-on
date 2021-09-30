@@ -3,8 +3,9 @@ package com.kh.futsal.team.model.service;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.file.FileDTO;
@@ -20,7 +21,7 @@ public class TeamService {
 	
 	private TeamDAO td = new TeamDAO();
 	
-	//팀 생성
+//	팀 생성
 	public void insertForCreating(Team team, Member member, List<FileDTO> fileDTOs) {
 		Connection conn = template.getConnection();
 		try {
@@ -38,7 +39,7 @@ public class TeamService {
 		}
 	}
 	
-	//팀 생성,가입
+//	팀 생성,가입
 	public void updateMemberIntoTeam(Member member, Team team) {
 		Connection conn = template.getConnection();
 		try {
@@ -52,14 +53,14 @@ public class TeamService {
 		}
 	}
 	
-	//팀 수정
+//	팀 수정
 	public void updateTeam(Team team, List<FileDTO> fileDTOs) {
 		Connection conn = template.getConnection();
 		try {
-			td.updateTeam(team,conn); //팀테이블
+			td.updateTeam(team,conn);
 			for (FileDTO fileDTO : fileDTOs) {
 				td.deleteFile(team.getTmCode(),conn);
-				td.insertFile(fileDTO,team.getTmCode(),conn); //파일테이블
+				td.insertFile(fileDTO,team.getTmCode(),conn);
 			}
 			template.commit(conn);
 		} catch (Exception e) {
@@ -70,7 +71,7 @@ public class TeamService {
 		}
 	}
 	
-	//팀원 등급 변경
+//	팀원 등급 변경
 	public int updateGrade(String userId, String grade) {
 		Connection conn = template.getConnection();
 		int res = 0;
@@ -86,7 +87,7 @@ public class TeamService {
 		return res;
 	}
 	
-	//팀장 위임
+//	팀장 위임
 	public int updateGrades(String userId, Team team) {
 		Connection conn = template.getConnection();
 		int res = 0;
@@ -107,7 +108,7 @@ public class TeamService {
 		return res;
 	}
 	
-	//경기결과 업데이트
+//	경기결과 업데이트
 	public int updateWinner(String mgIdx, String wnrCode, String lsrCode) {
 		Connection conn = template.getConnection();
 		int res = 0;
@@ -116,6 +117,9 @@ public class TeamService {
 				res = td.updateWinner(mgIdx,lsrCode,conn);
 			} else {
 				res = td.insertWinner(mgIdx,wnrCode,conn);
+			}
+			if(res < 1) {
+				return res;
 			}
 			td.updateTeamScore(wnrCode,lsrCode, conn);
 			template.commit(conn);
@@ -128,7 +132,7 @@ public class TeamService {
 		return res;
 	}
 	
-	//상대팀 평가 업데이트
+//	상대팀 평가 업데이트
 	public int updateRslt(String mgIdx, String target, int rating) {
 		Connection conn = template.getConnection();
 		int res = 0;
@@ -138,7 +142,6 @@ public class TeamService {
 			} else {
 				res = td.insertRslt(mgIdx,target,rating,conn);
 			}
-			System.out.println("service : " + res);
 			template.commit(conn);
 		} catch (Exception e) {
 			template.rollback(conn);
@@ -149,7 +152,7 @@ public class TeamService {
 		return res;
 	}
 	
-	//회원정보에서 팀 정보를 삭제(팀추방,팀탈퇴,팀해체)
+//	회원정보에서 팀 정보를 삭제(팀추방,팀탈퇴,팀해체)
 	public int updateMemberForLeaveTeam(String userId) {
 		int res = 0;
 		Connection conn = template.getConnection();
@@ -165,7 +168,7 @@ public class TeamService {
 		return res;
 	}
 	
-	//팀 해체
+//	팀 해체
 	public int updateDelDate(String tmCode, List<Member> tmMembers) {
 		Connection conn = template.getConnection();
 		int res = 0;
@@ -186,7 +189,7 @@ public class TeamService {
 		return res;
 	}
 		
-	//tmCode로 팀 검색
+//	팀 검색 (tmCode)
 	public Team selectTeamByTmCode(String tmCode) {
 		Connection conn = template.getConnection();
 		Team team = null;
@@ -198,7 +201,7 @@ public class TeamService {
 		return team;
 	}
 	
-	//tmName으로 팀 검색
+//	팀 검색 (tmName)
 	public Team selectTeamByTmName(String tmName) {
 		Connection conn = template.getConnection();
 		Team team = null;
@@ -210,7 +213,7 @@ public class TeamService {
 		return team;
 	}
 	
-	//userId로 팀 검색
+//	팀 검색 (UserId)
 	public Team selectTeamByUserId(String userId) {
 		Connection conn = template.getConnection();
 		Team team = null;
@@ -222,7 +225,7 @@ public class TeamService {
 		return team;
 	}
 	
-	//tmCode로 파일 검색
+//	파일 검색
 	public FileDTO selectFileByTmCode(String tmCode) {
 		Connection conn = template.getConnection();
 		FileDTO file = null;
@@ -234,7 +237,7 @@ public class TeamService {
 		return file;
 	}
 	
-	//tmCode로 팀원 리스트 호출
+//	팀원 리스트 검색
 	public List<Member> selectTmMembers(String tmCode) {
 		Connection conn = template.getConnection();
 		List<Member> tmMembers = null;
@@ -246,7 +249,7 @@ public class TeamService {
 		return tmMembers;
 	}
 
-	//tmCode로 경기결과 리스트 호출
+//	경기 결과 리스트 검색
 	public List<ResultDTO> selectMatchGame(String tmCode) {
 		Connection conn = template.getConnection();
 		List<ResultDTO> results = null;
@@ -258,7 +261,7 @@ public class TeamService {
 		return results;
 	}
 	
-	//tmCode로 팀이 올린 게시글 호출
+//	팀이 올린 게시글 검색
 	public List<MatchMaster> selectTmBoards(String tmCode) {
 		Connection conn = template.getConnection();
 		List<MatchMaster> tmBoards = null;
@@ -269,9 +272,37 @@ public class TeamService {
 		}
 		return tmBoards;
 	}
-
 	
-	//팀코드 랜덤 생성
+//	팀이 신청한 게시글 검색
+	public List<MatchMaster> selectTmApplications(String tmCode) {
+		Connection conn = template.getConnection();
+		List<MatchMaster> tmApplications = null;
+		try {
+			tmApplications = td.selectTmApplications(tmCode, conn);
+		} finally {
+			template.close(conn);
+		}
+		return tmApplications;
+	}
+	
+//	팀의 평균 평점 계산
+	public double selectTmAvgRating(String tmCode) {
+		Connection conn = template.getConnection();
+		double tmAvgRating = 0;
+		try {
+			Map<String, Integer> hostRating = td.selectHostRating(tmCode, conn);
+			Map<String, Integer> rivalRating = td.selectRivalRating(tmCode, conn);
+			tmAvgRating = (double)(hostRating.get("sum")+rivalRating.get("sum"))/(hostRating.get("cnt")+rivalRating.get("cnt"));
+			if(Double.isNaN(tmAvgRating)) {
+				tmAvgRating = 0;
+			}
+		} finally {
+			template.close(conn);
+		}
+		return tmAvgRating;
+	}
+
+//	팀코드 랜덤 생성
 	public String createRandomCode(String keyword) {
 		String result = "";
 		keyword += new SimpleDateFormat("yyMMdd").format(new Date());
@@ -320,5 +351,4 @@ public class TeamService {
 		}
 		return result;
 	}
-
 }

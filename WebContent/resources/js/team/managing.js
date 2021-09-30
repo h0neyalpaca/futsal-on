@@ -45,54 +45,46 @@ let leaveTeam = (userId) => {
 
 let drawQuestion = (txt,func) => {
 	document.querySelector('.pop-msg-wrap.question').style.display='flex';
-	document.querySelector('.pop-msg-wrap.question p').innerHTML='<i class="fas fa-exclamation-triangle"></i><br>'+txt;
+	document.querySelector('.pop-msg-wrap.question p').innerHTML='<i class="fas fa-question-circle"></i><br>'+txt;
 	document.querySelector('.submit-btn').setAttribute('onClick',func);
 	document.querySelector('.submit-btn').innerHTML='확인';
 }
 
-//팀원 등급 변경
 let grade = (userId, grade) => {
 	let xhr = new XMLHttpRequest();
 	xhr = xmlRequest('POST','manage-grade','');
 	xhr.send('userId='+userId+'&grade='+grade);
 }
-//팀 위임
 let delegation = (userId) => {
 	let xhr = new XMLHttpRequest();
 	xhr = xmlRequest('POST','manage-delegation','');
 	xhr.send('userId='+userId);
 }
-//경기결과 저장
 let winnerFunc = (mgIdx, winner,loser) => {
 	let xhr = new XMLHttpRequest();
 	xhr = xmlRequest('POST','update-winner','');
 	xhr.send('mgIdx='+mgIdx+'&winner='+winner+'&loser='+loser);
 }
-//상대팀 평가 저장
 let rsltFunc = (mgIdx, target, rating) => {
 	let xhr = new XMLHttpRequest();
 	xhr = xmlRequest('POST','update-rating','');
 	xhr.send('mgIdx='+mgIdx+'&target='+target+'&rating='+rating);
 }
-//팀 방출
 let expulsion = (userId) => {
 	let xhr = new XMLHttpRequest();
 	xhr = xmlRequest('POST','manage-expulsion','');
 	xhr.send('userId='+userId);
 }
-//팀 해체
 let breakFunc = (tmCode) => {
 	let xhr = new XMLHttpRequest();
 	xhr = xmlRequest('POST','break-team','/team/main');
 	xhr.send('tmCode='+tmCode);
 }
-//팀 탈퇴
 let leaveFunc = (userId) => {
 	let xhr = new XMLHttpRequest();
 	xhr = xmlRequest('POST','leave-team','/team/main');
 	xhr.send('userId='+userId);
 }
-//메서드방식,리퀘스트URL,완료후URL
 let xmlRequest = (method,rqstUrl,rtnUrl) => {
 	let xhr = new XMLHttpRequest();
 	xhr.open(method,'${request.contextPath}/team/managing/'+rqstUrl,true);
@@ -100,20 +92,21 @@ let xmlRequest = (method,rqstUrl,rtnUrl) => {
 	xhr.onreadystatechange = () => {
 		if (xhr.readyState == XMLHttpRequest.DONE) {
 			if (xhr.status == 200) {
-				drawAnswer(xhr.responseText,rtnUrl);
+				drawAnswer('<i class="fas fa-check-circle"></i><br>'+xhr.responseText,rtnUrl);
 			} else if (xhr.status == 400) {
-				drawAnswer(xhr.responseText,'');
+				drawAnswer('<i class="fas fa-times-circle"></i><br>'+xhr.responseText+'<br>오류코드:'+xhr.stateus,'');
 			} else {
-				drawAnswer(xhr.responseText,'');
+				drawAnswer('<i class="fas fa-times-circle"></i><br>'+xhr.responseText+'<br>오류코드:'+xhr.stateus,'');
 			}
 		}
 	};
 	return xhr;
 }
+
 let drawAnswer = (txt,url) => {
 	document.querySelector('.pop-msg-wrap.question').style.display='none';
 	document.querySelector('.pop-msg-wrap.answer').style.display='flex';
-	document.querySelector('.pop-msg-wrap.answer p').innerHTML='<i class="fas fa-check-circle"></i><br>'+txt;
+	document.querySelector('.pop-msg-wrap.answer p').innerHTML=txt;
 	document.querySelector('.close-btn').setAttribute('onClick','location.href="'+url+'"');
 }
 

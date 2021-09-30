@@ -155,12 +155,9 @@
 }
 
 .star i{
-	color:#aaa;
-}
-.star i.full-star{
 	color:#000;
 }
-.rating_area i.full-star{
+.rating_area i.full-star, .rating_area i.fa-star-half-alt{
 	color:#DC143C;
 }
 

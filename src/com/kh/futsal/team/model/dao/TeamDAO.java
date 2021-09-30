@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.exception.DataAccessException;
@@ -285,7 +287,6 @@ public class TeamDAO {
 		return res;
 	}
 	
-	//회원정보에서 팀 정보를 삭제(팀추방 ,팀탈퇴,팀해체)
 	public int updateMemberForLeaveTeam(String userId, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
@@ -302,7 +303,6 @@ public class TeamDAO {
 		return res;
 	}
 
-	//팀 해체 일자 업데이트
 	public int updateDelDateForLeaveTeam(String tmCode, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
@@ -319,7 +319,6 @@ public class TeamDAO {
 		return res;
 	}
 
-	//tmCode로 팀 검색
 	public Team selectTeamByTmCode(String tmCode, Connection conn) {
 		Team team = new Team();
 		PreparedStatement pstm = null;
@@ -340,7 +339,6 @@ public class TeamDAO {
 		return team;
 	}
 	
-	//tmName로 팀 검색
 	public Team selectTeamByTmName(String tmName, Connection conn) {
 		Team team = new Team();
 		PreparedStatement pstm = null;
@@ -361,7 +359,6 @@ public class TeamDAO {
 		return team;
 	}
 	
-	//userId로 팀 검색
 	public Team selectTeamByUserId(String userId, Connection conn) {
 		Team team = null;
 		PreparedStatement pstm = null;
@@ -382,7 +379,6 @@ public class TeamDAO {
 		return team;
 	}
 	
-	//tmCode로 파일 검색
 	public FileDTO selectFileByTmCode(String tmCode, Connection conn) {
 		FileDTO file = new FileDTO();
 		PreparedStatement pstm = null;
@@ -407,7 +403,6 @@ public class TeamDAO {
 		return file;
 	}
 
-	//팀코드로 팀원 리스트 호출
 	public List<Member> selectTmMembers(String tmCode, Connection conn) {
 		List<Member> tmMembers = new ArrayList<Member>();
 		PreparedStatement pstm = null;
@@ -429,7 +424,6 @@ public class TeamDAO {
 		return tmMembers;
 	}
 	
-	//tmCode로 경기결과 리스트 호출
 	public List<ResultDTO> selectMatchGame(String tmCode, Connection conn) {
 		List<ResultDTO> results = new ArrayList<ResultDTO>();
 		
@@ -459,7 +453,6 @@ public class TeamDAO {
 		return results;
 	}
 
-	//mgIdx로 경기결과가 있는지 확인
 	public int selectResultByMgIdx(String mgIdx, Connection conn) {
 		int res = 0;
 		PreparedStatement pstm = null;
@@ -482,7 +475,6 @@ public class TeamDAO {
 		return res;
 	}
 	
-	//팀코드로 팀이 올린 게시글 호출
 	public List<MatchMaster> selectTmBoards(String tmCode, Connection conn) {
 		List<MatchMaster> tmBoards = new ArrayList<MatchMaster>();
 		PreparedStatement pstm = null;
@@ -504,6 +496,77 @@ public class TeamDAO {
 		return tmBoards;
 	}
 	
+	public List<MatchMaster> selectTmApplications(String tmCode, Connection conn) {
+		List<MatchMaster> tmApplications = new ArrayList<MatchMaster>();
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		try {
+			String sql = "SELECT * FROM MATCH_MASTER JOIN MATCH_GAME USING(MM_IDX) WHERE APPLICANT_CODE = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, tmCode);
+			rset = pstm.executeQuery();
+			while(rset.next()) {
+				tmApplications.add(convertRowToMatchMaster(rset));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			template.close(rset,pstm);
+		}
+		return tmApplications;
+	}
+	
+	public Map<String,Integer> selectHostRating(String tmCode, Connection conn) {
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		Map<String, Integer> hostRating = new HashMap<>();
+		try {
+			String sql = "select NVL(sum(rs.host_rating),0) as SUM, count(*) as CNT "
+					+ "from match_master mm "
+					+ "join match_game mg using(mm_idx) "
+					+ "left join result rs on (mg.mg_idx = rs.mg_idx) "
+					+ "where mm.tm_code = ? and host_rating > 0 and host_rating is not null ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, tmCode);
+			rset = pstm.executeQuery();
+			if(rset.next()) {
+				hostRating.put("sum", rset.getInt("SUM"));
+				hostRating.put("cnt", rset.getInt("CNT"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			template.close(rset,pstm);
+		}
+		return hostRating;
+	}
+	
+	public Map<String,Integer> selectRivalRating(String tmCode, Connection conn) {
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		Map<String, Integer> rivalRating = new HashMap<>();
+		try {
+			String sql = "select NVL(sum(rs.rival_rating),0) as SUM, count(*) as CNT "
+					+ "from match_master mm "
+					+ "join match_game mg using(mm_idx) "
+					+ "left join result rs on (mg.mg_idx = rs.mg_idx) "
+					+ "where mg.applicant_code = ? and rival_rating > 0 and rival_rating is not null";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, tmCode);
+			rset = pstm.executeQuery();
+			if(rset.next()) {
+				rivalRating.put("sum", rset.getInt("SUM"));
+				rivalRating.put("cnt", rset.getInt("CNT"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			template.close(rset,pstm);
+		}
+		return rivalRating;
+	}
+	
 	private Member convertRowToMember(ResultSet rset) throws SQLException {
 		Member member = new Member();
 		member.setUserId(rset.getString("USER_ID"));
@@ -520,7 +583,6 @@ public class TeamDAO {
 		team.setTmGrade(rset.getString("TM_GRADE"));
 		team.setTmInfo(rset.getString("TM_INFO"));
 		team.setGameCnt(rset.getInt("GAME_CNT"));
-		team.setTmScore(rset.getInt("TM_SCORE"));
 		team.setTmWin(rset.getInt("TM_WIN"));
 		team.setTmLose(rset.getInt("TM_LOSE"));
 		team.setRegDate(rset.getDate("REG_DATE"));
@@ -552,13 +614,6 @@ public class TeamDAO {
 		resultDTO.setMgIdx(rset.getString("MG_IDX"));
 		resultDTO.setMatchDate(rset.getString("MATCH_DATE"));
 		resultDTO.setMatchTime(rset.getString("MATCH_TIME"));
-		String[] dateArr = rset.getString("MATCH_DATE").split("-");
-		String[] timeArr = rset.getString("MATCH_TIME").split(":");
-		String date = "";
-		String time = "";
-		for (int i = 0; i < dateArr.length; i++) {date += dateArr[i];}
-		for (int i = 0; i < timeArr.length; i++) {time += timeArr[i];}
-		resultDTO.setMatchSchedule(date+time);
 		resultDTO.setHostCode(rset.getString("HOST_CODE"));
 		resultDTO.setHostName(rset.getString("HOST_NAME"));
 		resultDTO.setRivalCode(rset.getString("RIVAL_CODE"));
@@ -568,6 +623,5 @@ public class TeamDAO {
 		resultDTO.setRivalRating(rset.getInt("RIVAL_RATING"));
 		return resultDTO;
 	}
-
 
 }
