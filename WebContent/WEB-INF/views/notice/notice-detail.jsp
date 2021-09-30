@@ -42,8 +42,20 @@
 				</div>
 				<div class="join-con list-wrap">
 					<ul class="prev-next-list">
-						<li><div class="prev"><a href="/notice/notice-detail?curPage=${curPage}&noticeNo=${notice.nwIdx}"><span>이전글</span><span>${noticeDetail.nwTitle}</span></a></div></li>
-						<li><div class="next"><a href="/notice/notice-detail?curPage=${curPage}&noticeNo=${notice.nwIdx}"><span>다음글</span><span>${noticeDetail.nwTitle}</span></a></div></li>
+					
+					<c:if test="${not empty prevDetail}">
+						<li><div class="prev"><a href="/notice/notice-detail?curPage=${curPage}&noticeNo=${prevDetail.nwIdx}"><span>이전글</span><span>${prevDetail.nwTitle}</span></a></div></li>
+					</c:if>	
+					<c:if test="${empty prevDetail}">
+					<li><div class="prev">이전 글이 존재하지 않습니다.</div></li>
+					</c:if>
+					<c:if test="${not empty nextDetail}">
+						<li><div class="next"><a href="/notice/notice-detail?curPage=${curPage}&noticeNo=${nextDetail.nwIdx}"><span>다음글</span><span>${nextDetail.nwTitle}</span></a></div></li>
+					</c:if>	
+					<c:if test="${empty nextDetail}">
+					<li><div class="next">다음 글이 존재하지 않습니다.</div></li>
+					</c:if>
+
 					</ul>
 				</div>
 			</div>

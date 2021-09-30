@@ -40,6 +40,30 @@ public class NoticeService {
 		return notice;
 	}
 	
+	public Notice selectNoticePrevDetail(String nwIdx) {
+		Connection conn = template.getConnection();
+		Notice notice = null;
+		
+		try {
+			notice = noticeDao.selectNoticePrevDetail(nwIdx, conn);
+		} finally {
+			template.close(conn);
+		}
+		return notice;
+	}
+
+	public Notice selectNoticeNextDetail(String nwIdx) {
+		Connection conn = template.getConnection();
+		Notice notice = null;
+		
+		try {
+			notice = noticeDao.selectNoticeNextDetail(nwIdx, conn);
+		} finally {
+			template.close(conn);
+		}
+		return notice;
+	}
+	
 	public List<Notice> selectMainNoticeList() {
 		
 		List<Notice> mainNoticeList = null;
@@ -111,6 +135,8 @@ public class NoticeService {
 		
 		return res;
 	}
+
+	
 
 	
 

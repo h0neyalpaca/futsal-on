@@ -122,15 +122,15 @@
 				<ul class="page-button">
 				
 					<c:if test="${curPage> pageSize }"> 
-							<li><a href="/notice/notice-list?page=${endPage-1}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
+							<span><a href="/notice/notice-list?page=${endPage-1}"><i class="far fa-arrow-alt-circle-left"></i></a></span>
 					</c:if>
 				
 					<c:forEach var="page" begin="${startPage}" end="${endPage}">
-						<li class="page-num"><a href="notice-list?curPage=${page}">${page}</a></li>
+						<span class="page-num"><a href="notice-list?curPage=${page}">${page}</a></span>
 					</c:forEach>
 						
 					<c:if test="${endPage<totalPage }">
-						<li><a href="/notice/notice-list?curPage=${endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
+						<span><a href="/notice/notice-list?curPage=${endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></span>
 					</c:if>
 				</ul>
 				</form>

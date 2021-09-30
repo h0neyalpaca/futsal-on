@@ -74,7 +74,9 @@ public class NoticeDao {
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-		String sql = "select NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS from news where nw_idx =?";
+		String sql = "select NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS " + 
+					 " from news " + 
+					 " where nw_idx =?";
 				
 		try {
 			pstm = conn.prepareStatement(sql);
@@ -94,41 +96,19 @@ public class NoticeDao {
 		return notice;
 		
 	}
-	
-	public Notice selectPrevDetail(String nwIdx, Connection conn){ //공지사항 이전 게시글
-			
-			Notice notice = null;
-			PreparedStatement pstm = null;
-			ResultSet rset = null;
-			
-			String sql = "select NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS from news where nw_idx =?";
-					
-			try {
-				pstm = conn.prepareStatement(sql);
-				pstm.setString(1,nwIdx);
-				rset = pstm.executeQuery();
 		
-				if(rset.next()) {
-					notice = convertRowToNotice(rset);
-				}
-				
-			} catch (SQLException e) {
-				throw new DataAccessException(e);
-			}finally {
-				template.close(rset, pstm);
-			}
-			
-			return notice;
-			
-		}
 	
-	public Notice selectNextDetail(String nwIdx, Connection conn){ //공지사항 다음 게시글
+	
+	public Notice selectNoticePrevDetail(String nwIdx, Connection conn) {
 		
 		Notice notice = null;
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-		String sql = "select NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS from news where nw_idx =?";
+		String sql = "select NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS" + 
+					 " from news" + 
+					 " where NW_IDX = (select min(NW_IDX) from news where NW_IDX > ?)" + 
+					 " and is_del = '0'";
 				
 		try {
 			pstm = conn.prepareStatement(sql);
@@ -146,10 +126,35 @@ public class NoticeDao {
 		}
 		
 		return notice;
-		
 	}
-	
 
+	public Notice selectNoticeNextDetail(String nwIdx, Connection conn) {
+		Notice notice = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		String sql =  "select NW_IDX, NW_TITLE, NW_CONTENT, NW_MAIN, REG_DATE, IS_DEL, VIEWS" + 
+				 	  " from news" + 
+				 	  " where NW_IDX = (select max(NW_IDX) from news where NW_IDX < ?)" + 
+				 	  " and is_del = '0'";
+				
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1,nwIdx);
+			rset = pstm.executeQuery();
+	
+			if(rset.next()) {
+				notice = convertRowToNotice(rset);
+			}
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		
+		return notice;
+	}
 	
 	public List<Notice> selectMainNoticeList(Connection conn){
 		
@@ -342,6 +347,8 @@ public class NoticeDao {
 	
 		return notice;
 	}
+
+	
 
 	
 }

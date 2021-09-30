@@ -78,9 +78,6 @@ public class NoticeController extends HttpServlet {
 		String curPage = request.getParameter("curPage");
 		System.out.println("curPage : " + curPage);
 
-		String prevNwIdx = request.getParameter("noticeNo"); //이전 게시물
-		String nextNwIdx = request.getParameter("noticeNo"); //다음 게시물
-		
 		
 		//로그인되어있는 id 가져오기
 		HttpSession session = request.getSession();
@@ -138,11 +135,20 @@ public class NoticeController extends HttpServlet {
 	
 		//nwIdx에 따른 게시판 상세페이지	
 		noticeDetail = noticeService.selectNoticeDetail(nwIdx);
-		
-		
 		System.out.println("noticeDetail : " + noticeDetail);
+		
+		//이전글, 다음글
+		Notice prevDetail = new Notice();
+		prevDetail = noticeService.selectNoticePrevDetail(nwIdx);
+		System.out.println("prevDetail : " + prevDetail);
+		Notice nextDetail = new Notice();
+		nextDetail = noticeService.selectNoticeNextDetail(nwIdx);
+		System.out.println("nextDetail : " + nextDetail);
+		
 
 		request.setAttribute("noticeDetail", noticeDetail);
+		request.setAttribute("prevDetail", prevDetail);
+		request.setAttribute("nextDetail", nextDetail);
 		request.setAttribute("curPage", curPage);
 
 		request.getRequestDispatcher("/notice/notice-detail").forward(request, response);
