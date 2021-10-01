@@ -44,7 +44,10 @@
 							</tr>
 							<tr>
 								<th>이름</th>
-								<td><input type="text" name="userName" id="userName" size="8" required /></td>
+								<td>
+									<input type="text" name="userName" id="userName" size="8" required />
+									<span class="msg imp" id="NameDif"></span>
+								</td>
 							</tr>
 							<tr>
 								<th>닉네임</th>
