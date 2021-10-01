@@ -15,7 +15,7 @@
 <section>
 	<div class="section">
 		<div class="join-wrap">
-			<h2><i class="fas fa-book-reader"></i> 공지사항</h2>
+			<h2><a href="/notice/notice-list"><i class="fas fa-book-reader"></i> 공지사항</a></h2>
 			<div class="join-con">	
 				<form action="/notice/notice-list" >
 					<div class="search">
@@ -89,12 +89,13 @@
 							<col style="width: 118px;">
 							<col style="width: 68px;">
 						</colgroup>
-						
+
+						<c:set var="num" value="${totalNoticeCnt - ((page.curPage-1) * 3) }"/>
 						<c:forEach var ="notice" items="${noticeList}" > 
 						<tbody class="notice">
 							<tr>
 							
-								<td class="num"><span>${notice.nwIdx}</span></td>
+								<td class="num"><span>${num}</span></td>
 								<td class="td_article">
 									<div class="board-wrap">
 										<div class="board-list">
@@ -112,6 +113,7 @@
 								</td>
 								 
 							</tr>
+							 <c:set var="num" value="${num-1 }"></c:set>
 							</c:forEach>
 
 							<tr>
@@ -126,7 +128,6 @@
 							<li><a class="prev-noti" href="/notice/notice-list?page=${page.endPage-1}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
 					</c:if>
 				
-
 					<c:forEach var="page" begin="${page.startPage}" end="${page.endPage}">
 							<li class="page-num ${page==curPage ? "active":""}"><a href="notice-list?curPage=${page}">${page}</a></li>
 					</c:forEach>

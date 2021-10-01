@@ -182,7 +182,6 @@ public class NoticeController extends HttpServlet {
 		String pageNum = request.getParameter("curPage");
 		if(pageNum == null) {
 			pageNum = "1";
-
 		}
 
 		curPage =  Integer.parseInt(pageNum);
@@ -207,6 +206,7 @@ public class NoticeController extends HttpServlet {
 		System.out.println("endPage : " + page.getEndPage());
 		System.out.println("curPage : " + page.getCurPage());
 		
+		request.setAttribute("totalNoticeCnt", totalNoticeCnt);
 		request.setAttribute("noticeList", noticeList);
 		request.setAttribute("mainNoticeList", mainNoticeList);
 		request.setAttribute("page", page);
