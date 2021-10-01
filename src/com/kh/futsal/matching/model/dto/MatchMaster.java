@@ -25,8 +25,10 @@ public class MatchMaster {
 	private String tmGrade; // 팀실력
 	private String tmInfo; // 소개글
 	private int gameCnt; // 총게임횟수
-	private int tmScore; // 평점
+	private double tmRating; // 평점
 	private int tmWin; // 승리횟수
+	private int tmLose; // 패배횟수
+	private String filePath; //파일경로
 
 
 	public int getState() {
@@ -70,12 +72,12 @@ public class MatchMaster {
 		this.tmInfo = tmInfo;
 	}
 
-	public int getTmScore() {
-		return tmScore;
+	public double getTmRating() {
+		return tmRating;
 	}
 
-	public void setTmScore(int tmScore) {
-		this.tmScore = tmScore;
+	public void setTmRating(double tmRating) {
+		this.tmRating = tmRating;
 	}
 
 	public int getTmWin() {
@@ -84,6 +86,14 @@ public class MatchMaster {
 
 	public void setTmWin(int tmWin) {
 		this.tmWin = tmWin;
+	}
+	
+	public int getTmLose() {
+		return tmLose;
+	}
+	
+	public void setTmLose(int tmLose) {
+		this.tmLose = tmLose;
 	}
 
 	public String getMatchDate() {
@@ -198,6 +208,14 @@ public class MatchMaster {
 		this.matchTime = matchTime;
 	}
 	
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
 	public long getMatchSchedule() {
 		String date = "";
 		String time = "";
@@ -218,8 +236,7 @@ public class MatchMaster {
 				+ ", address=" + address + ", regDate=" + regDate + ", title=" + title + ", matchNum=" + matchNum
 				+ ", expense=" + expense + ", grade=" + grade + ", content=" + content + ", tmMatch=" + tmMatch
 				+ ", matchDate=" + matchDate + ", matchTime=" + matchTime + ", state=" + state + ", tmName=" + tmName
-				+ ", tmGrade=" + tmGrade + ", tmInfo=" + tmInfo + ", gameCnt=" + gameCnt + ", tmScore=" + tmScore
-				+ ", tmWin=" + tmWin + "]";
+				+ ", tmGrade=" + tmGrade + ", tmInfo=" + tmInfo + ", gameCnt=" + gameCnt + ", tmRating=" + tmRating
+				+ ", tmWin=" + tmWin + ", tmLose=" + tmLose + ", filePath=" + filePath + "]";
 	}
-
 }

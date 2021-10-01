@@ -17,20 +17,20 @@
 				<h2><i class="far fa-futbol"></i> 나의 팀</h2>
 				<div class="myteam-con">
 					<%@ include file="/WEB-INF/views/team/include/team_tab.jsp" %>
-					
 					<div class="rating_area">
-						<p><strong>${team.tmName}</strong>팀 전적 ${team.gameCnt}전 ${team.tmWin}승 ${team.tmLose}패 / 평균 평점 ${team.tmScore}</p>
+						<p><strong>${team.tmName}</strong><br>전적 ${team.gameCnt}전 ${team.tmWin}승 ${team.tmLose}패 <span style="color:#ddd;"> ㅣ </span> 평균 평점 ${team.tmRating}/5점</p>
 						<div class="our_rating star">
-								<c:forEach var="i" begin="1" end="${team.tmScore}">
-									<i class="fas fa-star full-star"></i> 
-								</c:forEach>
-							<c:if test="${team.tmScore%1!=0}">
+							<c:forEach var="i" begin="1" end="${team.tmRating}">
+								<i class="fas fa-star full-star"></i> 
+							</c:forEach>
+							<c:if test="${team.tmRating%1!=0}">
 								<i class="fas fa-star-half-alt"></i>
 							</c:if>
+							<c:forEach var="i" begin="1" end="${5-team.tmRating}">
+								<i class="far fa-star star"></i> 
+							</c:forEach>
 						</div>
 					</div>
-					
-					<!-- 리더 화면 -->
 					<table class="team-member-form">
 						<tr>
 							<th>경기일자</th>
@@ -94,10 +94,16 @@
 											<c:forEach var="i" begin="1" end="${results.rivalRating}">
 												<i class="fas fa-star full-star"></i>
 											</c:forEach>
+											<c:forEach var="i" begin="1" end="${5-results.rivalRating}">
+												<i class="far fa-star"></i>
+											</c:forEach>
 									</c:if>
 									<c:if test="${results.hostRating!=0 and results.rivalName eq team.tmName}">
 										<c:forEach var="i" begin="1" end="${results.hostRating}">
 											<i class="fas fa-star full-star"></i>
+										</c:forEach>
+										<c:forEach var="i" begin="1" end="${5-results.hostRating}">
+											<i class="far fa-star"></i>
 										</c:forEach>
 									</c:if>
 									<c:if test="${authentication.grade!='ME03'}">

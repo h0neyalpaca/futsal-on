@@ -226,11 +226,11 @@ public class TeamService {
 	}
 	
 //	파일 검색
-	public FileDTO selectFileByTmCode(String tmCode) {
+	public FileDTO selectFile(String tmCode) {
 		Connection conn = template.getConnection();
 		FileDTO file = null;
 		try {
-			file = td.selectFileByTmCode(tmCode, conn);
+			file = td.selectFile(tmCode, conn);
 		} finally {
 			template.close(conn);
 		}
@@ -267,6 +267,11 @@ public class TeamService {
 		List<MatchMaster> tmBoards = null;
 		try {
 			tmBoards = td.selectTmBoards(tmCode, conn);
+			for (MatchMaster tmBoard : tmBoards) {
+				tmBoard.setTmRating(selectTmAvgRating(tmBoard.getTmCode()));
+				FileDTO fd = selectFile(tmBoard.getTmCode());
+				tmBoard.setFilePath(fd.getSavePath()+fd.getRenameFileName());
+			}
 		} finally {
 			template.close(conn);
 		}
@@ -279,6 +284,11 @@ public class TeamService {
 		List<MatchMaster> tmApplications = null;
 		try {
 			tmApplications = td.selectTmApplications(tmCode, conn);
+			for (MatchMaster tmApplication : tmApplications) {
+				tmApplication.setTmRating(selectTmAvgRating(tmApplication.getTmCode()));
+				FileDTO fd = selectFile(tmApplication.getTmCode());
+				tmApplication.setFilePath(fd.getSavePath()+fd.getRenameFileName());
+			}
 		} finally {
 			template.close(conn);
 		}

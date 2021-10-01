@@ -185,7 +185,7 @@ public class MypageController extends HttpServlet {
 		
 		for (int i = 0; i < matchList.size(); i++) {
 			Team team = teamService.selectTeamByTmCode(matchList.get(i).getTmCode());
-			team.setTmScore(teamService.selectTmAvgRating(matchList.get(i).getTmCode()));
+			team.setTmRating(teamService.selectTmAvgRating(matchList.get(i).getTmCode()));
 			teamInfos.add(team);
 		}		
 		

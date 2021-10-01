@@ -379,7 +379,7 @@ public class TeamDAO {
 		return team;
 	}
 	
-	public FileDTO selectFileByTmCode(String tmCode, Connection conn) {
+	public FileDTO selectFile(String tmCode, Connection conn) {
 		FileDTO file = new FileDTO();
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
@@ -481,7 +481,7 @@ public class TeamDAO {
 		ResultSet rset = null;
 		
 		try {
-			String sql = "SELECT * FROM MATCH_MASTER WHERE TM_CODE = ? ";
+			String sql = "SELECT * FROM MATCH_MASTER JOIN TEAM USING(TM_CODE) WHERE TM_CODE = ? ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, tmCode);
 			rset = pstm.executeQuery();
@@ -502,7 +502,7 @@ public class TeamDAO {
 		ResultSet rset = null;
 		
 		try {
-			String sql = "SELECT * FROM MATCH_MASTER JOIN MATCH_GAME USING(MM_IDX) WHERE APPLICANT_CODE = ? ";
+			String sql = "SELECT * FROM MATCH_MASTER JOIN MATCH_GAME USING(MM_IDX) JOIN TEAM USING(TM_CODE) WHERE APPLICANT_CODE = ? ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, tmCode);
 			rset = pstm.executeQuery();
@@ -605,6 +605,13 @@ public class TeamDAO {
 		matchMaster.setTmMatch(rset.getInt("TM_MATCH"));
 		matchMaster.setMatchTime(rset.getString("MATCH_TIME"));
 		matchMaster.setMatchDate(rset.getString("MATCH_DATE"));
+		//팀 정보
+		matchMaster.setTmName(rset.getString("TM_NAME"));
+		matchMaster.setTmGrade(rset.getString("TM_GRADE"));
+		matchMaster.setTmInfo(rset.getString("TM_INFO"));
+		matchMaster.setGameCnt(rset.getInt("GAME_CNT"));
+		matchMaster.setTmWin(rset.getInt("TM_WIN"));
+		matchMaster.setTmLose(rset.getInt("TM_LOSE"));
 		return matchMaster;
 	}
 	

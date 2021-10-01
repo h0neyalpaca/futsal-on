@@ -148,13 +148,21 @@
 	margin-bottom:30px;
 }
 .rating_area p{
+	line-height:2;
+	font-size:1.2em;
 	margin-bottom:10px;
 }
 .rating_area i{
 	font-size:2em;
 }
-
 .star i{
+	color:#aaa;
+	margin-right:-3px;
+}
+.star i:last-child{
+	margin-right:0;
+}
+.star i.full-star{
 	color:#000;
 }
 .rating_area i.full-star, .rating_area i.fa-star-half-alt{
@@ -166,6 +174,21 @@
 	border:1px solid #ccc;
 	border-radius:0;
 	box-shadow:0px 5px 15px #fff;
+}
+.board-cate{
+	display:flex;
+	justify-content:center;
+}
+.board-cate > li{
+	width:50%;
+	text-align:center;
+	padding:15px 0;
+	background-color:#eee;
+	cursor:pointer;
+}
+.board-cate > li.selected{
+	background-color:#483D8B;
+	color:#fff;
 }
 
 /* delete team */
