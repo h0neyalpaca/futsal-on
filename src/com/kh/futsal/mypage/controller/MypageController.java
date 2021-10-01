@@ -233,13 +233,17 @@ public class MypageController extends HttpServlet {
 		int time =  Integer.parseInt(today.substring(11,13));
 		
 		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
-			if(alarm.getIsStart() == 0) {
+			if(alarm.getIsStart() == 0 && !alarm.getContent().contains("종료")) {
 				alarmService.updateAlarmIsStart(alarm.getNtIdx(),alarm);
+			}else {
+				if(alarm.getContent().contains("종료")) {
+					return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
+				}
 			}
-		}
-		
-		if(alarm.getContent().contains("종료")) {
-			return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
+		}else {
+			if(alarm.getContent().contains("종료")) {
+				return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
+			}
 		}
 		return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
 	}
