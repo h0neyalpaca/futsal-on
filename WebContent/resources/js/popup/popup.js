@@ -9,7 +9,7 @@ let teamInfo = (tmCode) => {
 		})
 		.then(text => {
 			if(text == 'disable'){
-				
+				alert('존재하지 않는 팀입니다.');
 			}else{
 				let tmInfos = text.split('[=dividing line=]');
 				document.querySelector(".popup-teaminfo-wrap").style.display = 'block';
@@ -23,7 +23,7 @@ let teamInfo = (tmCode) => {
 			}
 		})
 		.catch(error=>{
-			//
+			alert('ERROR');
 		});
 };
 

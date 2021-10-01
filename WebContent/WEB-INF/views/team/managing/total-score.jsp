@@ -123,5 +123,45 @@
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <%@ include file="/WEB-INF/views/team/include/team-pop.jsp" %>
 <script type="text/javascript" src="${request.contextPath}/resources/js/team/managing.js"></script>
+<script type="text/javascript">
+	let updateWinner = (e, mgIdx, hostCode, rivalCode, tmCode) => {
+		let score = e.parentNode.childNodes[1].childNodes[1].value;
+		let winner = rivalCode;
+		let loser = hostCode;
+		if(tmCode == hostCode){
+			if(score==='1'){
+				winner = hostCode;
+				loser = rivalCode;
+			}
+			console.dir(winner);
+		} else{
+			if(score==='2'){
+				winner = hostCode;
+				loser = rivalCode;
+			}
+		}
+		drawQuestion('경기 결과를 저장하시겠습니까?','winnerFunc("'+mgIdx+'","'+winner+'","'+loser+'");');
+	}
+	let updateRslt = (e, mgIdx, hostCode, rivalCode, tmCode) => {
+		let rating = e.parentNode.childNodes[1].childNodes[1].value;
+		let target = '';
+		if(tmCode == hostCode){
+			target = 'rival';
+		} else{
+			target = 'host';
+		}
+		drawQuestion('상대팀 평가를 저장하시겠습니까?','rsltFunc("'+mgIdx+'","'+target+'","'+rating+'");');
+	}
+	let winnerFunc = (mgIdx, winner,loser) => {
+		let xhr = new XMLHttpRequest();
+		xhr = xmlRequest('POST','update-winner','');
+		xhr.send('mgIdx='+mgIdx+'&winner='+winner+'&loser='+loser);
+	}
+	let rsltFunc = (mgIdx, target, rating) => {
+		let xhr = new XMLHttpRequest();
+		xhr = xmlRequest('POST','update-rating','');
+		xhr.send('mgIdx='+mgIdx+'&target='+target+'&rating='+rating);
+	}
+</script>
 </body>
 </html>
