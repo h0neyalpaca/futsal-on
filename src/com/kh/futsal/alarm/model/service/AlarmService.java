@@ -7,7 +7,6 @@ import com.kh.futsal.alarm.model.dao.AlarmDao;
 import com.kh.futsal.alarm.model.dto.Alarm;
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.matching.model.dto.MatchMaster;
-import com.kh.futsal.member.model.dto.Member;
 
 public class AlarmService {
 

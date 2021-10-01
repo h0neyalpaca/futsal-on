@@ -237,6 +237,10 @@ public class MypageController extends HttpServlet {
 				alarmService.updateAlarmIsStart(alarm.getNtIdx(),alarm);
 			}
 		}
+		
+		if(alarm.getContent().contains("종료")) {
+			return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
+		}
 		return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
 	}
 	
