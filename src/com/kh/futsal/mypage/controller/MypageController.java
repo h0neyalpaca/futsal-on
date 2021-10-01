@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kh.futsal.alarm.model.dto.Alarm;
 import com.kh.futsal.alarm.model.service.AlarmService;
+import com.kh.futsal.common.file.FileDTO;
 import com.kh.futsal.common.pagination.PageInfo;
 import com.kh.futsal.common.pagination.Pagination;
 import com.kh.futsal.matching.model.dto.MatchGame;
@@ -193,6 +194,7 @@ public class MypageController extends HttpServlet {
 		List<MatchGame> mgList = matchingService.matchMgList(userId);
 		List<MatchMaster> matchList = matchingService.matchGameList(mgList);
 		List<Team> teamInfos = new ArrayList<Team>();
+		List<FileDTO> files = new ArrayList<FileDTO>();
 		Map<String,Object> matchTeamList =  new HashMap<String, Object>();
 		
 		for (int i = 0; i < matchList.size(); i++) {
@@ -205,9 +207,15 @@ public class MypageController extends HttpServlet {
 			}
 		}
 		
+		for (int j = 0; j < teamInfos.size(); j++) {
+			FileDTO file = teamService.selectFile(teamInfos.get(j).getTmCode());
+			files.add(file);
+		}
+		
 		matchTeamList.put("mgList",mgList);
 		matchTeamList.put("matchList", matchList);
 		matchTeamList.put("teamList",teamInfos);
+		matchTeamList.put("fileList",files);
 		request.setAttribute("datas", matchTeamList);
 		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
 	}

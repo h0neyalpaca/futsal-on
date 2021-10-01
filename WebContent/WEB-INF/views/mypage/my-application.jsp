@@ -38,8 +38,8 @@
 									<div class="popup-title">
 										<h1>${datas.teamList[status.index].tmName}</h1>
 									</div>
-									<div class="popup-team-img">
-										<img src="" alt="">
+									<div class="popup-team-img" style="background-size: cover; background-image: <c:if test="${empty datas.fileList[status.index].tmCode}">url('/resources/img/team/no-img.jpg')</c:if>
+									 <c:if test="${not empty datas.fileList[status.index].tmCode}">url('/resources/img/team/${file.savePath}${file.renameFileName}')</c:if>">
 									</div>
 									<div class="popup-team-info">
 										<p><span class="tit">실력</span> ${datas.teamList[status.index].getTmGrade()}</p>
@@ -57,7 +57,8 @@
 								</div>
 							</div>
 							<div class="profile_n_appli">
-									<div class="profile-img"></div>
+									<div class="profile-img"style="border:solid gray; background-size: cover; background-image: <c:if test="${empty datas.fileList[status.index].tmCode}">url('/resources/img/team/no-img.jpg')</c:if>
+									 <c:if test="${not empty datas.fileList[status.index].tmCode}">url('/resources/img/team/${file.savePath}${file.renameFileName}')</c:if>"></div>
 										<div class="profile-name">
 										${datas.teamList[status.index].tmName}
 										<span>
