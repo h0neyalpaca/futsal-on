@@ -86,8 +86,14 @@ public class MatchingController extends HttpServlet {
 	}
 
 	private void SearchRating(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-		List<MatchMaster> matchList = matchingService.matchListView(); 	
+		List<MatchMaster> matchList = null;
 		String match = request.getParameter("match");
+		
+		if (match.equals("team")) {
+			matchList = matchingService.matchListView(); 	
+		}else if (match.equals("mercenary")) {
+			matchList = matchingService.mercenaryListView();
+		}
 		for (MatchMaster matchMaster : matchList) {
 			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
 		}
@@ -105,7 +111,7 @@ public class MatchingController extends HttpServlet {
 
 	private void SearchRecent(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String match = request.getParameter("match");
-		System.out.println(match);
+		System.out.println("recent : " + match);
 		
 		if (match.equals("team")) {
 			match = "NULL";
@@ -121,9 +127,9 @@ public class MatchingController extends HttpServlet {
 		}
 		request.setAttribute("matchList", matchList);
 		
-		if (match.equals("team")) {
+		if (match.equals("NULL")) {
 			request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
-		}else if(match.equals("mercenary")) {
+		}else if(match.equals("NOT NULL")) {
 			request.getRequestDispatcher("/matching/mercenary/mercenary-list").forward(request, response);
 		}
 		

@@ -223,7 +223,7 @@ public class MatchDao {
 					" on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE"
 					+ " left outer join team"
 					+ " on MATCH_MASTER.TM_CODE = team.TM_CODE" 
-					+ " where MATCH_MASTER.LOCAL_CODE = ? and MATCH_DATE = ? and GRADE = ? and MATCH_NUM IS "+match;
+					+ " where MATCH_MASTER.LOCAL_CODE = ? and MATCH_DATE = ? and GRADE = ? and MATCH_NUM IS NOT NULL";
 		}
 		
 		
