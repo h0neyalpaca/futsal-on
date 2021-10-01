@@ -20,7 +20,7 @@
 				<form action="/notice/notice-list" >
 					<div class="search">
 						<div class="search-inner">
-							<div class="search-input"><input type="text" name ="searchNotice" ></div>
+							<div class="search-input"><input type="text" name ="searchNotice" value="${searchContent }" ></div>
 							<div class="search-button"><button><i class="fas fa-search"></i></button></div>
 						</div>
 					</div>
@@ -62,7 +62,7 @@
 										<div class="board-list">
 											<div class="inner-list top-notice-list">
 
-												<a href="/notice/notice-detail?curPage=${page.curPage}&noticeNo=${mainNotice.nwIdx}">${mainNotice.nwTitle}</a>
+												<a href="/notice/notice-detail?noticeNo=${mainNotice.nwIdx}">${mainNotice.nwTitle}</a>
 
 											</div>
 										</div>
@@ -82,6 +82,7 @@
 					</table>
 					
 					<!-- 일반 공지 -->
+					<c:if test="${not empty searchContent}">
 					<table class="join-form">
 						<colgroup>
 							<col style="width: 88px;">
@@ -89,10 +90,8 @@
 							<col style="width: 118px;">
 							<col style="width: 68px;">
 						</colgroup>
-
 						<c:set var="num" value="${totalNoticeCnt - ((page.curPage-1) * page.boardSize) }"/>
-
-						<c:forEach var ="notice" items="${noticeList}" > 
+						<c:forEach var ="notice" items="${noticeSearchList}" > 
 						<tbody class="notice">
 							<tr>
 							
@@ -120,10 +119,57 @@
 							<tr>
 								
 					</table>
+					<ul class="page-button">
 				
+					<c:if test="${page.curPage> page.pageSize }"> 
+							<li><a class="prev-noti" href="/notice/notice-list?page=${page.endPage-1}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
+					</c:if>
 				
-								
-				<ul class="page-button">
+					<c:forEach var="page" begin="${page.startPage}" end="${page.endPage}">
+							<li class="page-num ${page==curPage ? "active":""}"><a href="notice-list?curPage=${page}&searchNotice=${searchContent}">${page}</a></li>
+					</c:forEach>
+						
+					<c:if test="${page.endPage<page.totalPage }">
+						<li><a class="next-noti" href="/notice/notice-list?curPage=${page.endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
+					</c:if>
+				</ul>
+				</c:if>
+				<c:if test="${empty searchContent}">
+				<table class="join-form">
+						<colgroup>
+							<col style="width: 88px;">
+							<col>
+							<col style="width: 118px;">
+							<col style="width: 68px;">
+						</colgroup>
+						<c:set var="num" value="${totalNoticeCnt - ((page.curPage-1) * page.boardSize) }"/>
+						<c:forEach var ="notice" items="${noticeList}" > 
+						<tbody class="notice">
+							<tr>
+							
+								<td class="num"><span>${num}</span></td>
+								<td class="td_article">
+									<div class="board-wrap">
+										<div class="board-list">
+											<div class="inner-list">
+												<a href="/notice/notice-detail?curPage=${page.curPage}&noticeNo=${notice.nwIdx}">${notice.nwTitle}</a>
+											</div>
+										</div>
+									</div>
+								</td>
+								<td class="td-date">
+									${notice.regDate}
+								</td>
+								<td class="td-view">
+									${notice.views}
+								</td>
+								 
+							</tr>
+							 <c:set var="num" value="${num-1 }"></c:set>
+							</c:forEach>
+						<tr>
+					</table>
+					<ul class="page-button">
 				
 					<c:if test="${page.curPage> page.pageSize }"> 
 							<li><a class="prev-noti" href="/notice/notice-list?page=${page.endPage-1}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
@@ -137,6 +183,9 @@
 						<li><a class="next-noti" href="/notice/notice-list?curPage=${page.endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
 					</c:if>
 				</ul>
+				</c:if>
+								
+				
 				</form>
 				</div>
 				

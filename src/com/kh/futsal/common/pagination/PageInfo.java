@@ -2,16 +2,15 @@ package com.kh.futsal.common.pagination;
 
 public class PageInfo {
 
-	private int curPage = 0; //현재 페이지 번호
-	private int startPage = 0; //현재 페이지의 시작 번호
-	private int endPage = 0; //현제 페이지의 마지막 번호	
-	private int pageSize = 2; //한 번에 표시할 페이지 수
-	private int totalNoticeCnt = 0; //게시물 총 갯수
-	private int totalPage = 0; //페이지 총 갯수
-	private int startNo = 0; //현재 페이지의 첫 게시물 번호
-	private int endNo = 0; //현제 페이지의 마지막 게시물 번호
-
-	private int boardSize = 0;
+	private int curPage; //현재 페이지 번호
+	private int startPage; //현재 페이지의 시작 번호
+	private int endPage; //현제 페이지의 마지막 번호	
+	private int pageSize; //한 번에 표시할 페이지 수
+	private int totalNoticeCnt; //게시물 총 갯수
+	private int totalPage; //페이지 총 갯수
+	private int startNo; //현재 페이지의 첫 게시물 번호
+	private int endNo; //현제 페이지의 마지막 게시물 번호
+	private int boardSize; //페이지당 게시물 수 
 	
 	public PageInfo() {
 		// TODO Auto-generated constructor stub
@@ -109,9 +108,6 @@ public class PageInfo {
 				+ pageSize + ", totalNoticeCnt=" + totalNoticeCnt + ", totalPage=" + totalPage + ", startNo=" + startNo
 				+ ", endNo=" + endNo + ", boardSize=" + boardSize + "]";
 	}
-	
-
-	
 	
 	
 }
