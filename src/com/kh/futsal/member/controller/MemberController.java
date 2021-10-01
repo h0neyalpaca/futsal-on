@@ -132,7 +132,7 @@ public class MemberController extends HttpServlet {
 			
 			member.setUserId("kakao_"+userId);
 			member.setPassword("kakao");
-			member.setUserName("(ka)"+userId);
+			member.setUserName("카카오임시계정");
 			member.setTell(" ");
 			member.setEmail("카카오임시계정");
 			member.setCapacity(" ");
