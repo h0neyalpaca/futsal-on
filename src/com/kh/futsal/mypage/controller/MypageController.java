@@ -229,7 +229,7 @@ public class MypageController extends HttpServlet {
 		int time =  Integer.parseInt(today.substring(11,13));
 		
 		if(alarmDate.equals(day)) {
-			if((alarmTime -4) <= time && time < alarmTime) {
+			if((alarmTime -4) <= time && time < alarmTime+2) {
 				alarmService.updateAlarmIsStart(alarm.getNtIdx());
 				return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
 			}else if((alarmTime + 2) <= time) {
