@@ -197,6 +197,20 @@ public class MatchMaster {
 	public void setMatchTime(String matchTime) {
 		this.matchTime = matchTime;
 	}
+	
+	public long getMatchSchedule() {
+		String date = "";
+		String time = "";
+		String[] dateArr = getMatchDate().split("-");
+		String[] timeArr = getMatchTime().split(":");
+		for (int i = 0; i < dateArr.length; i++) {
+			date += dateArr[i];
+		}
+		for (int i = 0; i < timeArr.length; i++) {
+			time += timeArr[i];
+		}
+		return Long.parseLong(date+time);
+	}
 
 	@Override
 	public String toString() {

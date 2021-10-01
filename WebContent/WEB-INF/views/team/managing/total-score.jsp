@@ -57,7 +57,7 @@
 												</div>
 												<button class="btn-change-grade" onclick="updateWinner(this, '${results.mgIdx}', '${results.hostCode}', '${results.rivalCode}', '${team.tmCode}');">저장</button>
 											</c:when>
-											<c:when test="${empty results.winner and results.matchSchedule gt nowDate}">
+											<c:when test="${empty results.winner and results.matchSchedule ge nowDate}">
 												경기예정
 											</c:when>
 											<c:when test="${not empty results.winner}">
@@ -85,7 +85,7 @@
 												</div>
 												<button class="btn-change-grade" onclick="updateRslt(this, '${results.mgIdx}', '${results.hostCode}', '${results.rivalCode}', '${team.tmCode}');">저장</button>
 											</c:if>
-											<c:if test="${results.matchSchedule gt nowDate}">
+											<c:if test="${results.matchSchedule ge nowDate}">
 												경기예정
 											</c:if>
 										</c:if>
