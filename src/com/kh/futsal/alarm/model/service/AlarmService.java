@@ -39,11 +39,11 @@ public class AlarmService {
 	}
 	
 	//매치글 삭제시 알람 삭제용 
-	public void deleteAlarm(String ntIdx) {
+	public void deleteAlarm(String mmIdx) {
 		
 		Connection conn = template.getConnection();
 		try {
-			alarmDao.deleteAlarm(ntIdx,conn);
+			alarmDao.deleteAlarm(mmIdx,conn);
 			template.commit(conn);
 		}finally {
 			template.close(conn);

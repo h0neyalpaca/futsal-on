@@ -106,13 +106,13 @@ public class AlarmDao {
 	}
 	
 	//게시글 자체를 지웠을 때 용
-	public void deleteAlarm(String ntIdx, Connection conn) {
+	public void deleteAlarm(String mmIdx, Connection conn) {
 		
 		String sql = "delete notice where mm_idx = ? ";
 		PreparedStatement pstm = null;
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, ntIdx);
+			pstm.setString(1, mmIdx);
 			pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
