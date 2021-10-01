@@ -117,6 +117,8 @@ public class MypageController extends HttpServlet {
 	private void nickCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nickName = request.getParameter("nickName");
 		Member member = memberService.selectMemberByNick(nickName);
+		System.out.println(nickName);
+		System.out.println((Member) request.getSession().getAttribute("authentication"));
 		
 		if(member == null) {
 			response.getWriter().print("available");
