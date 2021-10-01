@@ -22,31 +22,34 @@
 					<a href="mercenary-match-form"><i class="fas fa-pencil-alt"></i>글쓰기</a>
 				</div>
 				<div class="search-wrap">
-					<form>
+					<form onsubmit="return formCheck()" action="/matching/team/team-match-search" method="post">
 						<dl>
 							<dt>경기지역</dt>
-							<dd>
-								<label class="selected"><input type="checkbox" selected>서울</label>
-								<label><input type="checkbox">경기</label>
-								<label><input type="checkbox">강원</label>
-								<label><input type="checkbox">충청</label>
-								<label><input type="checkbox">전라</label>
-								<label><input type="checkbox">제주</label>
-								<label><input type="checkbox">경상</label>
+							<dd class="local">
+								<label><input type="radio" value="LC11" name="localCode">서울</label>
+								<label><input type="radio" value="LC31" name="localCode">경기</label>
+								<label><input type="radio" value="LC32" name="localCode">강원</label>
+								<label><input type="radio" value="LC33" name="localCode">충청</label>
+								<label><input type="radio" value="LC35" name="localCode">전라</label>
+								<label><input type="radio" value="LC39" name="localCode">제주</label>
+								<label><input type="radio" value="LC37" name="localCode">경상</label>
 							</dd>
 						</dl>
 						<dl>
 							<dt>기간</dt>
-							<dd><input type="date"></dd>
+							<dd>
+								<input type="date" name="date" id="currentDate">
+							</dd>
 						</dl>
 						<dl>
 							<dt>상대팀 실력</dt>
-							<dd>
-								<label><input type="radio">상</label>
-								<label class="selected"><input type="radio">중</label>
-								<label><input type="radio">하</label>
+							<dd class="level-dd">
+								<label><input type="radio" name="level" value="high">상</label>
+								<label><input type="radio" name="level" value="middle">중</label>
+								<label><input type="radio" name="level" value="low">하</label>
 							</dd>
 						</dl>
+						<input type="hidden" name="match" value="mercenary">
 						<input type="submit" value="검색">
 					</form>
 				</div> <!-- End search wrap -->
@@ -54,85 +57,207 @@
 				<!-- 하나의 매치 박스 -->
 				<div class="search-role-wrap">
 					<div class="search-role">
-						<a href="#">최신순</a>
-						<a href="#">별점순</a>
+						<a href="/matching/team/recent?match=mercenary">최신순</a> <a href="/matching/team/rating?match=mercenary">별점순</a>
 					</div>
 				</div>
-				<div class="match-box">
-					<div class="tit-area">
-						<div class="tit-info">
-							<div class="state recruiting">모집중</div>
-							<div class="tit">
-								<strong>수원 화성 풋살파크 1구장 용병 1명 모집</strong>
-								별점 ★★★★★&nbsp;&nbsp;&nbsp;전적 10전 6승 4패
+				<c:forEach var="matchBox" items="${matchList}">
+				<%@ include file="/WEB-INF/views/pop/team-info.jsp"%>
+					<div class="match-box">
+						<div class="tit-area">
+							<div class="tit-info">
+								<c:choose>
+									<c:when test="${matchBox.getState() == 1}">
+										<div class="state end">모집완료</div>
+									</c:when>
+									<c:when test="${matchBox.getState() == 0}">
+										<div class="state recruiting">모집중</div>
+									</c:when>
+								</c:choose>
+								<div class="tit">
+									<strong>${matchBox.getTitle()}</strong>
+									<div>
+										<c:forEach var="i" begin="1" end="${matchBox.getTmRating()}">
+										<div style="float: left;"><i class="fas fa-star full-star"></i></div> 
+										</c:forEach>
+										<c:if test="${matchBox.getTmRating()%1!=0}">
+										<div style="float: left;"><i class="fas fa-star-half-alt"></i></div>
+										</c:if>
+										<c:forEach var="i" begin="1" end="${5-matchBox.getTmRating()}">
+										<div style="float: left;"><i class="far fa-star star"></i></div>
+										</c:forEach>
+									</div>
+									<c:set var="lose" value="${matchBox.getGameCnt() - matchBox.getTmWin()}"></c:set>
+									&nbsp;&nbsp;전적 ${matchBox.getGameCnt()}전${matchBox.getTmWin()}승<c:out value="${lose}"></c:out>패
+
+								</div>
+							</div>
+							<!-- 팝업창 -->
+
+							<!-- 팝업창 끝 -->
+							<div class="profile_n_appli">
+								<div class="profile">
+									1명남음
+									<div class="profile-img"></div>
+									<div class="profile-name">
+									${matchBox.getTmName()}
+									<span>
+										<i class="fas fa-search"></i>정보보기
+									</span>
+									</div>
+								</div>
+								<c:choose>
+									<c:when test="${matchBox.getState() == 1}">
+										<div class="btn-appli" onclick="expiration()">신청하기</div>
+									</c:when>
+									<c:when test="${matchBox.getState() == 0}">
+										<div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()},'${matchBox.getTmCode()}','${authentication.userId}','${matchBox.getMatchDate()}'),'${matchBox.getMatchTime()}','${matchBox.getTitle()}')">신청하기</div>
+									</c:when>
+								</c:choose>
+								
+								
 							</div>
 						</div>
-						<div class="profile_n_appli">
-							<div class="profile">
-								<div class="profile-name"><a onclick="">1 명남음</a></div>
-							</div>
-							<div class="btn-appli">신청하기</div>
+						<div class="match-detail">
+							<ul>
+								<li><span class="tit">지역</span>[${matchBox.getLocalCode()}]
+									${matchBox.getAddress()} <a class="view-map"
+									onclick="window.open('https://map.kakao.com/link/search/${matchBox.getAddress()}', 'pop01', 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no');">
+										<i class="fas fa-map-marker-alt"></i> 지도보기
+								</a></li>
+								<li><span class="tit">매치날짜</span>${matchBox.getMatchDate()}
+									${matchBox.getMatchTime()}</li>
+							</ul>
+							<ul>
+								<li><span class="tit">매치방식</span>${matchBox.getTmMatch()}:${matchBox.getTmMatch()}</li>
+								<li><span class="tit">실력</span> <c:choose>
+										<c:when test="${matchBox.getGrade() eq 'high'}">
+										상
+										</c:when>
+										<c:when test="${matchBox.getGrade() eq 'middle'}">
+								      	중
+								         </c:when>
+										<c:when test="${matchBox.getGrade() eq 'low'}">
+								               하
+								         </c:when>
+										<c:otherwise>${matchBox.getGrade()}</c:otherwise>
+									</c:choose></li>
+								<li><span class="tit">구장비</span>${matchBox.getExpense()}원</li>
+							</ul>
+							<div class="txt">${matchBox.getContent()}</div>
 						</div>
 					</div>
-					<div class="match-detail">
-						<ul>
-							<li><span class="tit">지역</span>[경기] 수원 화성 풀살파크 1구장 <a class="view-map"><i class="fas fa-map-marker-alt"></i> 지도보기</a></li>
-							<li><span class="tit">매치날짜</span>2021-09-11 13:00</li>
-						</ul>
-						<ul>
-							<li><span class="tit">매치방식</span>6:6</li>
-							<li><span class="tit">실력</span>상</li>
-							<li><span class="tit">용병비</span>10,000원</li>
-						</ul>
-						<div class="txt">내용이 들어갑니다.</div>
-					</div>
-				</div><!-- End 매치 박스 -->
+					<!-- End 매치 박스 -->
+
+				</c:forEach> 
 				<!-- 하나의 매치 박스 -->
-				<div class="match-box">
-					<div class="tit-area">
-						<div class="tit-info">
-							<div class="state end">모집완료</div>
-							<div class="tit">
-								<strong>수원 화성 풋살파크 1구장 매치 모집</strong>
-								별점 ★★★★★&nbsp;&nbsp;&nbsp;전적 10전 6승 4패
-							</div>
-						</div>
-						<div class="profile_n_appli">
-							<div class="profile">
-								<div class="profile-name"><a onclick="">0 명남음</a></div>
-							</div>
-							<div class="btn-appli">신청하기</div>
-						</div>
-					</div>
-					<div class="match-detail">
-						<ul>
-							<li><span class="tit">지역</span>[경기] 수원 화성 풀살파크 1구장 <a class="view-map"><i class="fas fa-map-marker-alt"></i> 지도보기</a></li>
-							<li><span class="tit">매치날짜</span>2021-09-11 13:00</li>
-						</ul>
-						<ul>
-							<li><span class="tit">매치방식</span>6:6</li>
-							<li><span class="tit">실력</span>상</li>
-							<li><span class="tit">용병비</span>10,000원</li>
-						</ul>
-						<div class="txt">내용이 들어갑니다.</div>
-					</div>
-				</div><!-- End 매치 박스 -->
+				
 			</div>
 		</div>
 	</section>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+	<script type="text/javascript">
+	let matchRequset = (idx,tmCode,user,date,time,title) => {
+		if (window.confirm("매치를 신청하시겠습니까?")) {
+			console.dir(tmCode);
+			location.href="/matching/team/subscription?matchIdx="+idx+"&tmCode="+tmCode+"&userId="+user+"&matchDate="+date+"&matchTime="+time+"&title="+title;
+		}
+	}
+	
+	let expiration = () =>{
+		alert("모집이 완료된 매치입니다.");
+	}
+	
+	let formCheck = () =>{
+		let localCode = document.getElementsByName('localCode');
+		
+		console.dir(localCode);
+		let value = null;
+		localCode.forEach((e) => {
+			if (e.checked) {
+				value = e.value;
+				console.dir(e.checked);
+			}
+		})
+		
+		
+		if (value == null) {
+			alert("지역을 선택해주세요.");
+			return false;
+		}
+		
+		
+		let date = document.querySelector('#currentDate').value;	
+		
+		
+		if(date == ""){
+			alert("경기 날짜를 선택해주세요.");
+			return false;
+		}
+		
+		let level = document.getElementsByName('level');
+		let checkLevel = null;
+		
+		level.forEach((e) => {
+			if (e.checked) {
+				checkLevel = e.value;
+				
+			}
+		})
+		console.dir(checkLevel);
+		
+		if (checkLevel == null) {
+			alert("실력을 선택해주세요.");
+			return false;
+		}
+		
+		
+		return true;
+	}
+	
+	
+	</script>
 <script>
+(() => {
+	document.querySelector('.local').addEventListener('click',e=>{
+		let checkLocal = document.getElementsByName('localCode');
+		
+		checkLocal.forEach(check => {
+			if (check.checked) {
+				check.parentNode.className = 'selected';
+			}else{
+				check.parentNode.className = '';
+			}
+			
+		})
+	})
+	
+	document.querySelector('.level-dd').addEventListener('click',e => {
+		let checkLevel = document.getElementsByName('level');
+		checkLevel.forEach(check => {
+			if (check.checked) {
+				check.parentNode.className = 'selected';
+			}else{
+				check.parentNode.className = '';
+			}
+			
+		})
+	})
+	
+
+	
 	let popup = document.querySelectorAll(".profile-name");
 
-	popup.forEach(element => {
+ 	popup.forEach(element => {
 		element.addEventListener('click', () => {
 			document.querySelector(".popup-teaminfo-wrap").style.display = 'block';
 		})
-	});
-
+	}); 
+ 	
 	document.querySelector(".popup-close").addEventListener('click',() =>{
 		document.querySelector(".popup-teaminfo-wrap").style.display = 'none';
 	})
+	
+})(); 
 </script>
 </body>
 </html>

@@ -52,7 +52,7 @@ public class MatchingController extends HttpServlet {
 			teamMatchRegister(request,response);
 			break;
 		case "team-match-search":
-			teamMatchSearch(request,response);
+			MatchSearch(request,response);
 			break;
 		case "recent":
 			SearchRecent(request,response);
@@ -86,8 +86,8 @@ public class MatchingController extends HttpServlet {
 	}
 
 	private void SearchRating(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-		List<MatchMaster> matchList = matchingService.RecentView(); 	
-		
+		List<MatchMaster> matchList = matchingService.matchListView(); 	
+		String match = request.getParameter("match");
 		for (MatchMaster matchMaster : matchList) {
 			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
 		}
@@ -95,20 +95,39 @@ public class MatchingController extends HttpServlet {
 		
 		request.setAttribute("matchList", matchList);
 		
-		request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
-		
+		if (match.equals("team")) {
+			request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
+		}else if(match.equals("mercenary")) {
+			request.getRequestDispatcher("/matching/mercenary/mercenary-list").forward(request, response);
+		}
 	}
-
+	
 
 	private void SearchRecent(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
-		List<MatchMaster> matchList = matchingService.RecentView(); 	
+		String match = request.getParameter("match");
+		System.out.println(match);
+		
+		if (match.equals("team")) {
+			match = "NULL";
+		}else if(match.equals("mercenary")) {
+			match = "NOT NULL";
+		}
+		
+		
+		List<MatchMaster> matchList = matchingService.RecentView(match);
 		
 		for (MatchMaster matchMaster : matchList) {
 			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
 		}
 		request.setAttribute("matchList", matchList);
 		
-		request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
+		if (match.equals("team")) {
+			request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
+		}else if(match.equals("mercenary")) {
+			request.getRequestDispatcher("/matching/mercenary/mercenary-list").forward(request, response);
+		}
+		
+		
 		
 	}
 
@@ -232,18 +251,29 @@ public class MatchingController extends HttpServlet {
 	}
 
 
-	private void teamMatchSearch(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+	private void MatchSearch(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String localCode = request.getParameter("localCode");
 		String date = request.getParameter("date");
 		String level = request.getParameter("level");
+		String match = request.getParameter("match");
+		if (match.equals("team")) {
+			match = "NULL";
+		}else if(match.equals("mercenary")) {
+			match = "NOT NULL";
+		}
 		
-		
-		List<MatchMaster> matchList = matchingService.matchListSearch(localCode,date,level); 	
+		List<MatchMaster> matchList = matchingService.matchListSearch(localCode,date,level,match); 	
 		
 		
 		request.setAttribute("matchList", matchList);
+		System.out.println(match);
 		
-		request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
+		if (match.equals("NULL")) {
+			request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
+		}else if(match.equals("NOT NULL")) {
+			request.getRequestDispatcher("/matching/mercenary/mercenary-list").forward(request, response);
+		}
+		
 	}
 
 
@@ -298,7 +328,12 @@ public class MatchingController extends HttpServlet {
 		request.getRequestDispatcher("/matching/mercenary/mercenary-match-form").forward(request, response);
 	}
 	private void mercenaryList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<MatchMaster> matchList = matchingService.mercenaryListView(); 	
+		for (MatchMaster matchMaster : matchList) {
+			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
+		}
 		
+		request.setAttribute("matchList", matchList);
 		
 		
 		request.getRequestDispatcher("/matching/mercenary/mercenary-list").forward(request, response);

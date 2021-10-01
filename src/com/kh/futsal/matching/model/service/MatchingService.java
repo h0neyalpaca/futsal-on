@@ -54,14 +54,14 @@ public class MatchingService {
 		return res;
 	}
 
-	public List<MatchMaster> matchListSearch(String localCode, String date, String level) {
+	public List<MatchMaster> matchListSearch(String localCode, String date, String level, String match) {
 		List res = null;
 		Connection conn = template.getConnection();
 		
 		
 		try {
 			//매치글 리스트 받아오기
-			res = matchDao.matchListSearch(conn,localCode,date,level);
+			res = matchDao.matchListSearch(conn,localCode,date,level,match);
 			
 		} finally {
 			template.close(conn);
@@ -258,14 +258,14 @@ public class MatchingService {
 		return res;
 	}
 
-	public List<MatchMaster> RecentView() {
+	public List<MatchMaster> RecentView(String match) {
 		List<MatchMaster> RecentMatchList = new ArrayList<MatchMaster>();
 		
 		Connection conn = template.getConnection();
 		
 		try {
-			//매치글 삭제
-			RecentMatchList = matchDao.RecentMatch(conn);
+			
+			RecentMatchList = matchDao.RecentMatch(conn,match);
 					
 			
 			template.commit(conn);
@@ -276,6 +276,22 @@ public class MatchingService {
 			template.close(conn);
 		}
 		return RecentMatchList;
+	}
+
+	public List<MatchMaster> mercenaryListView() {
+		List res = null;
+		Connection conn = template.getConnection();
+		
+		
+		try {
+			//매치글 리스트 받아오기
+			res = matchDao.mercenaryListView(conn);
+			
+		} finally {
+			template.close(conn);
+		}
+		
+		return res;
 	}
 
 	

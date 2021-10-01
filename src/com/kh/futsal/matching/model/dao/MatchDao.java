@@ -66,7 +66,8 @@ public class MatchDao {
 				" left outer join location" + 
 				" on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE"
 				+ " left outer join team"
-				+ " on MATCH_MASTER.TM_CODE = team.TM_CODE";
+				+ " on MATCH_MASTER.TM_CODE = team.TM_CODE"
+				+ " where MATCH_NUM IS NULL";
 		
 		try {
 			pstm = conn.prepareStatement(query);
@@ -101,6 +102,38 @@ public class MatchDao {
 		match.setState(rset.getInt("STATE"));
 		match.setMatchTime(rset.getString("MATCH_TIME"));
 		match.setMatchDate(rset.getString("MATCH_DATE"));
+		
+		match.setTmName(rset.getString("tm_name"));
+		match.setTmGrade(rset.getString("TM_GRADE"));
+		match.setTmInfo(rset.getString("TM_INFO"));
+		match.setGameCnt(rset.getInt("GAME_CNT"));
+		match.setTmRating(rset.getInt("TM_SCORE"));
+		match.setTmWin(rset.getInt("TM_WIN"));
+		
+		
+		
+		return match;
+	}
+	
+	private MatchMaster convertRowToMercenaryList(ResultSet rset) throws SQLException {
+		MatchMaster match = new MatchMaster();
+		
+		match.setMmIdx(rset.getString("MM_IDX"));
+		match.setUserId(rset.getString("USER_ID"));
+		match.setTmCode(rset.getString("TM_CODE"));
+		match.setLocalCode(rset.getString("LOCAL_CITY"));
+		match.setAddress(rset.getString("ADDRESS"));
+		match.setRegDate(rset.getDate("REG_DATE"));
+		match.setTitle(rset.getString("TITLE"));
+		match.setExpense(rset.getString("EXPENSE"));
+		
+		match.setGrade(rset.getString("GRADE"));
+		match.setContent(rset.getString("CONTENT"));
+		match.setTmMatch(rset.getInt("TM_MATCH"));
+		match.setState(rset.getInt("STATE"));
+		match.setMatchTime(rset.getString("MATCH_TIME"));
+		match.setMatchDate(rset.getString("MATCH_DATE"));
+		match.setMatchNum(rset.getInt("MATCH_NUM"));
 		
 		match.setTmName(rset.getString("tm_name"));
 		match.setTmGrade(rset.getString("TM_GRADE"));
@@ -162,7 +195,7 @@ public class MatchDao {
 	}	
 
 
-	public List matchListSearch(Connection conn, String localCode, String date, String level) {
+	public List matchListSearch(Connection conn, String localCode, String date, String level, String match) {
 		List<MatchMaster> memberList = new ArrayList<MatchMaster>();	
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
@@ -177,19 +210,41 @@ public class MatchDao {
 				" on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE"
 				+ " left outer join team"
 				+ " on MATCH_MASTER.TM_CODE = team.TM_CODE" 
-				+ " where MATCH_MASTER.LOCAL_CODE = ? and MATCH_DATE = ? and GRADE = ?";
+				+ " where MATCH_MASTER.LOCAL_CODE = ? and MATCH_DATE = ? and GRADE = ? and MATCH_NUM IS "+match;
+		
+		if (match.equals("NOT NULL")) {
+			query = "select "
+					+ "MM_IDX,USER_ID,MATCH_MASTER.TM_CODE,LOCAL_CITY,ADDRESS,MATCH_NUM,"
+					+ "MATCH_MASTER.REG_DATE,TITLE,EXPENSE,GRADE,CONTENT,TM_MATCH"
+					+ ",MATCH_TIME,MATCH_DATE,STATE"
+					+ ",team.tm_name,TM_GRADE,TM_INFO,GAME_CNT,TM_SCORE,TM_WIN"
+					+ " from MATCH_MASTER" + 
+					" left outer join location" + 
+					" on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE"
+					+ " left outer join team"
+					+ " on MATCH_MASTER.TM_CODE = team.TM_CODE" 
+					+ " where MATCH_MASTER.LOCAL_CODE = ? and MATCH_DATE = ? and GRADE = ? and MATCH_NUM IS "+match;
+		}
+		
 		
 		try {
 			pstm = conn.prepareStatement(query);
 			pstm.setString(1,localCode);
 			pstm.setString(2,date); 
 			pstm.setString(3,level);
-			 
+			
 			
 			rset = pstm.executeQuery();
-			while(rset.next()) {
-				memberList.add(convertRowToMatchList(rset));
+			if (match.equals("NULL")) {
+				while(rset.next()) {
+					memberList.add(convertRowToMatchList(rset));
+				}
+			}else if (match.equals("NOT NULL")) {
+				while(rset.next()) {
+					memberList.add(convertRowToMercenaryList(rset));
+				}
 			}
+			
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
 		}finally {
@@ -491,10 +546,11 @@ public class MatchDao {
 	}
 
 
-	public List<MatchMaster> RecentMatch(Connection conn) {
+	public List<MatchMaster> RecentMatch(Connection conn, String match) {
 		List<MatchMaster> memberList = new ArrayList<MatchMaster>();	
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
+		
 		
 		String query = "select "
 				+ "MM_IDX,USER_ID,MATCH_MASTER.TM_CODE,LOCAL_CITY,ADDRESS,"
@@ -506,13 +562,73 @@ public class MatchDao {
 				" on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE"
 				+ " left outer join team"
 				+ " on MATCH_MASTER.TM_CODE = team.TM_CODE"
+				+ " where MATCH_NUM IS "+match
 				+ " order by MM_IDX DESC";
+		
+		if (match.equals("NOT NULL")) {
+			query = "select "
+					+ "MM_IDX,USER_ID,MATCH_MASTER.TM_CODE,LOCAL_CITY,ADDRESS,MATCH_NUM,"
+					+ "MATCH_MASTER.REG_DATE,TITLE,EXPENSE,GRADE,CONTENT,TM_MATCH"
+					+ ",MATCH_TIME,MATCH_DATE,STATE"
+					+ ",team.tm_name,TM_GRADE,TM_INFO,GAME_CNT,TM_SCORE,TM_WIN"
+					+ " from MATCH_MASTER" + 
+					" left outer join location" + 
+					" on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE"
+					+ " left outer join team"
+					+ " on MATCH_MASTER.TM_CODE = team.TM_CODE"
+					+ " where MATCH_NUM IS "+match
+					+ " order by MM_IDX DESC";
+			}
+		
+		try {
+			pstm = conn.prepareStatement(query);
+			
+			rset = pstm.executeQuery();
+			
+			
+			if (match.equals("NULL")) {
+				while(rset.next()) {
+					memberList.add(convertRowToMatchList(rset));
+				}
+			}else if (match.equals("NOT NULL")) {
+				while(rset.next()) {
+					memberList.add(convertRowToMercenaryList(rset));
+				}
+			}
+			
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		
+		return memberList;
+	}
+
+
+	public List mercenaryListView(Connection conn) {
+		List<MatchMaster> memberList = new ArrayList<MatchMaster>();	
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		String query = "select "
+				+ "MM_IDX,USER_ID,MATCH_MASTER.TM_CODE,LOCAL_CITY,ADDRESS,MATCH_NUM,"
+				+ "MATCH_MASTER.REG_DATE,TITLE,EXPENSE,GRADE,CONTENT,TM_MATCH"
+				+ ",MATCH_TIME,MATCH_DATE,STATE"
+				+ ",team.tm_name,TM_GRADE,TM_INFO,GAME_CNT,TM_SCORE,TM_WIN"
+				+ " from MATCH_MASTER" + 
+				" left outer join location" + 
+				" on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE"
+				+ " left outer join team"
+				+ " on MATCH_MASTER.TM_CODE = team.TM_CODE"
+				+ " where MATCH_NUM IS NOT NULL";
 		
 		try {
 			pstm = conn.prepareStatement(query);
 			rset = pstm.executeQuery();
 			while(rset.next()) {
-				memberList.add(convertRowToMatchList(rset));
+				memberList.add(convertRowToMercenaryList(rset));
 			}
 		} catch (SQLException e) {
 			throw new DataAccessException(e);

@@ -57,6 +57,7 @@
 								<label><input type="radio" name="level" value="low">하</label>
 							</dd>
 						</dl>
+						<input type="hidden" name="match" value="team">
 						<input type="submit" value="검색">
 					</form>
 				</div>
@@ -65,7 +66,7 @@
 				<!-- 하나의 매치 박스 -->
 				<div class="search-role-wrap">
 					<div class="search-role">
-						<a href="/matching/team/recent">최신순</a> <a href="/matching/team/rating">별점순</a>
+						<a href="/matching/team/recent?match=team">최신순</a> <a href="/matching/team/rating?match=team">별점순</a>
 					</div>
 				</div>
 				
@@ -118,7 +119,7 @@
 										<div class="btn-appli" onclick="expiration()">신청하기</div>
 									</c:when>
 									<c:when test="${matchBox.getState() == 0}">
-										<div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()},'${matchBox.getTmCode()}','${authentication.userId}','${matchBox.getMatchDate()}'),'${matchBox.getMatchTime()}','${matchBox.getTitle()}')">신청하기</div>
+										<div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()},'${matchBox.getTmCode()}','${authentication.userId}','${matchBox.getMatchDate()}','${matchBox.getMatchTime()}','${matchBox.getTitle()}')">신청하기</div>
 									</c:when>
 								</c:choose>
 								
