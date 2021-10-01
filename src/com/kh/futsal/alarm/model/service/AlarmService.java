@@ -7,6 +7,7 @@ import com.kh.futsal.alarm.model.dao.AlarmDao;
 import com.kh.futsal.alarm.model.dto.Alarm;
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.matching.model.dto.MatchMaster;
+import com.kh.futsal.member.model.dto.Member;
 
 public class AlarmService {
 
@@ -39,18 +40,6 @@ public class AlarmService {
 		}
 	}
 	
-	//매치 종료 알람 팀매칭 글이 종료된거면 리더 아이디 를 userId로 사용
-	public void insertAlarmEndGame(MatchMaster matchMaster,String userId) {
-		
-		Connection conn = template.getConnection();
-		try {
-			alarmDao.insertAlarmEndGame(matchMaster,userId,conn);
-			template.commit(conn);
-		}finally {
-			template.close(conn);
-		}
-	}
-	
 	//매치글 삭제시 알람 삭제용 
 	public void deleteAlarm(String mmIdx) {
 		
@@ -76,17 +65,30 @@ public class AlarmService {
 	}
 	
 	//매치시작이 4시간 남았을 때 알람을 띄워주기 위한 기능
-	public void updateAlarmIsStart(String ntIdx) {
+	public void updateAlarmIsStart(String ntIdx,Alarm alarm) {
 		
 		Connection conn = template.getConnection();
 		try {
-			alarmDao.updateAlarmIsStart(ntIdx,conn);
+			int res = alarmDao.updateAlarmIsStart(ntIdx,conn);
+			if(res == 1) {
+				alarmDao.insertAlarmIsEnd(alarm,conn);
+			}
 			template.commit(conn);
 		}finally {
 			template.close(conn);
 		}
 	}
 	
-	
-	
+	public void updateAlarmIsEnd(MatchMaster match,String userId) {
+		
+		Connection conn = template.getConnection();
+		try {
+			alarmDao.updateAlarmIsEnd(match,userId,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+	}
+
 }

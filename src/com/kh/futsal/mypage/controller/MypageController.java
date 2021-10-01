@@ -197,7 +197,7 @@ public class MypageController extends HttpServlet {
 			teamInfos.add(team);
 			
 			if(matchList.get(i).getState() == 1) {
-				alarmService.insertAlarmEndGame(matchList.get(i), userId);
+				alarmService.updateAlarmIsEnd(matchList.get(i),userId);
 			}
 		}
 		
@@ -233,7 +233,9 @@ public class MypageController extends HttpServlet {
 		int time =  Integer.parseInt(today.substring(11,13));
 		
 		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
-			alarmService.updateAlarmIsStart(alarm.getNtIdx());
+			if(alarm.getIsStart() == 0) {
+				alarmService.updateAlarmIsStart(alarm.getNtIdx(),alarm);
+			}
 		}
 		return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
 	}

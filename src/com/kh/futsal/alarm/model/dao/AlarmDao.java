@@ -37,20 +37,41 @@ public class AlarmDao {
 	}
 	
 	
-	public void updateAlarmIsStart(String ntIdx, Connection conn) {
+	public int updateAlarmIsStart(String ntIdx, Connection conn) {
 		
 		String sql = "update notice set IS_START = 1 where nt_idx = ? ";
 		PreparedStatement pstm = null;
+		int res = 0;
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, ntIdx);
-			pstm.executeUpdate();
+			res = pstm.executeUpdate();
 			
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
 		}finally {
 			template.close(pstm);
 		}
+		return res;
+	}
+	
+	public int updateAlarmIsEnd(MatchMaster match,String userId, Connection conn) {
+		
+		String sql = "update notice set IS_START = 1 where mm_idx = ? and user_id = ?";
+		PreparedStatement pstm = null;
+		int res = 0;
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, match.getMmIdx());
+			pstm.setString(2, userId);
+			res = pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		return res;
 	}
 	
 	public void insertAlarm(MatchMaster matchMaster,String userId, Connection conn) {
@@ -74,17 +95,19 @@ public class AlarmDao {
 		
 	}
 	
-	public void insertAlarmEndGame(MatchMaster matchMaster,String userId, Connection conn) {
-		
+	public void insertAlarmIsEnd(Alarm alarm,Connection conn) {
+
 		PreparedStatement pstm = null;
-		String query = "insert into notice values(sc_nt_idx.nextval ,0,?,?,?,?,1,?) ";
+		String query = "insert into notice values(sc_nt_idx.nextval ,0,?,?,?,?,0,?) ";
+		String content = alarm.getContent().split("\\[")[1];
+		content = content.split("\\]")[0];
 		try {
 			pstm = conn.prepareStatement(query);
-			pstm.setString(1, matchMaster.getMatchDate());
-			pstm.setString(2, "["+ matchMaster.getTitle()+"]가 종료되었습니다");
-			pstm.setString(3, userId);
-			pstm.setString(4, matchMaster.getMatchTime());
-			pstm.setString(5, matchMaster.getMmIdx());
+			pstm.setString(1, alarm.getNtDate());
+			pstm.setString(2, "["+content+"]가 종료 되었습니다");
+			pstm.setString(3, alarm.getUserId());
+			pstm.setString(4, alarm.getMatchTime());
+			pstm.setString(5, alarm.getMmIdx());
 
 			pstm.executeUpdate();
 		} catch (SQLException e) {
@@ -92,11 +115,11 @@ public class AlarmDao {
 		} finally {
 			template.close(pstm);
 		}
+		
 	}
-	
 	public List<Alarm> selectAlarmList (String userId, Connection conn){
 		
-		String sql = "select * from notice where user_id = ? order by state";
+		String sql = "select * from notice where user_id = ? order by state asc,nt_idx desc";
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		List<Alarm> alarms = new ArrayList<Alarm>();
