@@ -43,6 +43,23 @@
 		tmImg.style.background='url("/img/team/${file.savePath}${file.renameFileName}") center center';
 	</c:if>
 	tmImg.style.backgroundSize='cover';
+	
+	let breakTeam = (tmCode) => {
+		drawQuestion('정말로 팀을 해체하시겠습니까?','breakFunc("'+tmCode+'");');
+	}
+	let leaveTeam = (userId) => {
+		drawQuestion('정말로 팀을 탈퇴하시겠습니까?','leaveFunc("'+userId+'");');
+	}
+	let breakFunc = (tmCode) => {
+		let xhr = new XMLHttpRequest();
+		xhr = xmlRequest('POST','break-team','/team/main');
+		xhr.send('tmCode='+tmCode);
+	}
+	let leaveFunc = (userId) => {
+		let xhr = new XMLHttpRequest();
+		xhr = xmlRequest('POST','leave-team','/team/main');
+		xhr.send('userId='+userId);
+	}
 </script> 
 </body>
 </html>
