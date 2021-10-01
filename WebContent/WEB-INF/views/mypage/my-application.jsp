@@ -28,8 +28,18 @@
 								</c:choose>
 								<div class="tit">
 									<strong>${match.title}</strong>
-									${match.matchNum}명남음&nbsp;&nbsp;&nbsp;
-									별점(${datas.teamList[status.index].tmRating})&nbsp;&nbsp;&nbsp;전적  ${datas.teamList[status.index].gameCnt}전  ${datas.teamList[status.index].tmWin}승 ${datas.teamList[status.index].gameCnt - datas.teamList[status.index].tmWin}패
+									<div>
+										<c:forEach var="i" begin="1" end="${datas.teamList[status.index].tmRating}">
+										<div style="float: left;"><i class="fas fa-star full-star"></i></div> 
+										</c:forEach>
+										<c:if test="${datas.teamList[status.index].tmRating%1!=0}">
+										<div style="float: left;"><i class="fas fa-star-half-alt"></i></div>
+										</c:if>
+										<c:forEach var="i" begin="1" end="${5-datas.teamList[status.index].tmRating}">
+										<div style="float: left;"><i class="far fa-star star"></i></div>
+										</c:forEach>
+									</div>
+									&nbsp;&nbsp;&nbsp;전적  ${datas.teamList[status.index].gameCnt}전  ${datas.teamList[status.index].tmWin}승 ${datas.teamList[status.index].gameCnt - datas.teamList[status.index].tmWin}패&nbsp;&nbsp;&nbsp;&nbsp;${match.matchNum}명남음
 								</div>
 							</div>
 							<div class="popup-teaminfo-wrap">
