@@ -47,7 +47,7 @@
 	document.querySelector('#btnNickCheck').addEventListener('click', function(){
 		  
 		   let userNick = document.querySelector('#userNick').value;
-		   let idReg = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/;
+		   let idReg = /(?=.*[가-힝0-9])(?=.{2,10})/;
 		   let spaceCheck = /\s/g;
 
 		   if(!userNick){
@@ -57,7 +57,7 @@
 		   }
 
 		   if(!idReg.test(userNick)) {
-		   	   document.querySelector('#nickCheck').innerHTML = '<i class="fas fa-exclamation-circle"></i> 닉네임은 4~10자로 설정해야합니다.';
+		   	   document.querySelector('#nickCheck').innerHTML = '<i class="fas fa-exclamation-circle"></i> 닉네임은 한글 또는 숫자 2~10자로 설정해야합니다.';
 			   return;
            } else {
 		   	   document.querySelector('#nickCheck').innerHTML = '';
@@ -127,7 +127,7 @@
 		   }
 	
 		   if(!regName.test(userName)){
-			   document.querySelector('#NameDif').innerHTML = '<i class="fas fa-exclamation-circle"></i> 이름은 한글,영문 2~10글자인 문자열입니다';
+			   document.querySelector('#NameDif').innerHTML = '<i class="fas fa-exclamation-circle"></i> 이름은 한글 또는 영문 2~10글자인 문자열입니다';
 			   document.querySelector('#userName').focus();
 			   e.preventDefault();
 		   } else {
