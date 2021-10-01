@@ -76,7 +76,8 @@ public class MypageController extends HttpServlet {
 		default:
 		}
 	}
-
+	
+	//매치신청 취소
 	private void myApplicationDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String mgIdx = request.getParameter("mgIdx");
@@ -94,6 +95,7 @@ public class MypageController extends HttpServlet {
 	    request.getRequestDispatcher("/common/result").forward(request, response);
 	}
 	
+	//게임 시작 4시간전에는 취소불가해서 시간 확인하는 메소드
 	private boolean checkDate(MatchGame match){
 		String matchDayTime= match.getMatchDate();
 		String matchDay = matchDayTime.substring(0,10);
@@ -111,6 +113,7 @@ public class MypageController extends HttpServlet {
 		return true;
 	}
 	
+	//닉네임 중복체크
 	private void nickCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nickName = request.getParameter("nickName");
 		Member member = memberService.selectMemberByNick(nickName);
@@ -121,7 +124,8 @@ public class MypageController extends HttpServlet {
 			response.getWriter().print("disable");
 		}
 	}
-
+	
+	//비밀번호 일치 체크
 	private void pwCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		String password = member.getPassword();
@@ -134,7 +138,8 @@ public class MypageController extends HttpServlet {
 		}
 		
 	}
-
+	
+	//탈퇴처리
 	private void leave(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String userId = request.getParameter("userId");
@@ -147,10 +152,12 @@ public class MypageController extends HttpServlet {
 	    request.getRequestDispatcher("/common/result").forward(request, response);
 	}
 	
+	
 	private void leaveId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/mypage/leave-id").forward(request, response);
 	}
 	
+	//회원정보 수정
 	private void mypageModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		Member member = (Member) request.getSession().getAttribute("authentication");
@@ -174,6 +181,7 @@ public class MypageController extends HttpServlet {
 		request.getRequestDispatcher("/mypage/modify-form").forward(request, response);
 	}
 	
+	//용병신청 리스트
 	private void myApplication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		String userId = member.getUserId();
@@ -196,6 +204,7 @@ public class MypageController extends HttpServlet {
 		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
 	}
 	
+	//개인알람리스트
 	private void personalNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		String userId = member.getUserId();
@@ -210,6 +219,7 @@ public class MypageController extends HttpServlet {
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
 	}
 
+	//알람 상태 업데이트용
 	private String checkAlarmState(Alarm alarm) {
 		String alarmDate = alarm.getNtDate();
 		int alarmTime = Integer.parseInt(alarm.getMatchTime().substring(0, 2));
@@ -224,12 +234,14 @@ public class MypageController extends HttpServlet {
 		return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
 	}
 	
+	//알람 확인 상태 업데이트
 	private void alarmCheck(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String ntIdx = request.getParameter("ntIdx");
 		alarmService.updateAlarm(ntIdx);
 		response.sendRedirect("/mypage/my-application");
 	}
-
+	
+	//오늘 날짜와 시간 가져오는 메소드
 	private String getToday() {
 		LocalDateTime today = LocalDateTime.now();
 		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
