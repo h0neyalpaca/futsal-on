@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.exception.DataAccessException;
+import com.kh.futsal.common.pagination.PageInfo;
 import com.kh.futsal.support.model.dto.Support;
 
 public class SupportDao {
@@ -75,9 +76,14 @@ public class SupportDao {
 	}
 	
 	
-	public List<Support> selectSupportList (String userId, Connection conn){
+	public List<Support> selectSupportList (String userId, PageInfo page, Connection conn){
 		
-		String sql = "select * from board where user_id = ?";
+		String sql = "select *" + 
+				 	" from (select rownum rnum, board.* " + 
+				 	" from (select * from board" + 
+				 	" order by bd_idx desc) board" + 
+				 	" where user_id = ?)" + 
+				 	" where rnum between ? and ?";
 		
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
@@ -86,6 +92,9 @@ public class SupportDao {
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, userId);
+			pstm.setInt(2, page.getStartNo());
+			pstm.setInt(3, page.getEndNo());
+			
 			rset = pstm.executeQuery();
 			
 			while(rset.next()) {
@@ -107,6 +116,32 @@ public class SupportDao {
 		}
 		return supports;
 	}
+	
+	public int selectBoardCnt(Connection conn, String userId) {
+			
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			int res = 0;
+			
+			String sql = "select count(*) from board where user_id = ?";
+			
+			try {
+				pstm = conn.prepareStatement(sql);
+				pstm.setString(1, userId);
+				rset=pstm.executeQuery();
+				if(rset.next()) {
+					res = rset.getInt(1);
+				}
+				
+				
+			}  catch (SQLException e) {
+				throw new DataAccessException(e);
+			}finally {
+				template.close(rset, pstm);
+			}
+			
+			return res;
+		}
 
 	public void updateBoard(String bdIdx, String content,Connection conn) {
 		

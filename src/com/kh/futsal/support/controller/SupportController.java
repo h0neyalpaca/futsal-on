@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kh.futsal.common.code.member.MemberGrade;
+import com.kh.futsal.common.pagination.PageInfo;
+import com.kh.futsal.common.pagination.Pagination;
 import com.kh.futsal.member.model.dto.Member;
 import com.kh.futsal.support.model.dto.Support;
 import com.kh.futsal.support.model.service.SupportService;
@@ -147,13 +149,26 @@ public class SupportController extends HttpServlet {
 		MemberGrade adminGrade = MemberGrade.valueOf(member.getGrade());
 		List<Support> supportList = null;
 		
+		int curPage = 0;
+		int totalNoticeCnt = 0;
+		totalNoticeCnt = supportService.selectBoardCnt(member.getUserId());
+		System.out.println("totalNoticeCnt :" + totalNoticeCnt);
+		String pageNum = request.getParameter("curPage");
+		if(pageNum == null) {
+			pageNum = "1";
+		}
+		curPage =  Integer.parseInt(pageNum);
+		
+		PageInfo page = Pagination.getPageInfo(curPage, totalNoticeCnt);
+		
 		if(adminGrade.ROLE.equals("admin")) {
 			 supportList = supportService.selectAllSupportList();
 		}else {
 			String userId = member.getUserId();
-			supportList = supportService.selectSupportList(userId);
+			supportList = supportService.selectSupportList(userId, page);
 		}
 		
+		request.setAttribute("page", page);
 		request.setAttribute("supportList", supportList);
 		request.getRequestDispatcher("/mypage/support/support-list").forward(request, response);
 		

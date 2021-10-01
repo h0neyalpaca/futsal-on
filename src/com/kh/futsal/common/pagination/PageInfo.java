@@ -10,6 +10,7 @@ public class PageInfo {
 	private int totalPage = 0; //페이지 총 갯수
 	private int startNo = 0; //현재 페이지의 첫 게시물 번호
 	private int endNo = 0; //현제 페이지의 마지막 게시물 번호
+
 	private int boardSize = 0;
 	
 	public PageInfo() {
@@ -109,11 +110,7 @@ public class PageInfo {
 				+ ", endNo=" + endNo + ", boardSize=" + boardSize + "]";
 	}
 	
-	 
-	
-	
-	
-	
+
 	
 	
 	
