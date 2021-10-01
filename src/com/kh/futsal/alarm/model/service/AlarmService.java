@@ -33,7 +33,18 @@ public class AlarmService {
 		Connection conn = template.getConnection();
 		try {
 			alarmDao.insertAlarm(matchMaster,userId,conn);
-			alarmDao.insertAlarmEndGame(matchMaster, userId, conn);
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+	}
+	
+	//매치 종료 알람 팀매칭 글이 종료된거면 리더 아이디 를 userId로 사용
+	public void insertAlarmEndGame(MatchMaster matchMaster,String userId) {
+		
+		Connection conn = template.getConnection();
+		try {
+			alarmDao.insertAlarmEndGame(matchMaster,userId,conn);
 			template.commit(conn);
 		}finally {
 			template.close(conn);
@@ -75,5 +86,7 @@ public class AlarmService {
 			template.close(conn);
 		}
 	}
+	
+	
 	
 }

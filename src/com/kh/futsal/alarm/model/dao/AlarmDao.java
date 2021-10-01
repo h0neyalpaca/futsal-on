@@ -77,7 +77,7 @@ public class AlarmDao {
 	public void insertAlarmEndGame(MatchMaster matchMaster,String userId, Connection conn) {
 		
 		PreparedStatement pstm = null;
-		String query = "insert into notice values(sc_nt_idx.nextval ,0,?,?,?,?,0,?) ";
+		String query = "insert into notice values(sc_nt_idx.nextval ,0,?,?,?,?,1,?) ";
 		try {
 			pstm = conn.prepareStatement(query);
 			pstm.setString(1, matchMaster.getMatchDate());
@@ -92,7 +92,6 @@ public class AlarmDao {
 		} finally {
 			template.close(pstm);
 		}
-		
 	}
 	
 	public List<Alarm> selectAlarmList (String userId, Connection conn){

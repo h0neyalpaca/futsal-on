@@ -195,7 +195,11 @@ public class MypageController extends HttpServlet {
 			Team team = teamService.selectTeamByTmCode(matchList.get(i).getTmCode());
 			team.setTmRating(teamService.selectTmAvgRating(matchList.get(i).getTmCode()));
 			teamInfos.add(team);
-		}		
+			
+			if(matchList.get(i).getState() == 1) {
+				alarmService.insertAlarmEndGame(matchList.get(i), userId);
+			}
+		}
 		
 		matchTeamList.put("mgList",mgList);
 		matchTeamList.put("matchList", matchList);
@@ -228,16 +232,10 @@ public class MypageController extends HttpServlet {
 		String day = today.substring(0,10);
 		int time =  Integer.parseInt(today.substring(11,13));
 		
-		if(alarmDate.equals(day)) {
-			if((alarmTime -4) <= time && time < alarmTime+2) {
-				alarmService.updateAlarmIsStart(alarm.getNtIdx());
-				return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
-			}else if((alarmTime + 2) <= time) {
-				alarmService.updateAlarmIsStart(alarm.getNtIdx());
-				return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
-			}
+		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
+			alarmService.updateAlarmIsStart(alarm.getNtIdx());
 		}
-		return "";
+		return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
 	}
 	
 	//알람 확인 상태 업데이트
