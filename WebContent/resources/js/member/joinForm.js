@@ -47,7 +47,8 @@
 	document.querySelector('#btnNickCheck').addEventListener('click', function(){
 		  
 		   let userNick = document.querySelector('#userNick').value;
-		   let idReg = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,10}$/
+		   let idReg = /(?=.*[가-힝0-9])(?=.{2,10})/;
+		   let spaceCheck = /\s/g;
 
 		   if(!userNick){
  			   alert("닉네임을 입력하지 않았습니다")
@@ -56,11 +57,18 @@
 		   }
 
 		   if(!idReg.test(userNick)) {
-		   	   document.querySelector('#nickCheck').innerHTML = '<i class="fas fa-exclamation-circle"></i> 닉네임은 4~10자로 설정해야합니다.';
+		   	   document.querySelector('#nickCheck').innerHTML = '<i class="fas fa-exclamation-circle"></i> 닉네임은 한글 또는 숫자 2~10자로 설정해야합니다.';
 			   return;
            } else {
 		   	   document.querySelector('#nickCheck').innerHTML = '';
- 		   }		   
+ 		   }
+
+		   if(spaceCheck.test(userNick)) {
+		   	   document.querySelector('#nickCheck').innerHTML = '<i class="fas fa-exclamation-circle"></i> 공백으로 입력하셨습니다.';
+			   return;
+           } else {
+		   	   document.querySelector('#nickCheck').innerHTML = '';
+ 		   }		      
 
 		   fetch("/member/userNick-check?userNick="+userNick)
 		   .then(response =>{
@@ -91,9 +99,11 @@
 		   let tell = document.querySelector('#tell').value;
 		   let serviceCheck = document.querySelector('#serviceCheck');
 		   let privacyCheck = document.querySelector('#privacyCheck');
+		   let userName = document.querySelector('#userName').value;
 
 		   let pwReg = /(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Zㄱ-힣0-9])(?=.{8,})/;
 		   let tellReg = /^\d{9,11}$/;
+		   let regName = /(?=.*[a-zA-Zㄱ-힣0-9])(?=.{2,10})/;
 		  
 		   if(!(serviceCheck.checked && privacyCheck.checked)){
 			  alert('필수약관에 동의하지 않았습니다');
@@ -115,9 +125,18 @@
 		   } else {
 			  document.querySelector('#passwordDif').innerHTML = '';
 		   }
-
+	
+		   if(!regName.test(userName)){
+			   document.querySelector('#NameDif').innerHTML = '<i class="fas fa-exclamation-circle"></i> 이름은 한글 또는 영문 2~10글자인 문자열입니다';
+			   document.querySelector('#userName').focus();
+			   e.preventDefault();
+		   } else {
+			  document.querySelector('#NameDif').innerHTML = '';
+		   }
+	
 		   if(!tellReg.test(tell)){
 			   document.querySelector('#tellReg').innerHTML = '<i class="fas fa-exclamation-circle"></i> 전화번호는 9~11자리의 숫자입니다';
+			   document.querySelector('#tell').focus();
 			   e.preventDefault();
 		   } else {
 			  document.querySelector('#tellReg').innerHTML = '';

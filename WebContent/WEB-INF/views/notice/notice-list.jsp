@@ -62,7 +62,7 @@
 										<div class="board-list">
 											<div class="inner-list top-notice-list">
 
-												<a href="/notice/notice-detail?noticeNo=${mainNotice.nwIdx}">${mainNotice.nwTitle}</a>
+												<a href="/notice/notice-detail?curPage=${page.curPage}&noticeNo=${mainNotice.nwIdx}">${mainNotice.nwTitle}</a>
 
 											</div>
 										</div>
@@ -90,7 +90,7 @@
 							<col style="width: 68px;">
 						</colgroup>
 
-						<c:set var="num" value="${totalNoticeCnt - ((page.curPage-1) * 3) }"/>
+						<c:set var="num" value="${totalNoticeCnt - ((page.curPage-1) * page.boardSize) }"/>
 						<c:forEach var ="notice" items="${noticeList}" > 
 						<tbody class="notice">
 							<tr>

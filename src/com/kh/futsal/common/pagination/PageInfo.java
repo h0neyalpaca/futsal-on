@@ -10,15 +10,14 @@ public class PageInfo {
 	private int totalPage = 0; //페이지 총 갯수
 	private int startNo = 0; //현재 페이지의 첫 게시물 번호
 	private int endNo = 0; //현제 페이지의 마지막 게시물 번호
+	private int boardSize = 0;
 	
 	public PageInfo() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	 
-	
+
 	public PageInfo(int curPage, int startPage, int endPage, int pageSize, int totalNoticeCnt, int totalPage,
-			int startNo, int endNo) {
+			int startNo, int endNo, int boardSize) {
 		super();
 		this.curPage = curPage;
 		this.startPage = startPage;
@@ -28,6 +27,7 @@ public class PageInfo {
 		this.totalPage = totalPage;
 		this.startNo = startNo;
 		this.endNo = endNo;
+		this.boardSize = boardSize;
 	}
 
 	public int getCurPage() {
@@ -53,7 +53,6 @@ public class PageInfo {
 	public void setEndPage(int endPage) {
 		this.endPage = endPage;
 	}
-
 
 	public int getPageSize() {
 		return pageSize;
@@ -95,15 +94,23 @@ public class PageInfo {
 		this.endNo = endNo;
 	}
 
+	public int getBoardSize() {
+		return boardSize;
+	}
 
+	public void setBoardSize(int boardSize) {
+		this.boardSize = boardSize;
+	}
 
 	@Override
 	public String toString() {
 		return "PageInfo [curPage=" + curPage + ", startPage=" + startPage + ", endPage=" + endPage + ", pageSize="
 				+ pageSize + ", totalNoticeCnt=" + totalNoticeCnt + ", totalPage=" + totalPage + ", startNo=" + startNo
-				+ ", endNo=" + endNo + "]";
+				+ ", endNo=" + endNo + ", boardSize=" + boardSize + "]";
 	}
-
+	
+	 
+	
 	
 	
 	

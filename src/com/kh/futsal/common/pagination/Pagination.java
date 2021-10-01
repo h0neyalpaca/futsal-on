@@ -15,23 +15,23 @@ public class Pagination {
 		int startNo = 0;
 		int endNo = 0;
 	
-		int noticeSize = 2; //페이지당 게시물 수 
+		int boardSize = 3; //페이지당 게시물 수 
 
 		 
 		//totalPage 페이지 총 갯수
-		if(totalNoticeCnt % noticeSize > 0) {
-			totalPage = totalNoticeCnt/noticeSize+1;
+		if(totalNoticeCnt % boardSize > 0) {
+			totalPage = totalNoticeCnt/boardSize+1;
 		}else {
-			totalPage = totalNoticeCnt/noticeSize;
+			totalPage = totalNoticeCnt/boardSize;
 		}
 		
 		//현재 페이지의 첫 게시물 번호
-		startNo = (curPage-1) * noticeSize +1;
+		startNo = (curPage-1) * boardSize +1;
 		//System.out.println("startNo : "+startNo);
 		//System.out.println("noticeSize : "+noticeSize);
 
 		//현제 페이지의 마지막 게시물 번호
-		endNo = startNo + noticeSize - 1;
+		endNo = startNo + boardSize - 1;
 		if(endNo > totalNoticeCnt) {
 			endNo = totalNoticeCnt;
 		}
@@ -46,7 +46,7 @@ public class Pagination {
 			endPage = totalPage;
 		}
 		
-		pageInfo = new PageInfo(curPage, startPage, endPage, pageSize, totalNoticeCnt, totalPage, startNo, endNo);
+		pageInfo = new PageInfo(curPage, startPage, endPage, pageSize, totalNoticeCnt, totalPage, startNo, endNo, boardSize);
 		
 		
 		return pageInfo;
