@@ -20,6 +20,9 @@
 						<tr>
 							<th>문의유형</th>
 							<th>상태</th>
+							<c:if test="${authentication.grade == 'AD00'}">
+							<th>문의자</th>
+							</c:if>
 							<th style="width:50%">제목</th>
 							<th>날짜</th>
 							<th>관리</th>
@@ -46,6 +49,11 @@
 										<span>답변완료</span>
 									</c:if>
 								</td>
+								<c:if test="${authentication.grade == 'AD00'}">
+									<td>
+										<span>${support.userId}</span>
+									</td>
+								</c:if>
 								<td style="text-align:left;">
 									<a href="/mypage/support/support-detail?bdIdx=${support.bdIdx}">${support.title}</a>
 								</td>

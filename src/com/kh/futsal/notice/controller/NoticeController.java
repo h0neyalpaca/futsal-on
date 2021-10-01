@@ -188,26 +188,20 @@ public class NoticeController extends HttpServlet {
 		System.out.println("curPage :" + curPage);	
 		
 		PageInfo page = Pagination.getPageInfo(curPage, totalNoticeCnt);
+		System.out.println("page :" + page);
 		
 		List<Notice> mainNoticeList = noticeService.selectMainNoticeList();
 		List<Notice> noticeList = new ArrayList<Notice>();
-		if(searchContent == null) { //아무것도 입력하지 않았다면
-			noticeList = noticeService.selectNoticeList(page);
+		List<Notice> noticeSearchList = new ArrayList<Notice>();
+	
+		noticeList = noticeService.selectNoticeList(page);
 
-		}else { //검색어를 입력했다면
-			noticeList = noticeService.selectSearchList(page, searchContent);
-		}	
-		
-		System.out.println("searchContent : " + searchContent);
-		System.out.println("noticeList : " + noticeList);
-		System.out.println("startNo : " + page.getStartNo());
-		System.out.println("endNo : " + page.getEndNo());
-		System.out.println("startPage : " + page.getStartPage());
-		System.out.println("endPage : " + page.getEndPage());
-		System.out.println("curPage : " + page.getCurPage());
-		
+		noticeSearchList = noticeService.selectSearchList(page, searchContent);
+
+		request.setAttribute("searchContent", searchContent);
 		request.setAttribute("totalNoticeCnt", totalNoticeCnt);
 		request.setAttribute("noticeList", noticeList);
+		request.setAttribute("noticeSearchList", noticeSearchList);
 		request.setAttribute("mainNoticeList", mainNoticeList);
 		request.setAttribute("page", page);
 		

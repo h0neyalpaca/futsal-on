@@ -605,6 +605,7 @@ public class TeamDAO {
 		matchMaster.setTmMatch(rset.getInt("TM_MATCH"));
 		matchMaster.setMatchTime(rset.getString("MATCH_TIME"));
 		matchMaster.setMatchDate(rset.getString("MATCH_DATE"));
+		matchMaster.setState(rset.getInt("STATE"));
 		//팀 정보
 		matchMaster.setTmName(rset.getString("TM_NAME"));
 		matchMaster.setTmGrade(rset.getString("TM_GRADE"));

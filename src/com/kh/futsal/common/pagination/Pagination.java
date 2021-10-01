@@ -14,9 +14,7 @@ public class Pagination {
 		int totalPage = 0; //페이지 총 갯수
 		int startNo = 0;
 		int endNo = 0;
-
-		int boardSize = 3; //페이지당 게시물 수 
-
+		int boardSize = 2; //페이지당 게시물 수 
 		 
 		//totalPage 페이지 총 갯수
 		if(totalNoticeCnt % boardSize > 0) {
@@ -30,7 +28,7 @@ public class Pagination {
 		//System.out.println("startNo : "+startNo);
 		//System.out.println("noticeSize : "+noticeSize);
 
-		//현제 페이지의 마지막 게시물 번호
+		//현재 페이지의 마지막 게시물 번호
 		endNo = startNo + boardSize - 1;
 		if(endNo > totalNoticeCnt) {
 			endNo = totalNoticeCnt;
@@ -47,6 +45,7 @@ public class Pagination {
 		}
 		
 		pageInfo = new PageInfo(curPage, startPage, endPage, pageSize, totalNoticeCnt, totalPage, startNo, endNo, boardSize);
+		
 		
 		return pageInfo;
 	}

@@ -174,7 +174,9 @@ public class AuthorizationFilter implements Filter {
 		}
 		TeamService ts = new TeamService();
 		Team team = ts.selectTeamByUserId(member.getUserId());
-		team.setTmRating(ts.selectTmAvgRating(team.getTmCode()));
+		if(team!=null) {
+			team.setTmRating(ts.selectTmAvgRating(team.getTmCode()));
+		}
 		httpRequest.getSession().setAttribute("team", team);
 
 		MemberGrade grade = MemberGrade.valueOf(member.getGrade());

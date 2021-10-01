@@ -637,5 +637,23 @@ public class MatchDao {
 		}
 		
 		return memberList;
+	}
+
+
+	public void upDateMatchNum(String mmIdx,Connection conn) {
+		PreparedStatement pstm = null;
+		String query = "update match_master set match_num = match_num+1 where mm_idx = ?";
+		
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, mmIdx);
+			
+			pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
 	}	
 }

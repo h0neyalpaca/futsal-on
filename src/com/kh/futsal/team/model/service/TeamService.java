@@ -270,7 +270,9 @@ public class TeamService {
 			for (MatchMaster tmBoard : tmBoards) {
 				tmBoard.setTmRating(selectTmAvgRating(tmBoard.getTmCode()));
 				FileDTO fd = selectFile(tmBoard.getTmCode());
-				tmBoard.setFilePath(fd.getSavePath()+fd.getRenameFileName());
+				if(fd.getFlIdx()!=null) {
+					tmBoard.setFilePath(fd.getSavePath()+fd.getRenameFileName());
+				}
 			}
 		} finally {
 			template.close(conn);
@@ -287,7 +289,9 @@ public class TeamService {
 			for (MatchMaster tmApplication : tmApplications) {
 				tmApplication.setTmRating(selectTmAvgRating(tmApplication.getTmCode()));
 				FileDTO fd = selectFile(tmApplication.getTmCode());
-				tmApplication.setFilePath(fd.getSavePath()+fd.getRenameFileName());
+				if(fd.getFlIdx()!=null) {
+					tmApplication.setFilePath(fd.getSavePath()+fd.getRenameFileName());
+				}
 			}
 		} finally {
 			template.close(conn);

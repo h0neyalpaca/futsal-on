@@ -61,6 +61,33 @@
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <%@ include file="/WEB-INF/views/team/include/team-pop.jsp" %>
-<script type="text/javascript" src="${request.contextPath}/resources/js/team/managing.js"></script> 
+<script type="text/javascript" src="${request.contextPath}/resources/js/team/managing.js"></script>
+<script type="text/javascript">
+	let manageGrade = (e, userId) => {
+		let grade = e.parentNode.childNodes[1].childNodes[1].value;
+		drawQuestion(userId+'님의 등급을 변경하시겠습니까?','grade("'+userId+'","'+grade+'");');
+	}
+	let manageDelegation = (userId) => {
+		drawQuestion(userId+'님에게 팀의 모든 권한을 위임하시겠습니까?','delegation("'+userId+'");');
+	}
+	let manageExpulsion = (userId) => {
+		drawQuestion(userId+'님을 추방하시겠습니까?','expulsion("'+userId+'");');
+	}
+	let grade = (userId, grade) => {
+		let xhr = new XMLHttpRequest();
+		xhr = xmlRequest('POST','manage-grade','');
+		xhr.send('userId='+userId+'&grade='+grade);
+	}
+	let delegation = (userId) => {
+		let xhr = new XMLHttpRequest();
+		xhr = xmlRequest('POST','manage-delegation','');
+		xhr.send('userId='+userId);
+	}
+	let expulsion = (userId) => {
+		let xhr = new XMLHttpRequest();
+		xhr = xmlRequest('POST','manage-expulsion','');
+		xhr.send('userId='+userId);
+	}
+</script>
 </body>
 </html>

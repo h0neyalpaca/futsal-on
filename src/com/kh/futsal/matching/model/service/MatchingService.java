@@ -119,6 +119,8 @@ public class MatchingService {
 		
 		try {
 			matchDao.deleteMatchGame(mgIdx,conn);
+			MatchGame matchGame = selectMatch(mgIdx); 
+			matchDao.upDateMatchNum(matchGame.getMmIdx(),conn);
 			alarmDao.deleteAlarm(match.getUserId(), match.getMmIdx(),conn);
 			
 			template.commit(conn);

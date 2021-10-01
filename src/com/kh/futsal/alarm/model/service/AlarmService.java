@@ -6,6 +6,7 @@ import java.util.List;
 import com.kh.futsal.alarm.model.dao.AlarmDao;
 import com.kh.futsal.alarm.model.dto.Alarm;
 import com.kh.futsal.common.db.JDBCTemplate;
+import com.kh.futsal.common.pagination.PageInfo;
 import com.kh.futsal.matching.model.dto.MatchMaster;
 
 public class AlarmService {
@@ -14,17 +15,17 @@ public class AlarmService {
 	private AlarmDao alarmDao = new AlarmDao();
 	
 	//알람 리스트 가져오기
-	public List<Alarm> selectNoticetList(String userId) {
-		
-		Connection conn = template.getConnection();
-		List<Alarm> alarms = null;
-		try {
-			alarms = alarmDao.selectAlarmList(userId, conn);
-		} finally {
-			template.close(conn);
+	public List<Alarm> selectNoticetList(String userId,  PageInfo page) {
+			
+			Connection conn = template.getConnection();
+			List<Alarm> alarms = null;
+			try {
+				alarms = alarmDao.selectAlarmList(userId, page, conn);
+			} finally {
+				template.close(conn);
+			}
+			return alarms;
 		}
-		return alarms;
-	}
 	
 	//매치 신청시 알람 데이터 추가용(팀 매치 신청이면 userId에 팀장 아이디 )
 	//매치글 작성시도 알람 추가하여 팀장에게 알려주기
@@ -89,5 +90,20 @@ public class AlarmService {
 			template.close(conn);
 		}
 	}
+
+	public int selectBoardCnt(String userId) {
+		int res = 0;
+		Connection conn = template.getConnection();
+		
+		try {
+			res = alarmDao.selectBoardCnt(conn, userId);
+		} finally {
+			template.close(conn);
+		}
+		
+		return res;
+	}
+
+	
 
 }

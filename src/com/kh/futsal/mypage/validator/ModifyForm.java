@@ -44,9 +44,14 @@ public class ModifyForm {
 			isFailed = true;
 		}
 		
+		
 		if(memberService.selectMemberByNick(nickName) != null || nickName.equals("")) {
+			if(member.getUserNick().equals(nickName)) {
+				 isFailed = false;
+			}else {
 			 faildValidation.put("nickName",nickName); 
 			 isFailed = true; 
+			}
 		}
 	
 		if(!Pattern.matches("(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Zㄱ-힣0-9]).{8,}", newPw)) {

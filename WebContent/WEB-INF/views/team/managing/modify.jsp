@@ -16,9 +16,13 @@
 			<h2><i class="far fa-futbol"></i> 나의 팀</h2>
 			<div class="myteam-con">
 				<%@ include file="/WEB-INF/views/team/include/team_tab.jsp" %>
-				<c:if test="${authentication.grade!='ME03'}">
-					<div class="team-img" style="margin-bottom:30px;"></div>
+				<c:if test="${authentication.grade!='ME03' and file.tmCode != null}">
+					<div class="team-img" style="background:url('/img/team/${file.savePath}${file.renameFileName}') center center; margin-bottom:30px; background-size:cover;"></div>
 				</c:if>
+				<c:if test="${authentication.grade!='ME03' and file.tmCode == null}">
+					<div class="team-img" style="background:url('/img/team/no-img.jpg') center center; margin-bottom:30px; background-size:cover;"></div>
+				</c:if>
+				
 				<form id="frm_create-team" action="${request.contextPath}/team/managing/modify-func" method="post" enctype="multipart/form-data">
 					<table class="team-create-form">
 						<tr><th>팀 이름</th><td>${team.tmName}</td></tr>
@@ -99,16 +103,20 @@
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 <%@ include file="/WEB-INF/views/team/include/team-pop.jsp" %>
-<script type="text/javascript" src="${request.contextPath}/resources/js/team/modForm.js"></script>
-<c:if test="${authentication.grade!='ME03'}">
-<script type="text/javascript">
-	let tmImg = document.querySelector('.team-img');
-	tmImg.style.background='url("/img/team/no-img.jpg") center center';
-	<c:if test="${file.tmCode != null}">
-		tmImg.style.background='url("/img/team/${file.savePath}${file.renameFileName}") center center';
-	</c:if>
-	tmImg.style.backgroundSize='cover';
-</script>
+<c:if test="${not empty param.result}">
+	<div class="pop-msg-wrap" style="display:flex;">
+		<div class="pop-msg">
+			<p>
+				<i class="fas fa-check-circle"></i><br>
+				<c:if test="${param.result==1}">팀 가입이 성공적으로 완료되었습니다.<br>${team.tmName} 팀의 팀원이 되신 것을 축하드립니다!</c:if>
+				<c:if test="${param.result==2}">팀이 성공적으로 생성되었습니다.<br>${team.tmName} 팀에서 많은 활동 부탁드릴게요!</c:if>
+				<c:if test="${param.result==3}">변경이 완료되었습니다.</c:if>
+			</p>
+			<button onclick="btnClose();">확인</button>
+		</div>
+	</div>
 </c:if>
+
+<script type="text/javascript" src="${request.contextPath}/resources/js/team/modify.js"></script> 
 </body>
 </html>

@@ -133,8 +133,6 @@ public class TeamController extends HttpServlet {
 		if(!tmBoards.isEmpty()) {
 			for (MatchMaster tmBoard : tmBoards) {
 				if(tmBoard.getState()==0 || (tmBoard.getState()==1 && tmBoard.getMatchSchedule() > searchNowTime())) {
-					System.out.println("1"+tmBoard.getMatchSchedule());
-					System.out.println(tmBoard.getMatchSchedule() > searchNowTime());
 					msg = "현재 작성하신 매치글, 혹은 진행 예정인 매치가 있습니다.<br>삭제 및 취소 후 다시 신청해주세요.";
 					pw(response).print(msg);
 					return;
@@ -143,8 +141,6 @@ public class TeamController extends HttpServlet {
 		} else if(!tmApplications.isEmpty()) {
 			for (MatchMaster tmApplication : tmApplications) {
 				if(tmApplication.getState()==0 || (tmApplication.getState()==1 && tmApplication.getMatchSchedule() > searchNowTime())) {
-					System.out.println("2"+tmApplication.getMatchSchedule());
-					System.out.println(tmApplication.getMatchSchedule() > searchNowTime());
 					msg = "현재 작성하신 매치글, 혹은 진행 예정인 매치가 있습니다.<br>삭제 및 취소 후 다시 신청해주세요.";
 					pw(response).print(msg);
 					return;
@@ -176,6 +172,8 @@ public class TeamController extends HttpServlet {
 	
 	private void teamBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Team team = (Team) request.getSession().getAttribute("team");
+		Long nowDate = searchNowTime();
+		request.setAttribute("nowDate",nowDate);
 		request.setAttribute("tmBoards", ts.selectTmBoards(team.getTmCode()));
 		request.setAttribute("appliBoards", ts.selectTmApplications(team.getTmCode()));
 		request.getRequestDispatcher("/team/managing/team-board").forward(request, response);

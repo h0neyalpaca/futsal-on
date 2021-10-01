@@ -97,9 +97,9 @@
 							<tr>
 								<th>실력</th>
 								<td>
-									<label><input type="radio" name="capacity" id="capacity1" value="상" ${authentication.capacity eq "상 "?"checked":""}/> 상</label>
-									<label><input type="radio" name="capacity" id="capacity2" value="중" ${authentication.capacity eq "중 "?"checked":""}/> 중</label>
-									<label><input type="radio" name="capacity" id="capacity3" value="하" ${authentication.capacity eq "하 "?"checked":""}/> 하</label>
+									<label><input type="radio" name="capacity" id="capacity1" value="상 " ${authentication.capacity eq "상 "?"checked":""}/> 상</label>
+									<label><input type="radio" name="capacity" id="capacity2" value="중 " ${authentication.capacity eq "중 "?"checked":""}/> 중</label>
+									<label><input type="radio" name="capacity" id="capacity3" value="하 " ${authentication.capacity eq "하 "?"checked":""}/> 하</label>
 								</td>
 							</tr>
 							<tr>
