@@ -125,14 +125,14 @@ public class MemberController extends HttpServlet {
 	private void kakaoLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userId = request.getParameter("userId");
 		
-		Member Checkmember = memberService.selectMemberById("(kakao)"+userId);
+		Member Checkmember = memberService.selectMemberById("kakao_"+userId);
 		Member member = new Member();
 		
 		if(Checkmember == null) {
 			
-			member.setUserId("(kakao)"+userId);
+			member.setUserId("kakao_"+userId);
 			member.setPassword("kakao");
-			member.setUserName("(ka)"+userId);
+			member.setUserName("카카오임시계정");
 			member.setTell(" ");
 			member.setEmail("카카오임시계정");
 			member.setCapacity(" ");
@@ -224,7 +224,7 @@ public class MemberController extends HttpServlet {
 //		System.out.println(userId + password);
 		Member member = memberService.memberAuthenticate(userId,password);
 		
-		if(member == null || member.getIsLeave() != 0) {
+		if(member == null || member.getIsLeave() != 0 || member.getPassword().equals("kakao")) {
 			response.sendRedirect("/member/login-form?err=1");
 			return;
 		}
