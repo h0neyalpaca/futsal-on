@@ -27,11 +27,13 @@ public class AlarmService {
 	}
 	
 	//매치 신청시 알람 데이터 추가용(팀 매치 신청이면 userId에 팀장 아이디 )
+	//매치글 작성시도 알람 추가하여 팀장에게 알려주기
 	public void insertAlarm(MatchMaster matchMaster,String userId) {
 		
 		Connection conn = template.getConnection();
 		try {
 			alarmDao.insertAlarm(matchMaster,userId,conn);
+			alarmDao.insertAlarmEndGame(matchMaster, userId, conn);
 			template.commit(conn);
 		}finally {
 			template.close(conn);

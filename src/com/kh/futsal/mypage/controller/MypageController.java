@@ -228,10 +228,16 @@ public class MypageController extends HttpServlet {
 		String day = today.substring(0,10);
 		int time =  Integer.parseInt(today.substring(11,13));
 		
-		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
-			alarmService.updateAlarmIsStart(alarm.getNtIdx());
+		if(alarmDate.equals(day)) {
+			if((alarmTime -4) <= time && time < alarmTime) {
+				alarmService.updateAlarmIsStart(alarm.getNtIdx());
+				return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
+			}else if((alarmTime + 2) <= time) {
+				alarmService.updateAlarmIsStart(alarm.getNtIdx());
+				return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
+			}
 		}
-		return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
+		return "";
 	}
 	
 	//알람 확인 상태 업데이트
