@@ -91,6 +91,7 @@
 						</colgroup>
 
 						<c:set var="num" value="${totalNoticeCnt - ((page.curPage-1) * page.boardSize) }"/>
+
 						<c:forEach var ="notice" items="${noticeList}" > 
 						<tbody class="notice">
 							<tr>

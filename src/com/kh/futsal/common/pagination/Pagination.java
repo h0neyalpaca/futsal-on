@@ -14,7 +14,7 @@ public class Pagination {
 		int totalPage = 0; //페이지 총 갯수
 		int startNo = 0;
 		int endNo = 0;
-	
+
 		int boardSize = 3; //페이지당 게시물 수 
 
 		 
@@ -47,7 +47,6 @@ public class Pagination {
 		}
 		
 		pageInfo = new PageInfo(curPage, startPage, endPage, pageSize, totalNoticeCnt, totalPage, startNo, endNo, boardSize);
-		
 		
 		return pageInfo;
 	}

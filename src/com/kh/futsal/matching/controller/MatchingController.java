@@ -1,6 +1,9 @@
 package com.kh.futsal.matching.controller;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -10,9 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.futsal.alarm.model.service.AlarmService;
 import com.kh.futsal.matching.model.dto.MatchGame;
 import com.kh.futsal.matching.model.dto.MatchMaster;
 import com.kh.futsal.matching.model.service.MatchingService;
+import com.kh.futsal.team.model.service.TeamService;
 
 /**
  * Servlet implementation class MatchingController
@@ -22,7 +27,8 @@ public class MatchingController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	MatchingService matchingService = new MatchingService();
-       
+	AlarmService alarmService = new AlarmService();   
+	TeamService teamService = new TeamService();
 
     public MatchingController() {
         super();
@@ -48,6 +54,12 @@ public class MatchingController extends HttpServlet {
 		case "team-match-search":
 			teamMatchSearch(request,response);
 			break;
+		case "recent":
+			SearchRecent(request,response);
+			break;
+		case "rating":
+			SearchRating(request,response);
+			break;
 		case "subscription":
 			MatchRequest(request,response);
 			break;
@@ -72,6 +84,34 @@ public class MatchingController extends HttpServlet {
 		}
 		
 	}
+
+	private void SearchRating(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+		List<MatchMaster> matchList = matchingService.RecentView(); 	
+		
+		for (MatchMaster matchMaster : matchList) {
+			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
+		}
+		matchList.sort(Comparator.comparing(MatchMaster::getTmRating,Comparator.reverseOrder()));
+		
+		request.setAttribute("matchList", matchList);
+		
+		request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
+		
+	}
+
+
+	private void SearchRecent(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+		List<MatchMaster> matchList = matchingService.RecentView(); 	
+		
+		for (MatchMaster matchMaster : matchList) {
+			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
+		}
+		request.setAttribute("matchList", matchList);
+		
+		request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
+		
+	}
+
 
 	private void teamModifyRegister(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String delAndModify = request.getParameter("modify");
@@ -115,6 +155,7 @@ public class MatchingController extends HttpServlet {
 			request.getRequestDispatcher("/common/result").forward(request, response);
 		}else if (delAndModify.equals("삭제")) {			
 			if (res == matchingService.matchDel(matchIdx)) {
+				alarmService.deleteAlarm(matchIdx);
 				request.setAttribute("msg", "오류가 발생하였습니다.");
 				request.setAttribute("url", "/team/managing/team-board");
 				request.getRequestDispatcher("/common/result").forward(request, response);
@@ -137,12 +178,23 @@ public class MatchingController extends HttpServlet {
 		String tmCode = request.getParameter("tmCode");
 		String matchDate = request.getParameter("matchDate");
 		String matchTime = request.getParameter("matchTime");
+		String title = request.getParameter("title");
+		
 		StringBuffer sb = new StringBuffer();
 		sb.append(matchDate);
 		sb.append(" "+matchTime);
 		//신청자와 주최자가 같을경우
 		System.out.println(matchDate);
 		
+		MatchMaster matchMaster = new MatchMaster();
+		matchMaster.setMmIdx(matchIdx);
+		matchMaster.setTitle(title);
+		matchMaster.setMatchDate(matchDate);
+		matchMaster.setMatchTime(matchTime);
+		
+		//알람 설정
+		
+		alarmService.insertAlarm(matchMaster, userId);
 		//팀코드로 비교 후 같은 팀이면 에러처리
 		String requsetTeamCode = matchingService.checkRequset(userId);
 		System.out.println(requsetTeamCode);
@@ -275,6 +327,10 @@ public class MatchingController extends HttpServlet {
 	}
 	private void teamList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<MatchMaster> matchList = matchingService.matchListView(); 	
+		for (MatchMaster matchMaster : matchList) {
+			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
+		}
+		
 		request.setAttribute("matchList", matchList);
 		
 		

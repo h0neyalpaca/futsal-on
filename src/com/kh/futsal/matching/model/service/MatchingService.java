@@ -258,6 +258,26 @@ public class MatchingService {
 		return res;
 	}
 
+	public List<MatchMaster> RecentView() {
+		List<MatchMaster> RecentMatchList = new ArrayList<MatchMaster>();
+		
+		Connection conn = template.getConnection();
+		
+		try {
+			//매치글 삭제
+			RecentMatchList = matchDao.RecentMatch(conn);
+					
+			
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		}finally {
+			template.close(conn);
+		}
+		return RecentMatchList;
+	}
+
 	
 
 

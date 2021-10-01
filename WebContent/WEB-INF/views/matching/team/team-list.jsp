@@ -7,6 +7,7 @@
 <%@ include file="/WEB-INF/views/include/head.jsp"%>
 <link rel="stylesheet" type="text/css"
 	href="${request.contextPath}/resources/css/matching/matching-team.css" />
+	
 </head>
 <body>
 	<c:if test="${not empty param.err}">
@@ -29,7 +30,7 @@
 					<a href="team-match-form"><i class="fas fa-pencil-alt"></i>글쓰기</a>
 				</div>
 				<div class="search-wrap">
-					<form action="/matching/team/team-match-search" method="post">
+					<form onsubmit="return formCheck()" action="/matching/team/team-match-search" method="post">
 						<dl>
 							<dt>경기지역</dt>
 							<dd class="local">
@@ -45,7 +46,7 @@
 						<dl>
 							<dt>기간</dt>
 							<dd>
-								<input type="date" name="date">
+								<input type="date" name="date" id="currentDate">
 							</dd>
 						</dl>
 						<dl>
@@ -64,7 +65,7 @@
 				<!-- 하나의 매치 박스 -->
 				<div class="search-role-wrap">
 					<div class="search-role">
-						<a href="#">최신순</a> <a href="#">별점순</a>
+						<a href="/matching/team/recent">최신순</a> <a href="/matching/team/rating">별점순</a>
 					</div>
 				</div>
 				
@@ -83,26 +84,19 @@
 								</c:choose>
 								<div class="tit">
 									<strong>${matchBox.getTitle()}</strong>
-									<c:choose>
-										<c:when test="${matchBox.getTmScore() == 5}">
-										별점 ★★★★★&nbsp;&nbsp;&nbsp;
-										</c:when>
-										<c:when test="${matchBox.getTmScore() == 4}">
-								      	 별점 ★★★★ &nbsp;&nbsp;&nbsp;&nbsp;
-								         </c:when>
-										<c:when test="${matchBox.getTmScore() == 3}">
-								               별점 ★★★&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								         </c:when>
-										<c:when test="${matchBox.getTmScore() == 2}">
-								              별점 ★★&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								         </c:when>
-										<c:when test="${matchBox.getTmScore() == 1}">
-								       	별점 ★&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								         </c:when>
-									</c:choose>
-									<c:set var="lose"
-										value="${matchBox.getGameCnt() - matchBox.getTmWin()}"></c:set>
-									전적 ${matchBox.getGameCnt()}전${matchBox.getTmWin()}승<c:out value="${lose}"></c:out>패
+									<div>
+										<c:forEach var="i" begin="1" end="${matchBox.getTmRating()}">
+										<div style="float: left;"><i class="fas fa-star full-star"></i></div> 
+										</c:forEach>
+										<c:if test="${matchBox.getTmRating()%1!=0}">
+										<div style="float: left;"><i class="fas fa-star-half-alt"></i></div>
+										</c:if>
+										<c:forEach var="i" begin="1" end="${5-matchBox.getTmRating()}">
+										<div style="float: left;"><i class="far fa-star star"></i></div>
+										</c:forEach>
+									</div>
+									<c:set var="lose" value="${matchBox.getGameCnt() - matchBox.getTmWin()}"></c:set>
+									&nbsp;&nbsp;전적 ${matchBox.getGameCnt()}전${matchBox.getTmWin()}승<c:out value="${lose}"></c:out>패
 
 								</div>
 							</div>
@@ -124,7 +118,7 @@
 										<div class="btn-appli" onclick="expiration()">신청하기</div>
 									</c:when>
 									<c:when test="${matchBox.getState() == 0}">
-										<div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()},'${matchBox.getTmCode()}','${authentication.userId}','${matchBox.getMatchDate()}'),'${matchBox.getMatchTime()}')">신청하기</div>
+										<div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()},'${matchBox.getTmCode()}','${authentication.userId}','${matchBox.getMatchDate()}'),'${matchBox.getMatchTime()}','${matchBox.getTitle()}')">신청하기</div>
 									</c:when>
 								</c:choose>
 								
@@ -171,15 +165,62 @@
 	</section>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 	<script type="text/javascript">
-	let matchRequset = (idx,tmCode,user,date,time) => {
+	let matchRequset = (idx,tmCode,user,date,time,title) => {
 		if (window.confirm("매치를 신청하시겠습니까?")) {
 			console.dir(tmCode);
-			location.href="/matching/team/subscription?matchIdx="+idx+"&tmCode="+tmCode+"&userId="+user+"&matchDate="+date+"&matchTime="+time;
+			location.href="/matching/team/subscription?matchIdx="+idx+"&tmCode="+tmCode+"&userId="+user+"&matchDate="+date+"&matchTime="+time+"&title="+title;
 		}
 	}
 	
 	let expiration = () =>{
 		alert("모집이 완료된 매치입니다.");
+	}
+	
+	let formCheck = () =>{
+		let localCode = document.getElementsByName('localCode');
+		
+		console.dir(localCode);
+		let value = null;
+		localCode.forEach((e) => {
+			if (e.checked) {
+				value = e.value;
+				console.dir(e.checked);
+			}
+		})
+		
+		
+		if (value == null) {
+			alert("지역을 선택해주세요.");
+			return false;
+		}
+		
+		
+		let date = document.querySelector('#currentDate').value;	
+		
+		
+		if(date == ""){
+			alert("경기 날짜를 선택해주세요.");
+			return false;
+		}
+		
+		let level = document.getElementsByName('level');
+		let checkLevel = null;
+		
+		level.forEach((e) => {
+			if (e.checked) {
+				checkLevel = e.value;
+				
+			}
+		})
+		console.dir(checkLevel);
+		
+		if (checkLevel == null) {
+			alert("실력을 선택해주세요.");
+			return false;
+		}
+		
+		
+		return true;
 	}
 	
 	

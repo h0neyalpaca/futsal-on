@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.kh.futsal.common.db.JDBCTemplate;
+import com.kh.futsal.common.pagination.PageInfo;
 import com.kh.futsal.support.model.dao.SupportDao;
 import com.kh.futsal.support.model.dto.Support;
 
@@ -38,13 +39,13 @@ public class SupportService {
 		return support;
 	}
 	
-	public List<Support> selectSupportList(String userId) {
+	public List<Support> selectSupportList(String userId, PageInfo page) {
 		
 		 Connection conn = template.getConnection();
 		 List<Support> supports = null;
 
 		try {
-			supports = supportDao.selectSupportList(userId, conn);
+			supports = supportDao.selectSupportList(userId, page, conn);
 		} finally {
 			template.close(conn);
 		}
@@ -104,6 +105,19 @@ public class SupportService {
 			template.close(conn);
 		}
 		
+	}
+
+	public int selectBoardCnt(String userId) {
+		int res = 0;
+		Connection conn = template.getConnection();
+		
+		try {
+			res = supportDao.selectBoardCnt(conn, userId);
+		} finally {
+			template.close(conn);
+		}
+		
+		return res;
 	}
 	
 }

@@ -488,5 +488,38 @@ public class MatchDao {
 		}
 		
 		return res;
+	}
+
+
+	public List<MatchMaster> RecentMatch(Connection conn) {
+		List<MatchMaster> memberList = new ArrayList<MatchMaster>();	
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		String query = "select "
+				+ "MM_IDX,USER_ID,MATCH_MASTER.TM_CODE,LOCAL_CITY,ADDRESS,"
+				+ "MATCH_MASTER.REG_DATE,TITLE,EXPENSE,GRADE,CONTENT,TM_MATCH"
+				+ ",MATCH_TIME,MATCH_DATE,STATE"
+				+ ",team.tm_name,TM_GRADE,TM_INFO,GAME_CNT,TM_SCORE,TM_WIN"
+				+ " from MATCH_MASTER" + 
+				" left outer join location" + 
+				" on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE"
+				+ " left outer join team"
+				+ " on MATCH_MASTER.TM_CODE = team.TM_CODE"
+				+ " order by MM_IDX DESC";
+		
+		try {
+			pstm = conn.prepareStatement(query);
+			rset = pstm.executeQuery();
+			while(rset.next()) {
+				memberList.add(convertRowToMatchList(rset));
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		
+		return memberList;
 	}	
 }
