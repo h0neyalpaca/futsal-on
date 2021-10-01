@@ -14,8 +14,9 @@ public class Pagination {
 		int totalPage = 0; //페이지 총 갯수
 		int startNo = 0;
 		int endNo = 0;
-		
-		int noticeSize = 3; //페이지당 게시물 수 
+	
+		int noticeSize = 2; //페이지당 게시물 수 
+
 		 
 		//totalPage 페이지 총 갯수
 		if(totalNoticeCnt % noticeSize > 0) {

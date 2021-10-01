@@ -31,7 +31,7 @@
 					</div>
 					<div class="article-container">
 						<div class="article-inner">
-							<p>회원가입 관련 공지 내용입니다.</p>
+							<p>${noticeDetail.nwContent}</p>
 						</div>
 					</div>
 					<div class="notice-list-button">
@@ -55,7 +55,6 @@
 					<c:if test="${empty nextDetail}">
 					<li><div class="next">다음 글이 존재하지 않습니다.</div></li>
 					</c:if>
-
 					</ul>
 				</div>
 			</div>
