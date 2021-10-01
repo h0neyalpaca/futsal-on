@@ -9,12 +9,13 @@ public class Team {
 	private String tmName; //팀이름
 	private String tmGrade; //팀실력
 	private String tmInfo; //소개글
+	private double tmRating; //팀 평균 평점
 	private int gameCnt; //총게임횟수
-	private double tmScore; //평점
 	private int tmWin; //승리횟수
 	private int tmLose; //패배횟수
 	private Date regDate; //팀생성일
 	private Date delDate; //팀삭제일
+	
 	public String getTmCode() {
 		return tmCode;
 	}
@@ -57,12 +58,6 @@ public class Team {
 	public void setGameCnt(int gameCnt) {
 		this.gameCnt = gameCnt;
 	}
-	public double getTmScore() {
-		return tmScore;
-	}
-	public void setTmScore(double tmScore) {
-		this.tmScore = tmScore;
-	}
 	public int getTmWin() {
 		return tmWin;
 	}
@@ -74,6 +69,12 @@ public class Team {
 	}
 	public void setTmLose(int tmLose) {
 		this.tmLose = tmLose;
+	}
+	public double getTmRating() {
+		return tmRating;
+	}
+	public void setTmRating(double tmRating) {
+		this.tmRating = tmRating;
 	}
 	public Date getRegDate() {
 		return regDate;
@@ -87,11 +88,10 @@ public class Team {
 	public void setDelDate(Date delDate) {
 		this.delDate = delDate;
 	}
-	
 	@Override
 	public String toString() {
 		return "Team [tmCode=" + tmCode + ", localCode=" + localCode + ", managerId=" + managerId + ", tmName=" + tmName
-				+ ", tmGrade=" + tmGrade + ", tmInfo=" + tmInfo + ", gameCnt=" + gameCnt + ", tmScore=" + tmScore
+				+ ", tmGrade=" + tmGrade + ", tmInfo=" + tmInfo + ", tmRating=" + tmRating + ", gameCnt=" + gameCnt
 				+ ", tmWin=" + tmWin + ", tmLose=" + tmLose + ", regDate=" + regDate + ", delDate=" + delDate + "]";
 	}
 }

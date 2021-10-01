@@ -169,7 +169,7 @@ public class TeamController extends HttpServlet {
 	
 	private void deleteTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Team team = (Team) request.getSession().getAttribute("team");
-		FileDTO file = ts.selectFileByTmCode(team.getTmCode());
+		FileDTO file = ts.selectFile(team.getTmCode());
 		request.getSession().setAttribute("file", file);
 		request.getRequestDispatcher("/team/managing/delete-team").forward(request, response);
 	}
@@ -177,6 +177,7 @@ public class TeamController extends HttpServlet {
 	private void teamBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Team team = (Team) request.getSession().getAttribute("team");
 		request.setAttribute("tmBoards", ts.selectTmBoards(team.getTmCode()));
+		request.setAttribute("appliBoards", ts.selectTmApplications(team.getTmCode()));
 		request.getRequestDispatcher("/team/managing/team-board").forward(request, response);
 	}
 	
@@ -271,7 +272,7 @@ public class TeamController extends HttpServlet {
 	
 	private void teamModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Team team = (Team) request.getSession().getAttribute("team");
-		FileDTO file = ts.selectFileByTmCode(team.getTmCode());
+		FileDTO file = ts.selectFile(team.getTmCode());
 		request.setAttribute("file", file);
 		request.getRequestDispatcher("/team/managing/modify").forward(request, response);
 	}

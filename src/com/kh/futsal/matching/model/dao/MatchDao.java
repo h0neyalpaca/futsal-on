@@ -106,7 +106,7 @@ public class MatchDao {
 		match.setTmGrade(rset.getString("TM_GRADE"));
 		match.setTmInfo(rset.getString("TM_INFO"));
 		match.setGameCnt(rset.getInt("GAME_CNT"));
-		match.setTmScore(rset.getInt("TM_SCORE"));
+		match.setTmRating(rset.getInt("TM_SCORE"));
 		match.setTmWin(rset.getInt("TM_WIN"));
 		
 		
