@@ -29,7 +29,7 @@
 								<div class="tit">
 									<strong>${match.title}</strong>
 									${datas.teamList[status.index].tmName}&nbsp;&nbsp;&nbsp;
-									별점(${datas.teamList[status.index].tmScore})&nbsp;&nbsp;&nbsp;전적  ${datas.teamList[status.index].gameCnt}전  ${datas.teamList[status.index].tmWin}승 ${datas.teamList[status.index].gameCnt - datas.teamList[status.index].tmWin}패
+									별점(${datas.teamList[status.index].tmRating})&nbsp;&nbsp;&nbsp;전적  ${datas.teamList[status.index].gameCnt}전  ${datas.teamList[status.index].tmWin}승 ${datas.teamList[status.index].gameCnt - datas.teamList[status.index].tmWin}패
 								</div>
 							</div>
 							<div class="profile_n_appli">
