@@ -11,7 +11,6 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-
 <section>
 		<div class="section">
 			<div class="myteam-wrap">
@@ -56,13 +55,25 @@
 											</c:if>
 											<div class="profile-name" onclick="teamInfo('${tmBoards.tmCode}')">${tmBoards.tmName}<span><i class="fas fa-search"></i>정보보기</span></div>
 										</div>
-										<div class="btn-appli" onclick="teamMatchingModify('${tmBoards.mmIdx}')">수정하기</div>
-										<div class="btn-appli" onclick="teamMatchingDel('${tmBoards.mmIdx}')">삭제하기</div>
+										<c:if test="${authentication.grade=='ME03'}">
+											<c:if test="${tmBoards.state == 0 and tmBoards.matchSchedule ge nowDate}">
+												<div class="btn-appli" onclick="teamMatchingModify('${tmBoards.mmIdx}')">수정하기</div>
+												<div class="btn-appli" onclick="teamMatchingDel('${tmBoards.mmIdx}')">삭제하기</div>
+											</c:if>
+											<c:if test="${tmBoards.state == 1 and tmBoards.matchSchedule ge nowDate}">
+												<div class="btn-appli" style="background:#bbb;cursor:default;">수정불가</div>
+												<div class="btn-appli" onclick="">취소하기</div>
+											</c:if>
+											<c:if test="${tmBoards.state == 1 and tmBoards.matchSchedule le nowDate}">
+												<div class="btn-appli" style="background:#bbb;cursor:default;">수정불가</div>
+												<div class="btn-appli" style="background:#bbb;cursor:default;">취소불가</div>
+											</c:if>
+										</c:if>
 									</div>
 								</div>
 								<div class="match-detail">
 									<ul>
-										<li><span class="tit">지역</span>[${tmBoards.localCode eq 'LC11'?'서울':team.localCode eq 'LC31'?'경기':team.localCode eq 'LC32'?'강원':team.localCode eq 'LC33'?'충청':team.localCode eq 'LC35'?'전라':team.localCode eq 'LC39'?'제주':'경상'}] ${tmBoards.address} 
+										<li><span class="tit">지역</span>[${tmBoards.localCode eq 'LC11'?'서울':tmBoards.localCode eq 'LC31'?'경기':tmBoards.localCode eq 'LC32'?'강원':tmBoards.localCode eq 'LC33'?'충청':tmBoards.localCode eq 'LC35'?'전라':tmBoards.localCode eq 'LC39'?'제주':'경상'}] ${tmBoards.address} 
 											<a class="view-map" onclick="window.open('https://map.kakao.com/link/search/${tmBoards.address}', 'pop01', 'top=10, left=10, width=1000, height=600, status=no, menubar=no, toolbar=no, resizable=no');"> 
 												<i class="fas fa-map-marker-alt"></i> 지도보기
 											</a>
@@ -90,8 +101,12 @@
 	</section>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
+<%@ include file="/WEB-INF/views/team/include/team-pop.jsp" %>
 <%@ include file="/WEB-INF/views/pop/team-info-pop.jsp" %>
+
+<script type="text/javascript" src="${request.contextPath}/resources/js/team/managing.js"></script>
 <script type="text/javascript" src="${request.contextPath}/resources/js/popup/popup.js"></script>
+
 <script type="text/javascript">
 document.querySelector('#tmBrdBtn').addEventListener('click',(e)=>{
 	e.target.style.backgroundColor='#483D8B';
@@ -111,22 +126,13 @@ document.querySelector('#appliBtn').addEventListener('click',(e)=>{
 });
 
 let teamMatchingModify = (idx) => {
-	if (window.confirm("매치글을 수정하시겠습니까?")) {
-		console.dir(idx);
-		location.href="/matching/team/team-modify?matchIdx="+idx;
-	}
-	
-	// +"&tmCode="+tmCode+"&userId="+user+"&matchDate="+date
+	console.log("${empty tmBoards}");
+	drawQuestion('매치글을 수정하시겠습니까?','location.href="/matching/team/team-modify?matchIdx='+idx+'"');
 }
+
 let teamMatchingDel = (idx) => {
-	
-	if (window.confirm("매치글을 수정하시겠습니까?")) {
-		location.href="/matching/team/team-modify-register?matchIdx="+idx+"&modify=삭제";
-	}
-	
+	drawQuestion('매치글을 삭제하시겠습니까?','location.href="/matching/team/team-modify-register?matchIdx='+idx+'&modify=삭제"');
 }
-
-
 </script>
 </body>
 </html>

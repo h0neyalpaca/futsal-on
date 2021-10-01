@@ -176,6 +176,8 @@ public class TeamController extends HttpServlet {
 	
 	private void teamBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Team team = (Team) request.getSession().getAttribute("team");
+		Long nowDate = searchNowTime();
+		request.setAttribute("nowDate",nowDate);
 		request.setAttribute("tmBoards", ts.selectTmBoards(team.getTmCode()));
 		request.setAttribute("appliBoards", ts.selectTmApplications(team.getTmCode()));
 		request.getRequestDispatcher("/team/managing/team-board").forward(request, response);

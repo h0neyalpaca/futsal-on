@@ -42,14 +42,12 @@ let breakTeam = (tmCode) => {
 let leaveTeam = (userId) => {
 	drawQuestion('정말로 팀을 탈퇴하시겠습니까?','leaveFunc("'+userId+'");');
 }
-
 let drawQuestion = (txt,func) => {
 	document.querySelector('.pop-msg-wrap.question').style.display='flex';
 	document.querySelector('.pop-msg-wrap.question p').innerHTML='<i class="fas fa-question-circle"></i><br>'+txt;
 	document.querySelector('.submit-btn').setAttribute('onClick',func);
 	document.querySelector('.submit-btn').innerHTML='확인';
 }
-
 let grade = (userId, grade) => {
 	let xhr = new XMLHttpRequest();
 	xhr = xmlRequest('POST','manage-grade','');
@@ -102,14 +100,12 @@ let xmlRequest = (method,rqstUrl,rtnUrl) => {
 	};
 	return xhr;
 }
-
 let drawAnswer = (txt,url) => {
 	document.querySelector('.pop-msg-wrap.question').style.display='none';
 	document.querySelector('.pop-msg-wrap.answer').style.display='flex';
 	document.querySelector('.pop-msg-wrap.answer p').innerHTML=txt;
 	document.querySelector('.close-btn').setAttribute('onClick','location.href="'+url+'"');
 }
-
 let btnClose = () => {
 	let msgWrap = document.querySelectorAll('.pop-msg-wrap');
 	msgWrap.forEach(e=>{

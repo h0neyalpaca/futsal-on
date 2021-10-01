@@ -270,7 +270,9 @@ public class TeamService {
 			for (MatchMaster tmBoard : tmBoards) {
 				tmBoard.setTmRating(selectTmAvgRating(tmBoard.getTmCode()));
 				FileDTO fd = selectFile(tmBoard.getTmCode());
-				tmBoard.setFilePath(fd.getSavePath()+fd.getRenameFileName());
+				if(fd.getFlIdx()!=null) {
+					tmBoard.setFilePath(fd.getSavePath()+fd.getRenameFileName());
+				}
 			}
 		} finally {
 			template.close(conn);
