@@ -204,55 +204,98 @@ public class MatchingController extends HttpServlet {
 		String matchDate = request.getParameter("matchDate");
 		String matchTime = request.getParameter("matchTime");
 		String title = request.getParameter("title");
+		String match = request.getParameter("match");
+		String hostId = request.getParameter("hostId");
+		String requsetTeamCode = null;
+		MatchGame matchGame = new MatchGame();
+		MatchMaster matchMaster = new MatchMaster();
+		
 		
 		StringBuffer sb = new StringBuffer();
 		sb.append(matchDate);
 		sb.append(" "+matchTime);
-		//신청자와 주최자가 같을경우
-		System.out.println(matchDate);
 		
-		MatchMaster matchMaster = new MatchMaster();
+		
+		//매치 유형 확인
+		//신청자와 주최자가 같을경우
+		//팀코드로 비교 후 같은 팀이면 에러처리		
+		if (match.equals("team")) {
+			requsetTeamCode = matchingService.checkRequset(userId);
+			
+			if (requsetTeamCode.equals(tmCode)) {
+				response.sendRedirect("matching/team/team-list?err=1");
+				return;
+			}
+			matchGame.setApplicantCode(requsetTeamCode);
+		
+		}else if (match.equals("mercenary")) {
+			//용병신청자가 이미 신청한 매치에 다시 신청하지 못하도록 확인
+			//신청자 유저아이디를 이용해서 매치번호 가져와서 주최자 매치번호를 비교해서 같으면 에러처리
+			//유저아이디와 매치시간을 이용해서 매치번호 특정시켜 가져온다.
+			String checkMatchIdx = matchingService.checkMatchIdx(sb.toString(),userId);
+			
+			if (checkMatchIdx.equals(matchIdx)) {
+				request.setAttribute("msg","이미 용병으로 신청한 매치입니다.");
+				request.setAttribute("url", "/matching/mercenary/mercenary-list");
+				request.getRequestDispatcher("/common/result").forward(request, response);
+				return;
+			}
+			
+			if (hostId.equals(userId)) {
+				request.setAttribute("msg","본인이 올린글을 신청하실수 없습니다.");
+				request.setAttribute("url", "/matching/mercenary/mercenary-list");
+				request.getRequestDispatcher("/common/result").forward(request, response);
+				return;
+			}
+			matchGame.setUserId(userId);
+		}
+		
+		
 		matchMaster.setMmIdx(matchIdx);
 		matchMaster.setTitle(title);
 		matchMaster.setMatchDate(matchDate);
 		matchMaster.setMatchTime(matchTime);
 		
-		//알람 설정
-		
 		alarmService.insertAlarm(matchMaster, userId);
-		//팀코드로 비교 후 같은 팀이면 에러처리
-		String requsetTeamCode = matchingService.checkRequset(userId);
-		System.out.println(requsetTeamCode);
-		if (requsetTeamCode.equals(tmCode)) {
-			response.sendRedirect("matching/team/team-list?err=1");
-			return;
-		}
-		MatchGame matchGame = new MatchGame();
+		
 		matchGame.setMmIdx(matchIdx);
 		matchGame.setMatchDate(sb.toString());
-		matchGame.setApplicantCode(requsetTeamCode);
 		
 		
-
 		//매치게임에 등록
-		if (res == matchingService.matchGameRegister(matchGame)) {
+		if (res == matchingService.matchGameRegister(matchGame,match)) {
 			request.setAttribute("msg", "에러가 발생했습니다.");
 			request.setAttribute("url", "/index");
 			request.getRequestDispatcher("/common/result").forward(request, response);
 		}
 		
 		//모집상태 변경
-		matchingService.matchRequset(matchIdx);
+		matchingService.matchRequset(matchIdx,match);
 		
 		//team에 전적수 추가
 		//신청팀 전적 추가
-		matchingService.matchUpdate(requsetTeamCode);
+		if (match.equals("team")) {
+			matchingService.matchUpdate(requsetTeamCode);
+		}
 		//주최팀 전적 추가
 		matchingService.matchUpdate(tmCode);
 		
 		request.setAttribute("msg", "매치가 성사되었습니다.");
 		request.setAttribute("url", "/index");
 		request.getRequestDispatcher("/common/result").forward(request, response);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+	
 		
 	}
 

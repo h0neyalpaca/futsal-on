@@ -362,10 +362,16 @@ public class MatchDao {
 	}
 
 
-	public int matchRequset(String matchIdx, Connection conn) {
+	public int matchRequset(String matchIdx, String match, Connection conn) {
 		int res = 0;		
 		PreparedStatement pstm = null;
-		String query = "update match_master set state = 1 where MM_IDX = ?";
+		String query = "";
+		if (match.equals("team")) {
+			query = "update match_master set state = 1 where MM_IDX = ?";
+		}else if(match.equals("mercenary")) {
+			query = "update match_master set match_num = match_num - 1 where MM_IDX = ?";
+		}
+		
 		
 		try {
 			pstm = conn.prepareStatement(query);
@@ -413,12 +419,19 @@ public class MatchDao {
 	}
 
 
-	public int matchGameRegister(MatchGame matchGame, Connection conn) {
+	public int matchGameRegister(MatchGame matchGame, String match, Connection conn) {
 		int res = 0;		
 		PreparedStatement pstm = null;
-		
-		String query = "INSERT INTO MATCH_GAME (MG_IDX, MM_IDX, MATCH_DATE, STATE, APPLICANT_CODE)"
+		String query = "";
+		if (match.equals("team")) {
+			query = "INSERT INTO MATCH_GAME (MG_IDX, MM_IDX, MATCH_DATE, STATE, APPLICANT_CODE)"
 					 + " VALUES(SC_MG_IDX.nextval,?,?,1,?)";
+		}else if (match.equals("mercenary")) {
+			query = "INSERT INTO MATCH_GAME (MG_IDX, MM_IDX, MATCH_DATE, STATE, USER_ID)"
+					 + " VALUES(SC_MG_IDX.nextval,?,?,1,?)";
+		}
+		
+		
 		
 		 
 		
@@ -426,7 +439,13 @@ public class MatchDao {
 			pstm = conn.prepareStatement(query);
 			pstm.setString(1, matchGame.getMmIdx());
 			pstm.setString(2, matchGame.getMatchDate());
-			pstm.setString(3, matchGame.getApplicantCode());
+			
+			if (match.equals("team")) {
+				pstm.setString(3, matchGame.getApplicantCode());
+			}else if (match.equals("mercenary")) {
+				pstm.setString(3, matchGame.getUserId());
+			}
+			
 							
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
@@ -655,5 +674,30 @@ public class MatchDao {
 			template.close(pstm);
 		}
 		
+	}
+
+
+	public String checkMatchIdx(String userId, String matchDate, Connection conn) {
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		String res = "";
+		String query = "select mm_idx from match_game where user_id = ? and match_date = ?";
+		
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, userId);
+			pstm.setString(2, matchDate);
+			
+			rset = pstm.executeQuery();
+			
+			if (rset.next()) {
+				res = rset.getString("MM_IDX");
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		return res;
 	}	
 }

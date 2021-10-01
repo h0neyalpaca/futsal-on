@@ -8,6 +8,12 @@
 <link rel="stylesheet" type="text/css" href="${request.contextPath}/resources/css/matching/matching-mercenary.css" />
 </head>
 <body>
+	<c:if test="${not empty param.err}">
+		<script type="text/javascript">
+			let errMsg = '${err}';
+			alert(errMsg);
+		</script>
+	</c:if>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 	<section>
 		<div class="section">
@@ -66,10 +72,10 @@
 						<div class="tit-area">
 							<div class="tit-info">
 								<c:choose>
-									<c:when test="${matchBox.getState() == 1}">
+									<c:when test="${matchBox.getMatchNum() <= 0}">
 										<div class="state end">모집완료</div>
 									</c:when>
-									<c:when test="${matchBox.getState() == 0}">
+									<c:when test="${matchBox.getMatchNum() > 0}">
 										<div class="state recruiting">모집중</div>
 									</c:when>
 								</c:choose>
@@ -96,7 +102,7 @@
 							<!-- 팝업창 끝 -->
 							<div class="profile_n_appli">
 								<div class="profile">
-									1명남음
+									${matchBox.getMatchNum()}명남음&nbsp;&nbsp;
 									<div class="profile-img"></div>
 									<div class="profile-name">
 									${matchBox.getTmName()}
@@ -106,11 +112,11 @@
 									</div>
 								</div>
 								<c:choose>
-									<c:when test="${matchBox.getState() == 1}">
+									<c:when test="${matchBox.getMatchNum() <= 0}">
 										<div class="btn-appli" onclick="expiration()">신청하기</div>
 									</c:when>
-									<c:when test="${matchBox.getState() == 0}">
-										<div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()},'${matchBox.getTmCode()}','${authentication.userId}','${matchBox.getMatchDate()}'),'${matchBox.getMatchTime()}','${matchBox.getTitle()}')">신청하기</div>
+									<c:when test="${matchBox.getMatchNum() > 0}">
+										<div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()},'${matchBox.getTmCode()}','${authentication.userId}','${matchBox.getMatchDate()}','${matchBox.getMatchTime()}','${matchBox.getTitle()}','${matchBox.getUserId()}')">신청하기</div>
 									</c:when>
 								</c:choose>
 								
@@ -156,10 +162,10 @@
 	</section>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
 	<script type="text/javascript">
-	let matchRequset = (idx,tmCode,user,date,time,title) => {
-		if (window.confirm("매치를 신청하시겠습니까?")) {
+	let matchRequset = (idx,tmCode,user,date,time,title,hostId) => {
+		if (window.confirm("용병를 신청하시겠습니까?")) {
 			console.dir(tmCode);
-			location.href="/matching/team/subscription?matchIdx="+idx+"&tmCode="+tmCode+"&userId="+user+"&matchDate="+date+"&matchTime="+time+"&title="+title;
+			location.href="/matching/team/subscription?matchIdx="+idx+"&tmCode="+tmCode+"&userId="+user+"&matchDate="+date+"&matchTime="+time+"&title="+title+"&match=mercenary&hostId="+hostId;
 		}
 	}
 	

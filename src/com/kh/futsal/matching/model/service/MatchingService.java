@@ -141,11 +141,11 @@ public class MatchingService {
 		return match;
 	}
 
-	public int matchRequset(String matchIdx) {
+	public int matchRequset(String matchIdx, String match) {
 		Connection conn = template.getConnection();
 		int res = 0;
 		try {
-			res = matchDao.matchRequset(matchIdx,conn);
+			res = matchDao.matchRequset(matchIdx,match,conn);
 			
 			template.commit(conn);
 		}finally {
@@ -167,12 +167,12 @@ public class MatchingService {
 		return id;
 	}
 
-	public int matchGameRegister(MatchGame matchGame) {
+	public int matchGameRegister(MatchGame matchGame, String match) {
 		Connection conn = template.getConnection();
 		int res = 0;
 		try {
 			//매치글쓰기
-			res = matchDao.matchGameRegister(matchGame, conn);
+			res = matchDao.matchGameRegister(matchGame,match, conn);
 			//방금 가입한 회원의 아이디로 정보를 다시 조회			
 			
 			template.commit(conn);
@@ -294,6 +294,19 @@ public class MatchingService {
 		}
 		
 		return res;
+	}
+
+	public String checkMatchIdx(String matchDate, String userId) {
+		Connection conn = template.getConnection();
+		String id = null;
+		try {
+			id = matchDao.checkMatchIdx(userId,matchDate,conn);
+			
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+		return id;
 	}
 
 	

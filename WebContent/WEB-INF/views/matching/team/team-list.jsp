@@ -119,7 +119,7 @@
 										<div class="btn-appli" onclick="expiration()">신청하기</div>
 									</c:when>
 									<c:when test="${matchBox.getState() == 0}">
-										<div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()},'${matchBox.getTmCode()}','${authentication.userId}','${matchBox.getMatchDate()}','${matchBox.getMatchTime()}','${matchBox.getTitle()}')">신청하기</div>
+										<div class="btn-appli" onclick="matchRequset(${matchBox.getMmIdx()},'${matchBox.getTmCode()}','${authentication.userId}','${matchBox.getMatchDate()}','${matchBox.getMatchTime()}','${matchBox.getTitle()}','${matchBox.getUserId()}')">신청하기</div>
 									</c:when>
 								</c:choose>
 								
@@ -166,10 +166,10 @@
 	</section>
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 	<script type="text/javascript">
-	let matchRequset = (idx,tmCode,user,date,time,title) => {
+	let matchRequset = (idx,tmCode,user,date,time,title,hostId) => {
 		if (window.confirm("매치를 신청하시겠습니까?")) {
 			console.dir(tmCode);
-			location.href="/matching/team/subscription?matchIdx="+idx+"&tmCode="+tmCode+"&userId="+user+"&matchDate="+date+"&matchTime="+time+"&title="+title;
+			location.href="/matching/team/subscription?matchIdx="+idx+"&tmCode="+tmCode+"&userId="+user+"&matchDate="+date+"&matchTime="+time+"&title="+title+"&match=team"+"&hostId="+hostId;
 		}
 	}
 	
