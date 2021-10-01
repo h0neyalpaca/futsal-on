@@ -10,6 +10,7 @@ import java.util.List;
 import com.kh.futsal.alarm.model.dto.Alarm;
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.exception.DataAccessException;
+import com.kh.futsal.common.pagination.PageInfo;
 import com.kh.futsal.matching.model.dto.MatchMaster;
 
 public class AlarmDao {
@@ -117,15 +118,23 @@ public class AlarmDao {
 		}
 		
 	}
-	public List<Alarm> selectAlarmList (String userId, Connection conn){
+	public List<Alarm> selectAlarmList (String userId,PageInfo page, Connection conn){
 		
-		String sql = "select * from notice where user_id = ? order by state asc,nt_idx desc";
+		String sql = "select *" + 
+			 	" from (select rownum rnum, notice.* " + 
+			 	" from (select * from notice" + 
+			 	" order by NT_IDX desc) notice" + 
+			 	" where user_id = ?)" + 
+			 	" where rnum between ? and ?";
+		
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		List<Alarm> alarms = new ArrayList<Alarm>();
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, userId);
+			pstm.setInt(2, page.getStartNo());
+			pstm.setInt(3, page.getEndNo());
 			rset = pstm.executeQuery();
 			
 			while(rset.next()) {
@@ -180,5 +189,32 @@ public class AlarmDao {
 			template.close(pstm);
 		}
 	}
+
+	public int selectBoardCnt(Connection conn, String userId) {
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		int res = 0;
+		
+		String sql = "select count(*) from notice where user_id = ?";
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, userId);
+			rset=pstm.executeQuery();
+			if(rset.next()) {
+				res = rset.getInt(1);
+			}
+			
+			
+		}  catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		
+		return res;
+	}
+
+	
 	
 }

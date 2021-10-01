@@ -37,15 +37,18 @@
 							</c:if>
 						</c:forEach>
 					</table>
-					<!-- <ul class="pagenation">
-						<li><i class="far fa-arrow-alt-circle-left"></i></li>
-						<li class="selected">1</li>
-						<li>2</li>
-						<li>3</li>
-						<li>4</li>
-						<li>5</li>
-						<li><i class="far fa-arrow-alt-circle-right"></i></li>
-					</ul> -->
+					<ul class="pagenation">
+						<c:if test="${page.curPage> page.pageSize }"> 
+							<li><a class="prev-noti" href="/mypage/personal-notice?page=${page.endPage-1}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
+					</c:if>
+				
+					<c:forEach var="page" begin="${page.startPage}" end="${page.endPage}">
+							<li class="page-num ${page==curPage ? "active":""}"><a href="personal-notice?curPage=${page}">${page}</a></li>
+					</c:forEach>
+						
+					<c:if test="${page.endPage<page.totalPage }">
+						<li><a class="next-noti" href="/mypage/personal-notice?curPage=${page.endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
+					</c:if>
 				</div>
 			</div>
 		</div>

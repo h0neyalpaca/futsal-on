@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kh.futsal.alarm.model.dto.Alarm;
 import com.kh.futsal.alarm.model.service.AlarmService;
+import com.kh.futsal.common.pagination.PageInfo;
+import com.kh.futsal.common.pagination.Pagination;
 import com.kh.futsal.matching.model.dto.MatchGame;
 import com.kh.futsal.matching.model.dto.MatchMaster;
 import com.kh.futsal.matching.model.service.MatchingService;
@@ -216,10 +218,31 @@ public class MypageController extends HttpServlet {
 		String userId = member.getUserId();
 		List<String> times = new ArrayList<String>();
 		
-		List<Alarm> alarms = alarmService.selectNoticetList(userId);
+		int curPage = 0;
+		int totalNoticeCnt = 0;
+		totalNoticeCnt = alarmService.selectBoardCnt(userId);
+		
+		System.out.println("totalNoticeCnt :" + totalNoticeCnt);
+		
+		String pageNum = request.getParameter("curPage");
+		if(pageNum == null) {
+			pageNum = "1";
+		}
+		curPage =  Integer.parseInt(pageNum);
+		
+		PageInfo page = Pagination.getPageInfo(curPage, totalNoticeCnt);
+		System.out.println("page : " + page);
+		System.out.println("userId : " + userId);
+		
+		List<Alarm> alarms = alarmService.selectNoticetList(userId , page);
+		
 		for (int i = 0; i < alarms.size(); i++) {
 			times.add(checkAlarmState(alarms.get(i)));
 		}
+		
+		System.out.println("alarms : " + alarms);
+		
+		request.setAttribute("page", page);
 		request.setAttribute("alarms", alarms);
 		request.setAttribute("times",times);
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
