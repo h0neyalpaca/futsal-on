@@ -191,7 +191,22 @@ public class MypageController extends HttpServlet {
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		String userId = member.getUserId();
 		
-		List<MatchGame> mgList = matchingService.matchMgList(userId);
+		int curPage = 0;
+		int totalNoticeCnt = 0;
+		totalNoticeCnt = matchingService.selectBoardCnt(userId);
+		
+		System.out.println("totalNoticeCnt :" + totalNoticeCnt);
+		
+		String pageNum = request.getParameter("curPage");
+		if(pageNum == null) {
+			pageNum = "1";
+		}
+		curPage =  Integer.parseInt(pageNum);
+		
+		PageInfo page = Pagination.getPageInfo(curPage, totalNoticeCnt);
+		System.out.println("page : " + page);
+		
+		List<MatchGame> mgList = matchingService.matchMgList(userId, page);
 		List<MatchMaster> matchList = matchingService.matchGameList(mgList);
 		List<Team> teamInfos = new ArrayList<Team>();
 		List<FileDTO> files = new ArrayList<FileDTO>();
@@ -212,11 +227,17 @@ public class MypageController extends HttpServlet {
 			files.add(file);
 		}
 		
+		System.out.println("mgList : " + mgList);
+		System.out.println("matchList : " + matchList);
+		System.out.println("teamInfos : " + teamInfos);
+		
+		
 		matchTeamList.put("mgList",mgList);
 		matchTeamList.put("matchList", matchList);
 		matchTeamList.put("teamList",teamInfos);
 		matchTeamList.put("fileList",files);
 		request.setAttribute("datas", matchTeamList);
+		request.setAttribute("page", page);
 		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
 	}
 	

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.kh.futsal.alarm.model.dao.AlarmDao;
 import com.kh.futsal.common.db.JDBCTemplate;
+import com.kh.futsal.common.pagination.PageInfo;
 import com.kh.futsal.matching.model.dao.MatchDao;
 import com.kh.futsal.matching.model.dto.MatchGame;
 import com.kh.futsal.matching.model.dto.MatchMaster;
@@ -99,19 +100,32 @@ public class MatchingService {
 		return res;
 	}
 	
-	public List<MatchGame> matchMgList(String userId) {
+	public List<MatchGame> matchMgList(String userId, PageInfo page) {
 		
 		List<MatchGame> mgList = null;
 		Connection conn = template.getConnection();
 		
 		try {
-			mgList = matchDao.matchGameList(userId, conn);
+			mgList = matchDao.matchGameList(userId, page, conn);
 			
 		} finally {
 			template.close(conn);
 		}
 		
 		return mgList;
+	}
+	
+	public int selectBoardCnt(String userId) {
+		int res = 0;
+		Connection conn = template.getConnection();
+		
+		try {
+			res = matchDao.selectBoardCnt(conn, userId);
+		} finally {
+			template.close(conn);
+		}
+		
+		return res;
 	}
 
 	public void deleteMyApplicant(String mgIdx,MatchGame match) {

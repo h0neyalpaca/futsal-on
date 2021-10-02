@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.kh.futsal.common.db.JDBCTemplate;
 import com.kh.futsal.common.exception.DataAccessException;
+import com.kh.futsal.common.pagination.PageInfo;
 import com.kh.futsal.matching.model.dto.MatchGame;
 import com.kh.futsal.matching.model.dto.MatchMaster;
 
@@ -254,17 +255,25 @@ public class MatchDao {
 		return memberList;
 	}
 
-	public List<MatchGame> matchGameList(String userId,Connection conn){
+	public List<MatchGame> matchGameList(String userId,PageInfo page, Connection conn){
 		
 		List<MatchGame> gameList = new ArrayList<MatchGame>();	
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-		String query = "select mm_idx, mg_idx, user_id from match_game where user_id = ? order by state";
+		String query = "select *"
+					+ " from"
+					+ " (select rownum rnum, mm_idx, mg_idx, user_id"
+					+ " from match_game "
+					+ " where user_id = ?"
+					+ " order by state)"
+					+ " where rnum between ? and ?";
 
 		try {
 			pstm = conn.prepareStatement(query);
 			pstm.setString(1, userId);
+			pstm.setInt(2, page.getStartNo());
+			pstm.setInt(3, page.getEndNo());
 			rset = pstm.executeQuery();
 			
 			while(rset.next()) {
@@ -282,6 +291,32 @@ public class MatchDao {
 		
 		
 		return gameList;
+	}
+	
+	public int selectBoardCnt(Connection conn, String userId) {
+		
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		int res = 0;
+		
+		String sql = "select count(*) from match_game where user_id = ?";
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, userId);
+			rset=pstm.executeQuery();
+			if(rset.next()) {
+				res = rset.getInt(1);
+			}
+			
+			
+		}  catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(rset, pstm);
+		}
+		
+		return res;
 	}
 	
 	public MatchMaster matchGame(String mmIdx, Connection conn) {
