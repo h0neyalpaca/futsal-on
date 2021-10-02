@@ -211,7 +211,7 @@
 /* ------------------테이블 */
 
 /* -------------------페이지버튼 */
-
+/* pagenation */
 .page-button {
 	margin-top:20px;
 	display:flex;
@@ -226,7 +226,6 @@
 	color:#aaa;
 }
 
-
 .page-button i{
 	font-size:1.2em;
 	color:#888;
@@ -234,14 +233,12 @@
 	align-content: center;	
 }
 
-.page-num>a:hover, .page-button i:hover{ 
+
+.page-num>a:hover, .page-button i:hover, .active{ 
 	color:#483D8B;
 	font-weight: bold;
 }
 
-.active{
-	color:#483D8B;
-	font-weight: bold;
-}
+
 
 /* -------------------페이지버튼 */

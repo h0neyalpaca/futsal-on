@@ -68,16 +68,23 @@
 
 					<ul class="pagenation">
 						<c:if test="${page.curPage> page.pageSize }"> 
-							<li><a class="prev-noti" href="/mypage/support/support-list?page=${page.endPage-1}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
-					</c:if>
+							<li><a class="prev-noti" href="/mypage/support/support-list?curPage=${page.startPage-page.pageSize}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
+						</c:if>
 				
-					<c:forEach var="page" begin="${page.startPage}" end="${page.endPage}">
-							<li class="page-num ${page==curPage ? "active":""}"><a href="support-list?curPage=${page}">${page}</a></li>
-					</c:forEach>
+						<c:forEach var="pageNum" begin="${page.startPage}" end="${page.endPage}">
+							<c:choose>
+								<c:when test="${page.curPage eq pageNum }">	
+									<li class="page-num active"><a href="support-list?curPage=${pageNum}">${pageNum}</a></li>
+								</c:when>
+								<c:otherwise>	
+									<li class="page-num"><a href="support-list?curPage=${pageNum}">${pageNum}</a></li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
 						
-					<c:if test="${page.endPage<page.totalPage }">
-						<li><a class="next-noti" href="/mypage/support/support-list?curPage=${page.endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
-					</c:if>
+						<c:if test="${page.endPage<page.totalPage }">
+							<li><a class="next-noti" href="/mypage/support/support-list?curPage=${page.endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
+						</c:if>
 					</ul>
 
 				</div>

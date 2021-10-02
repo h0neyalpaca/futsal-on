@@ -32,19 +32,23 @@
 	display:flex;
 	justify-content:center;
 }
-.pagenation li{
+.page-num *{ 
 	font-size:1.2em;
 	padding:8px;
 	cursor:pointer;
 	color:#aaa;
 }
+
 .pagenation li i {
+	font-size:1.2em;
 	color:#888;
+	padding:6px;
+	align-content: center;	
 }
 
-.pagenation li.selected,
-.pagenation li.selected i{
+.page-num>a:hover, .pagenation i:hover, .active{ 
 	color:#483D8B;
+	font-weight: bold;
 }
 
 /* inq */

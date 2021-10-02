@@ -22,33 +22,38 @@
 							<th style="width:60%">알림내용</th>
 							<th>날짜</th>
 						</tr>
-						<c:forEach items="${alarms}" var="alarm" varStatus="status">
+						<c:forEach items="${alarms}" var="alarm">
 							<c:if test="${alarm.isStart == 1}">
 								<tr>
-									<td><c:choose>
-										<c:when test="${alarm.state == 0}">안읽음</c:when>
-										<c:when test="${alarm.state == 1}">읽음</c:when>
-									</c:choose></td>
+									<td>${alarm.state}</td>
 									<td style="text-align:center;">
-										<a href="/mypage/alarm-check?ntIdx=${alarm.ntIdx}">${alarm.content}</a>
+										<a href="#">${alarm.content}</a>
 									</td>
-									<td>${alarm.ntDate}<br>${times[status.index]}</td>
+									<td>${alarm.ntDate}</td>
 								</tr>
 							</c:if>
 						</c:forEach>
 					</table>
 					<ul class="pagenation">
 						<c:if test="${page.curPage> page.pageSize }"> 
-							<li><a class="prev-noti" href="/mypage/personal-notice?page=${page.endPage-1}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
-					</c:if>
+							<li><a class="prev-noti" href="/mypage/personal-notice?curPage=${page.startPage-page.pageSize}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
+						</c:if>
 				
-					<c:forEach var="page" begin="${page.startPage}" end="${page.endPage}">
-							<li class="page-num ${page==curPage ? "active":""}"><a href="personal-notice?curPage=${page}">${page}</a></li>
+					<c:forEach var="pageNum" begin="${page.startPage}" end="${page.endPage}">
+							<c:choose>
+							<c:when test="${page.curPage eq pageNum }">	
+								<li class="page-num active"><a href="personal-notice?curPage=${pageNum}">${pageNum}</a></li>
+							</c:when>
+							<c:otherwise>	
+								<li class="page-num"><a href="personal-notice?curPage=${pageNum}">${pageNum}</a></li>
+							</c:otherwise>
+							</c:choose>
 					</c:forEach>
 						
 					<c:if test="${page.endPage<page.totalPage }">
 						<li><a class="next-noti" href="/mypage/personal-notice?curPage=${page.endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
 					</c:if>
+					</ul>
 				</div>
 			</div>
 		</div>
