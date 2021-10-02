@@ -123,8 +123,8 @@ public class AlarmDao {
 		String sql = "select *" + 
 			 	" from (select rownum rnum, notice.* " + 
 			 	" from (select * from notice" + 
-			 	" order by NT_IDX desc) notice" + 
-			 	" where user_id = ?)" + 
+			 	" order by NT_date desc) notice" + 
+			 	" where user_id = ? and state = '1')" + 
 			 	" where rnum between ? and ?";
 		
 		PreparedStatement pstm = null;
