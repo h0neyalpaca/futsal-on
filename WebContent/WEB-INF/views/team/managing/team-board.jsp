@@ -62,7 +62,7 @@
 											</c:if>
 											<c:if test="${tmBoards.state == 1 and tmBoards.matchSchedule-400 ge nowDate}">
 												<div class="btn-appli" style="background:#bbb;cursor:default;">수정불가</div>
-												<div class="btn-appli" onclick="">취소하기</div>
+												<div class="btn-appli" onclick="teamMatchingCancel('${tmBoards.mmIdx}')">취소하기</div>
 											</c:if>
 											<c:if test="${tmBoards.matchSchedule lt nowDate or (tmBoards.state == 1 and tmBoards.matchSchedule-400 lt nowDate)}">
 												<div class="btn-appli" style="background:#bbb;cursor:default;">수정불가</div>
@@ -82,7 +82,7 @@
 									</ul>
 									<ul>
 										<li><span class="tit">매치방식</span>${tmBoards.tmMatch}:${tmBoards.tmMatch}</li>
-										<li><span class="tit">실력</span>${tmBoards.grade}</li>
+										<li><span class="tit">실력</span>${tmBoards.grade eq 'high'?'상':tmBoards.grade eq 'middle'?'중':'하'}</li>
 										<li><span class="tit">구장비</span>${tmBoards.expense}원</li>
 									</ul>
 									<div class="txt">${tmBoards.content}</div>
@@ -105,7 +105,7 @@
 												<c:forEach var="i" begin="1" end="${appliBoards.tmRating}">
 													<i class="fas fa-star full-star" style="display:inline-block;margin-right:-4px;color:#aaa;"></i>
 												</c:forEach>
-												<c:if test="${team.tmRating%1!=0}">
+												<c:if test="${appliBoards.tmRating%1!=0}">
 													<i class="fas fa-star-half-alt" style="display:inline-block;margin-right:-4px;color:#aaa;"></i>
 												</c:if>
 												<c:forEach var="i" begin="1" end="${5-appliBoards.tmRating}">
@@ -126,7 +126,7 @@
 										</div>
 										<c:if test="${authentication.grade=='ME03'}">
 											<c:if test="${appliBoards.matchSchedule-400 ge nowDate}">
-												<div class="btn-appli" onclick="">취소하기</div>
+												<div class="btn-appli" onclick="teamMatchingCancel('${appliBoards.mmIdx}','${appliBoards.tmCode}','${team.tmCode}')">취소하기</div>
 											</c:if>
 											<c:if test="${appliBoards.matchSchedule-400 lt nowDate}">
 												<div class="btn-appli" style="background:#bbb;cursor:default;">취소불가</div>
@@ -145,7 +145,7 @@
 									</ul>
 									<ul>
 										<li><span class="tit">매치방식</span>${appliBoards.tmMatch}:${appliBoards.tmMatch}</li>
-										<li><span class="tit">실력</span>${appliBoards.grade}</li>
+										<li><span class="tit">실력</span>${appliBoards.grade eq 'high'?'상':appliBoards.grade eq 'middle'?'중':'하'}</li>
 										<li><span class="tit">구장비</span>${appliBoards.expense}원</li>
 									</ul>
 									<div class="txt">${appliBoards.content}</div>
@@ -185,11 +185,18 @@
 	
 	let teamMatchingModify = (idx) => {
 		console.log("${empty tmBoards}");
+		console.log(idx);
 		drawQuestion('매치글을 수정하시겠습니까?','location.href="/matching/team/team-modify?matchIdx='+idx+'"');
 	}
 	
-	let teamMatchingDel = (idx) => {
-		drawQuestion('매치글을 삭제하시겠습니까?','location.href="/matching/team/team-modify-register?matchIdx='+idx+'&modify=삭제"');
+	let teamMatchingCancel = (idx,hostCode,rivalCode) => {
+		console.log(idx);
+		drawQuestion('매치글을 취소하시겠습니까?','location.href="/matching/team/team-modify-register?matchIdx='+idx+'&hostCode='+hostCode+'&rivalCode='+rivalCode+'&modify=취소"');
+	}
+	
+	let teamMatchingDel = (idx,hostCode,rivalCode) => {
+		console.log(idx);
+		drawQuestion('신청을 삭제하시겠습니까?','location.href="/matching/team/team-modify-register?matchIdx='+idx+'&modify=삭제"');
 	}
 </script>
 </body>

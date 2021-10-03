@@ -137,7 +137,6 @@ public class MatchingController extends HttpServlet {
 		
 	}
 
-
 	private void teamModifyRegister(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String delAndModify = request.getParameter("modify");
 		String matchIdx = request.getParameter("matchIdx");
@@ -178,7 +177,7 @@ public class MatchingController extends HttpServlet {
 			request.setAttribute("msg", "매치글 수정을 완료하였습니다.");
 			request.setAttribute("url", "/team/managing/team-board");
 			request.getRequestDispatcher("/common/result").forward(request, response);
-		}else if (delAndModify.equals("삭제")) {			
+		} else if (delAndModify.equals("삭제")) {		
 			if (res == matchingService.matchDel(matchIdx)) {
 				alarmService.deleteAlarm(matchIdx);
 				request.setAttribute("msg", "오류가 발생하였습니다.");
@@ -188,10 +187,17 @@ public class MatchingController extends HttpServlet {
 			request.setAttribute("msg", "매치글 삭제를 완료하였습니다.");
 			request.setAttribute("url", "/team/managing/team-board");
 			request.getRequestDispatcher("/common/result").forward(request, response);
+		} else if (delAndModify.equals("취소")) {
+			if (res == matchingService.matchCancel(matchIdx,request.getParameter("hostCode"),request.getParameter("rivalCode"))) {
+				//alarmService.deleteAlarm(matchIdx); //유저 아이디 필요
+				request.setAttribute("msg", "오류가 발생하였습니다.");
+				request.setAttribute("url", "/team/managing/team-board");
+				request.getRequestDispatcher("/common/result").forward(request, response);
+			}
+			request.setAttribute("msg", "매치글 취소를 완료하였습니다.");
+			request.setAttribute("url", "/team/managing/team-board");
+			request.getRequestDispatcher("/common/result").forward(request, response);
 		}
-		
-
-		
 	}
 
 
