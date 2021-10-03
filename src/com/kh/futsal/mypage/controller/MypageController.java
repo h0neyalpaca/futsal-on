@@ -195,9 +195,7 @@ public class MypageController extends HttpServlet {
 		int curPage = 0;
 		int totalNoticeCnt = 0;
 		totalNoticeCnt = matchingService.selectBoardCnt(userId);
-		
-		System.out.println("totalNoticeCnt :" + totalNoticeCnt);
-		
+				
 		String pageNum = request.getParameter("curPage");
 		if(pageNum == null) {
 			pageNum = "1";
@@ -205,7 +203,6 @@ public class MypageController extends HttpServlet {
 		curPage =  Integer.parseInt(pageNum);
 		
 		PageInfo page = Pagination.getPageInfo(curPage, totalNoticeCnt);
-		System.out.println("page : " + page);
 		
 		List<MatchGame> mgList = matchingService.matchMgList(userId, page);
 		List<MatchMaster> matchList = matchingService.matchGameList(mgList);
@@ -218,7 +215,7 @@ public class MypageController extends HttpServlet {
 			team.setTmRating(teamService.selectTmAvgRating(matchList.get(i).getTmCode()));
 			teamInfos.add(team);
 			
-			if(matchList.get(i).getState() == 1) {
+			if(checkGameEnd(matchList.get(i))) {
 				alarmService.updateAlarmIsEnd(matchList.get(i),userId);
 			}
 		}
@@ -227,11 +224,6 @@ public class MypageController extends HttpServlet {
 			FileDTO file = teamService.selectFile(teamInfos.get(j).getTmCode());
 			files.add(file);
 		}
-		
-		System.out.println("mgList : " + mgList);
-		System.out.println("matchList : " + matchList);
-		System.out.println("teamInfos : " + teamInfos);
-		
 		
 		matchTeamList.put("mgList",mgList);
 		matchTeamList.put("matchList", matchList);
@@ -242,6 +234,31 @@ public class MypageController extends HttpServlet {
 		request.getRequestDispatcher("/mypage/my-application").forward(request, response);
 	}
 	
+	private boolean checkGameEnd(MatchMaster match) {
+		String alarmDate = match.getMatchDate();
+		int alarmTime = Integer.parseInt(match.getMatchTime().substring(0, 2));
+		int alarmMonth = Integer.parseInt(alarmDate.substring(5, 7));
+		int alarmDay = Integer.parseInt(alarmDate.substring(8, 10));
+		
+		String today = getToday();
+		String day = today.substring(0,10);
+		int time =  Integer.parseInt(today.substring(11,13));
+		int nowMonth = Integer.parseInt(day.substring(5, 7));
+		int nowDate = Integer.parseInt(day.substring(8, 10));
+		
+		if(alarmDate.equals(day)) {
+			if(alarmTime <= time) {
+					return true;
+			}
+		}else if(alarmMonth < nowMonth) {
+			return true;
+		}else if(alarmMonth == nowMonth) {
+			if(alarmDay < nowDate) {
+				return true;
+			}
+		}
+		return false;
+	}
 	//개인알람리스트
 	private void personalNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Member member = (Member) request.getSession().getAttribute("authentication");
@@ -252,8 +269,6 @@ public class MypageController extends HttpServlet {
 		int totalNoticeCnt = 0;
 		totalNoticeCnt = alarmService.selectBoardCnt(userId);
 		
-		System.out.println("totalNoticeCnt :" + totalNoticeCnt);
-		
 		String pageNum = request.getParameter("curPage");
 		if(pageNum == null) {
 			pageNum = "1";
@@ -262,27 +277,23 @@ public class MypageController extends HttpServlet {
 		
 		PageInfo page = Pagination.getPageInfo(curPage, totalNoticeCnt);
 		
-		
 		List<Alarm> alarms = alarmService.selectNoticetList(userId , page);
 
 		for (int i = 0; i < alarms.size(); i++) {
 			times.add(checkAlarmState(alarms.get(i)));
 		}
 		
-		System.out.println("alarms : " + alarms);
-		System.out.println("userId : " + userId);
-		
 		request.setAttribute("page", page);
 		request.setAttribute("alarms", alarms);
 		request.setAttribute("times",times);
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
 	}
-
+	
+	
 	//알람 상태 업데이트용
 	private String checkAlarmState(Alarm alarm) {
 		String alarmDate = alarm.getNtDate();
 		int alarmTime = Integer.parseInt(alarm.getMatchTime().substring(0, 2));
-		
 		int alarmMonth = Integer.parseInt(alarmDate.substring(5, 7));
 		int alarmDay = Integer.parseInt(alarmDate.substring(8, 10));
 		
@@ -294,30 +305,12 @@ public class MypageController extends HttpServlet {
 	
 		
 		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
-			if(alarm.getIsStart() == 0 && !alarm.getContent().contains("종료")) {
-				alarmService.updateAlarmIsStart(alarm.getNtIdx(),alarm);
-			}else {
-				if(alarm.getContent().contains("종료")) {
-					return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
-				}
-			}
+				alarmTimeCheck(alarm,alarmTime);
 		}else if(alarmMonth < nowMonth) {
-			if((alarm.getIsStart() == 0 && !alarm.getContent().contains("종료"))){
-				alarmService.updateAlarmIsStart(alarm.getNtIdx(),alarm);
-			}else {
-				if(alarm.getContent().contains("종료")) {
-					return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
-				}
-			}	
+				alarmTimeCheck(alarm,alarmTime);
 		}else if(alarmMonth == nowMonth) {
 			if(alarmDay < nowDate) {
-				if((alarm.getIsStart() == 0 && !alarm.getContent().contains("종료"))){
-					alarmService.updateAlarmIsStart(alarm.getNtIdx(),alarm);
-				}else {
-					if(alarm.getContent().contains("종료")) {
-						return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
-					}
-				}	
+				alarmTimeCheck(alarm,alarmTime);
 			}
 		}else {
 			if(alarm.getContent().contains("종료")) {
@@ -340,6 +333,18 @@ public class MypageController extends HttpServlet {
 		DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		String todayTime = today.format(Formatter);
 		return todayTime;
+	}
+	
+	private String alarmTimeCheck(Alarm alarm,int alarmTime) {
+		
+		if((alarm.getIsStart() == 0 && !alarm.getContent().contains("종료"))){
+			alarmService.updateAlarmIsStart(alarm.getNtIdx(),alarm);
+		}else {
+			if(alarm.getContent().contains("종료")) {
+				return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
+			}
+		}
+		return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

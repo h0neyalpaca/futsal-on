@@ -52,6 +52,18 @@ public class AlarmService {
 		}
 	}
 	
+	//매치 취소시 알람 삭제용
+	public void deleteAlarm(String userId,String mmIdx) {
+		
+		Connection conn = template.getConnection();
+		try {
+			alarmDao.deleteAlarm(userId,mmIdx,conn);
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+	}
+	
 	//알람을 읽으면 상태 업데이트
 	public void updateAlarm(String ntIdx) {
 		
