@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -302,6 +303,38 @@ public class TeamDAO {
 		}
 		return res;
 	}
+	
+	public int updateTmPenalty(String userId, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "UPDATE MEMBER SET TM_CODE = '', GRADE = 'ME00' WHERE USER_ID = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, userId);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+	
+	public int insertTmPenalty(String userId, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		try {
+			String sql = "INSERT INTO TEAM_PENALTY VALUES (?, SYSDATE) ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, userId);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+		return res;
+	}
 
 	public int updateDelDateForLeaveTeam(String tmCode, Connection conn) {
 		int res = 0;
@@ -319,6 +352,47 @@ public class TeamDAO {
 		return res;
 	}
 
+	public int selectTmPenaltyUser(String userId, Connection conn) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		try {
+			String sql = "SELECT * FROM TEAM_PENALTY WHERE USER_ID = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, userId);
+			rset = pstm.executeQuery();
+			if(rset.next()) {
+				res = 1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			template.close(rset,pstm);
+		}
+		return res;
+	}
+	
+	public boolean selectTmPenalty(String userId, Connection conn) {
+		boolean flag = false;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		try {
+			String sql = "SELECT * FROM TEAM_PENALTY WHERE USER_ID = ? AND SYSDATE < (DEL_DATE+(INTERVAL '7'DAY)) ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, userId);
+			rset = pstm.executeQuery();
+			if(rset.next()) {
+				flag = true;
+				System.out.println("dao에서 검색결과가 있으면 패널티 있는것임 "+flag);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			template.close(rset,pstm);
+		}
+		return flag;
+	}
+	
 	public Team selectTeamByTmCode(String tmCode, Connection conn) {
 		Team team = new Team();
 		PreparedStatement pstm = null;
@@ -481,7 +555,8 @@ public class TeamDAO {
 		ResultSet rset = null;
 		
 		try {
-			String sql = "SELECT * FROM MATCH_MASTER JOIN TEAM USING(TM_CODE) WHERE TM_CODE = ? ORDER BY MATCH_DATE DESC, MATCH_TIME DESC ";
+			String sql = "SELECT * FROM MATCH_MASTER MM JOIN TEAM TM USING(TM_CODE) LEFT JOIN MATCH_GAME MG USING(MM_IDX) "
+					+ "WHERE TM_CODE = ? AND MM.MATCH_NUM IS NULL ORDER BY MM.MATCH_DATE DESC, MM.MATCH_TIME DESC ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, tmCode);
 			rset = pstm.executeQuery();
@@ -494,6 +569,28 @@ public class TeamDAO {
 			template.close(rset,pstm);
 		}
 		return tmBoards;
+	}
+	
+	public List<MatchMaster> selectMcBoards(String tmCode, Connection conn) {
+		List<MatchMaster> mcBoards = new ArrayList<MatchMaster>();
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		try {
+			String sql = "SELECT * FROM MATCH_MASTER MM JOIN TEAM TM USING(TM_CODE) LEFT JOIN MATCH_GAME MG USING(MM_IDX) "
+					+ "WHERE TM_CODE = ? AND MM.MATCH_NUM IS NOT NULL ORDER BY MM.MATCH_DATE DESC, MM.MATCH_TIME DESC ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, tmCode);
+			rset = pstm.executeQuery();
+			while(rset.next()) {
+				mcBoards.add(convertRowToMatchMaster(rset));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			template.close(rset,pstm);
+		}
+		return mcBoards;
 	}
 	
 	public List<MatchMaster> selectTmApplications(String tmCode, Connection conn) {
@@ -603,6 +700,7 @@ public class TeamDAO {
 		matchMaster.setGrade(rset.getString("GRADE"));
 		matchMaster.setContent(rset.getString("CONTENT"));
 		matchMaster.setTmMatch(rset.getInt("TM_MATCH"));
+		matchMaster.setMatchNum(rset.getInt("MATCH_NUM"));
 		matchMaster.setMatchTime(rset.getString("MATCH_TIME"));
 		matchMaster.setMatchDate(rset.getString("MATCH_DATE"));
 		matchMaster.setState(rset.getInt("STATE"));
