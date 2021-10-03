@@ -282,7 +282,7 @@ public class MypageController extends HttpServlet {
 		for (int i = 0; i < alarms.size(); i++) {
 			times.add(checkAlarmState(alarms.get(i)));
 		}
-		
+		System.out.println(alarms);
 		request.setAttribute("page", page);
 		request.setAttribute("alarms", alarms);
 		request.setAttribute("times",times);
@@ -302,15 +302,15 @@ public class MypageController extends HttpServlet {
 		int nowMonth = Integer.parseInt(day.substring(5, 7));
 		int nowDate = Integer.parseInt(day.substring(8, 10));
 		int time =  Integer.parseInt(today.substring(11,13));
-	
+		
 		
 		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
-				alarmTimeCheck(alarm,alarmTime);
+			 return alarmTimeCheck(alarm,alarmTime);
 		}else if(alarmMonth < nowMonth) {
-				alarmTimeCheck(alarm,alarmTime);
+			return alarmTimeCheck(alarm,alarmTime);
 		}else if(alarmMonth == nowMonth) {
 			if(alarmDay < nowDate) {
-				alarmTimeCheck(alarm,alarmTime);
+				return alarmTimeCheck(alarm,alarmTime);
 			}
 		}else {
 			if(alarm.getContent().contains("종료")) {
