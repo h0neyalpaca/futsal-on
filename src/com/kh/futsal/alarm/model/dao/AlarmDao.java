@@ -214,7 +214,7 @@ public class AlarmDao {
 		ResultSet rset = null;
 		int res = 0;
 		
-		String sql = "select count(*) from notice where user_id = ? and is_start = '1'";
+		String sql = "select count(*) from notice where user_id = ? ";
 		
 		try {
 			pstm = conn.prepareStatement(sql);
