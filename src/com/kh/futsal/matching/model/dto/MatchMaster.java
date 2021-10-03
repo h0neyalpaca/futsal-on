@@ -10,7 +10,7 @@ public class MatchMaster {
 	private String address; // 상세주소
 	private Date regDate; // 작성 일자
 	private String title; // 제목
-	private int matchNum; // 용병 인원
+	private Integer matchNum; // 용병 인원
 	private String expense; // 비용
 	private String grade; // 실력
 	private String content; // 내용
@@ -174,7 +174,7 @@ public class MatchMaster {
 		this.title = title;
 	}
 
-	public int getMatchNum() {
+	public Integer getMatchNum() {
 		return matchNum;
 	}
 

@@ -236,12 +236,12 @@ public class MatchingService {
 		return res;
 	}
 
-	public int matchModify(MatchMaster matchMaster) {
+	public int matchModify(MatchMaster matchMaster, String match) {
 		Connection conn = template.getConnection();
 		int res = 0;
 		try {
 			//매치글쓰기
-			res = matchDao.matchModify(matchMaster, conn);
+			res = matchDao.matchModify(matchMaster,match, conn);
 			//방금 가입한 회원의 아이디로 정보를 다시 조회			
 			
 			template.commit(conn);

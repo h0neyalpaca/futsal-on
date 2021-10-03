@@ -566,7 +566,7 @@ public class MatchDao {
 	}
 
 
-	public int matchModify(MatchMaster matchMaster, Connection conn) {
+	public int matchModify(MatchMaster matchMaster, String match, Connection conn) {
 		int res = 0;		
 		PreparedStatement pstm = null;
 		String query = "update MATCH_MASTER "
@@ -581,7 +581,21 @@ public class MatchDao {
 				+ "MATCH_TIME = ?,"
 				+ "MATCH_DATE = ?"
 				+ " where MM_IDX = ?";
-		
+		if (match.equals("mercenary")) {
+			query = "update MATCH_MASTER "
+					+ "set "
+					+ "LOCAL_CODE = ?,"
+					+ "ADDRESS = ?,"
+					+ "TITLE = ?,"
+					+ "GRADE = ?,"
+					+ "CONTENT = ?,"
+					+ "EXPENSE = ?,"
+					+ "TM_MATCH = ?,"
+					+ "MATCH_TIME = ?,"
+					+ "MATCH_DATE = ?,"
+					+ "MATCH_NUM = ?"
+					+ " where MM_IDX = ?";
+		}
 		
 		
 		try {
@@ -595,7 +609,10 @@ public class MatchDao {
 			pstm.setInt(7, matchMaster.getTmMatch());
 			pstm.setString(8, matchMaster.getMatchTime());
 			pstm.setString(9, matchMaster.getMatchDate());
-			pstm.setString(10, matchMaster.getMmIdx());
+			pstm.setString(11, matchMaster.getMmIdx());
+			if (match.equals("mercenary")) {
+				pstm.setInt(10, matchMaster.getMatchNum());
+			}
 			
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {

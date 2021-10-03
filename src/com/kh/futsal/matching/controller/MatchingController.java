@@ -69,7 +69,10 @@ public class MatchingController extends HttpServlet {
 			modify(request,response);
 			break;
 		case "team-modify-register":
-			teamModifyRegister(request,response);
+			modifyRegister(request,response);
+			break;
+		case "mercenary-modify-register":
+			modifyRegister(request,response);
 			break;
 		case "mercenary-list":
 			mercenaryList(request,response);
@@ -143,13 +146,19 @@ public class MatchingController extends HttpServlet {
 	}
 
 
-	private void teamModifyRegister(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+	private void modifyRegister(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String delAndModify = request.getParameter("modify");
 		String matchIdx = request.getParameter("matchIdx");
+		String match = request.getParameter("match");
+		MatchMaster matchMaster = new MatchMaster();
 		int res = 0;
 		System.out.println("동작");
+		System.out.println(matchIdx);
 		if (delAndModify.equals("수정")) {
-			
+			if (match.equals("mercenary")) {
+				String mercenary = request.getParameter("mercenary");
+				matchMaster.setMatchNum(Integer.parseInt(mercenary));
+			}
 			String localCode = request.getParameter("localCode");
 			String detailAddress = request.getParameter("detailAddress");
 			int size = Integer.parseInt(request.getParameter("size"));
@@ -162,7 +171,7 @@ public class MatchingController extends HttpServlet {
 			String matchTime = request.getParameter("time");
 			
 			
-			MatchMaster matchMaster = new MatchMaster();
+			
 			
 			matchMaster.setLocalCode(localCode);
 			matchMaster.setAddress(detailAddress);
@@ -174,10 +183,11 @@ public class MatchingController extends HttpServlet {
 			matchMaster.setMatchTime(matchTime);
 			matchMaster.setMatchDate(matchDate);
 			matchMaster.setContent(content);
-			if (res == matchingService.matchModify(matchMaster)) {
+			if (res == matchingService.matchModify(matchMaster,match)) {
 				request.setAttribute("msg", "오류가 발생하였습니다.");
 				request.setAttribute("url", "/team/managing/team-board");
 				request.getRequestDispatcher("/common/result").forward(request, response);
+				return;
 			}
 			
 			request.setAttribute("msg", "매치글 수정을 완료하였습니다.");
@@ -423,6 +433,7 @@ public class MatchingController extends HttpServlet {
 		matchMaster.setExpense(expense);
 		matchMaster.setGrade(grade);
 		matchMaster.setTmMatch(size);
+		
 		if (match.equals("team")) {
 			matchMaster.setTitle(detailAddress+" 매치 상대 구합니다!");
 		}else if(match.equals("mercenary")) {
@@ -448,9 +459,7 @@ public class MatchingController extends HttpServlet {
 	}
 
 
-	private void mercenaryModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/matching/mercenary/mercenary-modify").forward(request, response);
-	}
+	
 	private void mercenaryMathForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/matching/mercenary/mercenary-match-form").forward(request, response);
 	}
@@ -470,6 +479,8 @@ public class MatchingController extends HttpServlet {
 	
 	private void modify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String matchIdx = request.getParameter("matchIdx");
+		
+		
 		System.out.println(matchIdx);
 		//매치 번호를 이용해서 글의 정보를 가져온다.
 		MatchMaster matchModify = matchingService.getMatchModify(matchIdx);
@@ -480,9 +491,18 @@ public class MatchingController extends HttpServlet {
 			request.getRequestDispatcher("/common/result").forward(request, response);
 		}
 		//가져온 정보를 뿌려준다
-		request.setAttribute("matchIdx", matchIdx);
-		request.setAttribute("matchModify", matchModify);
-		request.getRequestDispatcher("/matching/team/team-modify").forward(request, response);
+		
+		if (matchModify.getMatchNum() != null) {
+			request.setAttribute("matchIdx", matchIdx);
+			request.setAttribute("matchModify", matchModify);
+			request.getRequestDispatcher("/matching/mercenary/mercenary-modify").forward(request, response);
+			
+		}else {
+			request.setAttribute("matchIdx", matchIdx);
+			request.setAttribute("matchModify", matchModify);
+			request.getRequestDispatcher("/matching/team/team-modify").forward(request, response);
+			
+		}
 		
 		
 	}
