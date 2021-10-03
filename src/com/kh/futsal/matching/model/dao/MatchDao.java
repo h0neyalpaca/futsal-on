@@ -415,6 +415,8 @@ public class MatchDao {
 			query = "update match_master set state = 1 where MM_IDX = ?";
 		}else if(match.equals("mercenary")) {
 			query = "update match_master set match_num = match_num - 1 where MM_IDX = ?";
+		}else if (match.equals("end")) {
+			query = "update match_master set match_num = match_num - 1,state = 1 where MM_IDX = ?";
 		}
 		
 		

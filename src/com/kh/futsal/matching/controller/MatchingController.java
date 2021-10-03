@@ -302,6 +302,14 @@ public class MatchingController extends HttpServlet {
 		}
 		
 		//모집상태 변경
+		if (match.equals("mercenary")) {
+			String matchNum = request.getParameter("matchNum");
+			matchMaster.setMatchNum(Integer.parseInt(matchNum));
+			System.out.println(matchMaster.getMatchNum()-1);
+			if (0==(matchMaster.getMatchNum()-1)) {
+				matchingService.matchRequset(matchIdx,"end");
+			}
+		}
 		matchingService.matchRequset(matchIdx,match);
 		
 		//team에 전적수 추가
