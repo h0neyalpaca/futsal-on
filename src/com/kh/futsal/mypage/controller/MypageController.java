@@ -264,6 +264,7 @@ public class MypageController extends HttpServlet {
 		
 		
 		List<Alarm> alarms = alarmService.selectNoticetList(userId , page);
+
 		for (int i = 0; i < alarms.size(); i++) {
 			times.add(checkAlarmState(alarms.get(i)));
 		}
