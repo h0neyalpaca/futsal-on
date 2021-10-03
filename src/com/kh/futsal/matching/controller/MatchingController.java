@@ -1,6 +1,8 @@
 package com.kh.futsal.matching.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -106,6 +108,8 @@ public class MatchingController extends HttpServlet {
 		}else if(match.equals("mercenary")) {
 			request.getRequestDispatcher("/matching/mercenary/mercenary-list").forward(request, response);
 		}
+		
+		
 	}
 	
 
@@ -133,9 +137,8 @@ public class MatchingController extends HttpServlet {
 			request.getRequestDispatcher("/matching/mercenary/mercenary-list").forward(request, response);
 		}
 		
-		
-		
 	}
+
 
 	private void teamModifyRegister(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String delAndModify = request.getParameter("modify");
@@ -177,7 +180,7 @@ public class MatchingController extends HttpServlet {
 			request.setAttribute("msg", "매치글 수정을 완료하였습니다.");
 			request.setAttribute("url", "/team/managing/team-board");
 			request.getRequestDispatcher("/common/result").forward(request, response);
-		} else if (delAndModify.equals("삭제")) {		
+		}else if (delAndModify.equals("삭제")) {			
 			if (res == matchingService.matchDel(matchIdx)) {
 				alarmService.deleteAlarm(matchIdx);
 				request.setAttribute("msg", "오류가 발생하였습니다.");
@@ -187,17 +190,10 @@ public class MatchingController extends HttpServlet {
 			request.setAttribute("msg", "매치글 삭제를 완료하였습니다.");
 			request.setAttribute("url", "/team/managing/team-board");
 			request.getRequestDispatcher("/common/result").forward(request, response);
-		} else if (delAndModify.equals("취소")) {
-			if (res == matchingService.matchCancel(matchIdx,request.getParameter("hostCode"),request.getParameter("rivalCode"))) {
-				//alarmService.deleteAlarm(matchIdx); //유저 아이디 필요
-				request.setAttribute("msg", "오류가 발생하였습니다.");
-				request.setAttribute("url", "/team/managing/team-board");
-				request.getRequestDispatcher("/common/result").forward(request, response);
-			}
-			request.setAttribute("msg", "매치글 취소를 완료하였습니다.");
-			request.setAttribute("url", "/team/managing/team-board");
-			request.getRequestDispatcher("/common/result").forward(request, response);
 		}
+		
+
+		
 	}
 
 
@@ -220,6 +216,23 @@ public class MatchingController extends HttpServlet {
 		StringBuffer sb = new StringBuffer();
 		sb.append(matchDate);
 		sb.append(" "+matchTime);
+		
+		//먼저 매치신청 시간과 매치시간을 비교하여 경기시작 1시간이 지난 경우 매치신청을 할수 없게 한다.
+		if (matchTimeCheck(matchDate,matchTime)) {
+			if (match.equals("team")) {
+				request.setAttribute("msg","신청기간 이미 지난 매치입니다.(경기시작 1시간 전까지 신청가능)");
+				request.setAttribute("url", "/matching/team/team-list");
+				request.getRequestDispatcher("/common/result").forward(request, response);
+				return;
+			}else if (match.equals("mercenary")) {
+				request.setAttribute("msg","신청기간 이미 지난 매치입니다.(경기시작 1시간 전까지 신청가능)");
+				request.setAttribute("url", "/matching/mercenary/mercenary-list");
+				request.getRequestDispatcher("/common/result").forward(request, response);
+				return;
+			}
+			
+		}
+		
 		
 		
 		//매치 유형 확인
@@ -289,20 +302,49 @@ public class MatchingController extends HttpServlet {
 		request.setAttribute("msg", "매치가 성사되었습니다.");
 		request.setAttribute("url", "/index");
 		request.getRequestDispatcher("/common/result").forward(request, response);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
 	
 		
+	}
+
+
+	private boolean matchTimeCheck(String matchDate,String matchTime) {
+		LocalDate dateNow = LocalDate.now();
+		LocalTime timeNow = LocalTime.now();
+
+		String[] date = matchDate.split("-");
+		String[] time = matchTime.split(":");
+		
+		
+		//년도 비교 현재 시간보다 더 많거나 같아야함
+		int nowYear = dateNow.getYear();
+		if (nowYear > Integer.parseInt(date[0])) {
+			return true;
+		}
+		
+		//월 비교
+		int nowMonth = dateNow.getMonthValue();
+		if (nowMonth > Integer.parseInt(date[1])) {
+			return true;
+		}
+		//일 비교
+		int nowDay = dateNow.getDayOfMonth();
+		if (nowDay > Integer.parseInt(date[2])) {
+			return true;
+		}
+		
+		//시간 비교 1시간 뺀 시간으로 비교
+		int hour = timeNow.getHour();
+		if (hour > (Integer.parseInt(time[0])-1)) {
+			return true;
+		}
+		
+		//분 비교
+		int minute = timeNow.getMinute();
+		if (minute > Integer.parseInt(time[1])) {
+			return true;
+		}
+		
+		return false;
 	}
 
 
