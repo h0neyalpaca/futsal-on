@@ -23,13 +23,15 @@
 							<th>날짜</th>
 						</tr>
 						<c:forEach items="${alarms}" var="alarm" varStatus="status">
+							<c:if test="${alarm.isStart == 1}">
 								<tr>
-									<td><c:if test="${alarm.isStart == 1}">읽음</c:if><c:if test="${alarm.isStart == 0}">안읽음</c:if></td>
+									<td><c:if test="${alarm.state == 1}">읽음</c:if><c:if test="${alarm.state == 0}">안읽음</c:if></td>
 									<td style="text-align:center;">
-										<a href="/mypage/my-application">${alarm.content}</a>
+										<a href="/mypage/alarm-check?ntIdx=${alarm.ntIdx}">${alarm.content}</a>
 									</td>
-									<td>${alarm.ntDate}<br>${times[status.index]}</td>
+									<td>${alarm.ntDate}<br>${times[status.index]} </td>
 								</tr>
+							</c:if>
 						</c:forEach>
 					</table>
 					<ul class="pagenation">
