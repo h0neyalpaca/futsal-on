@@ -82,7 +82,7 @@
 							<input type="hidden" name="userId" value="${authentication.userId}">
 							<span id="checkContent"></span>
 						</div>
-						<input type="hidden" name="match" value="mercenary">
+						<input type="hidden" name="match" value="team">
 						<input type="submit" value="등록">
 					</form>
 				</div> 
