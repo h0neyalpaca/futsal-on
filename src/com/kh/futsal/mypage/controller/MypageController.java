@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -260,11 +261,9 @@ public class MypageController extends HttpServlet {
 		curPage =  Integer.parseInt(pageNum);
 		
 		PageInfo page = Pagination.getPageInfo(curPage, totalNoticeCnt);
-		System.out.println("page : " + page);
-		System.out.println("userId : " + userId);
+		
 		
 		List<Alarm> alarms = alarmService.selectNoticetList(userId , page);
-		
 		for (int i = 0; i < alarms.size(); i++) {
 			times.add(checkAlarmState(alarms.get(i)));
 		}
@@ -281,10 +280,16 @@ public class MypageController extends HttpServlet {
 	private String checkAlarmState(Alarm alarm) {
 		String alarmDate = alarm.getNtDate();
 		int alarmTime = Integer.parseInt(alarm.getMatchTime().substring(0, 2));
-				
+		
+		int alarmMonth = Integer.parseInt(alarmDate.substring(5, 7));
+		int alarmDay = Integer.parseInt(alarmDate.substring(8, 10));
+		
 		String today = getToday();
 		String day = today.substring(0,10);
+		int nowMonth = Integer.parseInt(day.substring(5, 7));
+		int nowDate = Integer.parseInt(day.substring(8, 10));
 		int time =  Integer.parseInt(today.substring(11,13));
+	
 		
 		if(alarmDate.equals(day) && (alarmTime -4) <= time) {
 			if(alarm.getIsStart() == 0 && !alarm.getContent().contains("종료")) {
@@ -294,6 +299,14 @@ public class MypageController extends HttpServlet {
 					return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
 				}
 			}
+		}else if(alarmMonth <= nowMonth && alarmDay < nowDate) {
+			if((alarm.getIsStart() == 0 && !alarm.getContent().contains("종료"))){
+				alarmService.updateAlarmIsStart(alarm.getNtIdx(),alarm);
+			}else {
+				if(alarm.getContent().contains("종료")) {
+					return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
+				}
+			}	
 		}else {
 			if(alarm.getContent().contains("종료")) {
 				return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);

@@ -38,25 +38,6 @@ public class AlarmDao {
 	}
 	
 
-	public int updateAlarmIsStartByMmIdx(String mmIdx, Connection conn) {
-		
-		String sql = "update notice set IS_START = 1 where mm_idx = ? ";
-		PreparedStatement pstm = null;
-		int res = 0;
-		try {
-			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, mmIdx);
-			res = pstm.executeUpdate();
-			
-		} catch (SQLException e) {
-			throw new DataAccessException(e);
-		}finally {
-			template.close(pstm);
-		}
-		return res;
-	}
-	
-	
 	public int updateAlarmIsStart(String ntIdx, Connection conn) {
 		
 		String sql = "update notice set IS_START = 1 where nt_idx = ? ";
@@ -143,7 +124,7 @@ public class AlarmDao {
 			 	" from (select rownum rnum, notice.* " + 
 			 	" from (select * from notice" + 
 			 	" order by NT_date desc) notice" + 
-			 	" where user_id = ? and is_start = '1')" + 
+			 	" where user_id = ?)" + 
 			 	" where rnum between ? and ?";
 		
 		PreparedStatement pstm = null;

@@ -79,20 +79,6 @@ public class AlarmService {
 		}
 	}
 	
-	//matchMaster에서 State가 1로 업데이트할 때 알람 테이블에서 해당 mmIdx를 갖고 있는 데이터들 IsStart상태 업데이트
-	public void updateAlarmIsStartByMmIdx(String mmIdx) {
-		
-		Connection conn = template.getConnection();
-		try {
-			alarmDao.updateAlarmIsStartByMmIdx(mmIdx,conn);
-			
-			template.commit(conn);
-		}finally {
-			template.close(conn);
-		}
-	}
-
-	
 	public void updateAlarmIsEnd(MatchMaster match,String userId) {
 		
 		Connection conn = template.getConnection();

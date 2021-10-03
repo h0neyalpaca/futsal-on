@@ -26,8 +26,8 @@
 							<c:if test="${alarm.isStart == 1}">
 								<tr>
 									<td><c:if test="${alarm.isStart == 1}">읽음</c:if><c:if test="${alarm.isStart == 0}">않읽음</c:if></td>
-									<td style="text-align:center;">
-										<a href="#">${alarm.content}</a>
+									<td style="text-align:center;">${alarm.ntIdx}
+										<a href="/mypage/my-application">${alarm.content}</a>
 									</td>
 									<td>${alarm.ntDate}</td>
 								</tr>
