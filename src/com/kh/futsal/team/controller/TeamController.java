@@ -47,6 +47,9 @@ public class TeamController extends HttpServlet {
 		case "main":
 			teamMain(request,response);
 			break;
+		case "chck-penalty":
+			chckPenalty(request,response);
+			break;
 		case "join-team":
 			joinTeam(request,response);
 			break;
@@ -151,7 +154,7 @@ public class TeamController extends HttpServlet {
 		//해체가 가능한 경우
 		Member member = (Member) request.getSession().getAttribute("authentication");
 		List<Member> tmMembers = ts.selectTmMembers(request.getParameter("tmCode"));
-		int res = ts.updateDelDate(request.getParameter("tmCode"),tmMembers);
+		int res = ts.updateDelDate(request.getParameter("tmCode"),member.getUserId(),tmMembers);
 		res = 1;
 		if(res > 0) {
 			msg = "팀 해체가 완료되었습니다.";
@@ -175,6 +178,7 @@ public class TeamController extends HttpServlet {
 		Long nowDate = searchNowTime();
 		request.setAttribute("nowDate",nowDate);
 		request.setAttribute("tmBoards", ts.selectTmBoards(team.getTmCode()));
+		request.setAttribute("mcBoards", ts.selectMcBoards(team.getTmCode()));
 		request.setAttribute("appliBoards", ts.selectTmApplications(team.getTmCode()));
 		request.getRequestDispatcher("/team/managing/team-board").forward(request, response);
 	}
@@ -224,7 +228,7 @@ public class TeamController extends HttpServlet {
 	private void manageDelegation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Team team = (Team) request.getSession().getAttribute("team");
 		Member member = (Member) request.getSession().getAttribute("authentication");
-
+		
 		String msg = "처리 중 오류가 발생하였습니다.";
 		int res = ts.updateGrades(request.getParameter("userId"), team);
 		if (res > 0) {
@@ -337,6 +341,18 @@ public class TeamController extends HttpServlet {
 	
 	private void joinTeam(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/team/join-team").forward(request, response);
+	}
+
+//	팀코드로 팀 유무 체크
+	private void chckPenalty(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		if(ts.selectTmPenalty(member.getUserId())) {
+			System.out.println("controller 트루인가");
+			response.getWriter().print("disable");
+		} else {
+			System.out.println("controller 펄스인가");
+			response.getWriter().print("available");
+		}
 	}
 	
 	private void teamMain(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -21,7 +21,7 @@
 				<div class="team-img"></div>
 				
 				<c:if test="${authentication.grade=='ME03'}">
-					<p class="leave-msg">팀을 해체하시면 <strong>팀원은 자동으로 전원 탈퇴</strong>되며,<br>동일한 이름으로 팀 생성이 불가능하니 신중하게 결정해주세요.</p>
+					<p class="leave-msg">팀을 해체하시면 <strong>팀원은 자동으로 전원 탈퇴되며 7일간 팀을 생성하실 수 없습니다.</strong><br>또한 동일한 이름으로 팀 생성이 불가능하니 신중하게 결정해주세요.</p>
 					<button class="btn-leave-team" onclick="breakTeam('${team.tmCode}')">팀 해체하기</button>
 				</c:if>
 				<c:if test="${authentication.grade!='ME03'}">

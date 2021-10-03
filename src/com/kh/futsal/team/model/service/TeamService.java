@@ -169,14 +169,22 @@ public class TeamService {
 	}
 	
 //	팀 해체
-	public int updateDelDate(String tmCode, List<Member> tmMembers) {
+	public int updateDelDate(String tmCode, String userId, List<Member> tmMembers) {
 		Connection conn = template.getConnection();
 		int res = 0;
 		try {
-			res = td.updateDelDateForLeaveTeam(tmCode,conn);
+			res = td.updateDelDateForLeaveTeam(tmCode, conn);
 			if(res > 0) {
 				for (Member member : tmMembers) {
 					res = td.updateMemberForLeaveTeam(member.getUserId(),conn);
+				}
+				if(res > 0) {
+					res = td.selectTmPenaltyUser(userId, conn);
+					if(res > 0) {
+						res = td.updateTmPenalty(userId, conn);						
+					} else {
+						res = td.insertTmPenalty(userId, conn);
+					}
 				}
 			}
 			template.commit(conn);
@@ -225,6 +233,23 @@ public class TeamService {
 		return team;
 	}
 	
+//	팀 패널티 검색
+	public boolean selectTmPenalty(String userId) {
+		boolean flag = false;
+		Connection conn = template.getConnection();
+		try {
+			flag = td.selectTmPenalty(userId, conn);
+			System.out.println("service에 true가 반환되어야 함"+flag);
+			if(flag) {
+				System.out.println("트루입니까?"+flag);
+				return flag;
+			}
+		} finally {
+			template.close(conn);
+		}
+		return flag;
+	}
+	
 //	파일 검색
 	public FileDTO selectFile(String tmCode) {
 		Connection conn = template.getConnection();
@@ -261,7 +286,7 @@ public class TeamService {
 		return results;
 	}
 	
-//	팀이 올린 게시글 검색
+//	팀이 올린 팀매치 게시글 검색
 	public List<MatchMaster> selectTmBoards(String tmCode) {
 		Connection conn = template.getConnection();
 		List<MatchMaster> tmBoards = null;
@@ -278,6 +303,25 @@ public class TeamService {
 			template.close(conn);
 		}
 		return tmBoards;
+	}
+
+//	팀이 올린 용병매치 게시글 검색
+	public List<MatchMaster> selectMcBoards(String tmCode) {
+		Connection conn = template.getConnection();
+		List<MatchMaster> mcBoards = null;
+		try {
+			mcBoards = td.selectMcBoards(tmCode, conn);
+			for (MatchMaster mcBoard : mcBoards) {
+				mcBoard.setTmRating(selectTmAvgRating(mcBoard.getTmCode()));
+				FileDTO fd = selectFile(mcBoard.getTmCode());
+				if(fd.getFlIdx()!=null) {
+					mcBoard.setFilePath(fd.getSavePath()+fd.getRenameFileName());
+				}
+			}
+		} finally {
+			template.close(conn);
+		}
+		return mcBoards;
 	}
 	
 //	팀이 신청한 게시글 검색
