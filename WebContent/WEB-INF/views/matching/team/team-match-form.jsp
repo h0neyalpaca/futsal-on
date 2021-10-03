@@ -19,7 +19,7 @@
 					</div>
 				</div>
 				<div class="search-wrap">
-					<form onsubmit="return formCheck();" action="/matching/team/team-match-register" method="post" >
+					<form onsubmit="return formCheck();" action="/matching/team/mercenary-match-register" method="post" >
 						<dl>
 							<dt>경기지역</dt>	
 							<dd class="matchRegion">
@@ -82,6 +82,7 @@
 							<input type="hidden" name="userId" value="${authentication.userId}">
 							<span id="checkContent"></span>
 						</div>
+						<input type="hidden" name="match" value="mercenary">
 						<input type="submit" value="등록">
 					</form>
 				</div> 

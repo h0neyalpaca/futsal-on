@@ -16,12 +16,17 @@ import com.kh.futsal.matching.model.dto.MatchMaster;
 public class MatchDao {
 	JDBCTemplate template = JDBCTemplate.getInstance();
 
-	public int matchRegister(MatchMaster matchMaster, Connection conn) {
+	public int matchRegister(MatchMaster matchMaster, String match, Connection conn) {
 		int res = 0;		
 		PreparedStatement pstm = null;
-		
 		String query = "INSERT INTO MATCH_MASTER (MM_IDX, USER_ID, TM_CODE, LOCAL_CODE, ADDRESS, REG_DATE, TITLE,EXPENSE, GRADE, CONTENT, TM_MATCH, MATCH_TIME,MATCH_DATE)"
-					 + " VALUES(SC_MM_IDX.nextval,?,?,?,?,sysdate,?, ?, ?, ?,?, ?,?)";
+				 + " VALUES(SC_MM_IDX.nextval,?,?,?,?,sysdate,?, ?, ?, ?,?, ?,?)";
+	
+		
+		if (match.equals("mercenary")) {
+			query = "INSERT INTO MATCH_MASTER (MM_IDX, USER_ID, TM_CODE, LOCAL_CODE, ADDRESS, REG_DATE, TITLE,EXPENSE, GRADE, CONTENT, TM_MATCH, MATCH_TIME,MATCH_DATE,MATCH_NUM)"
+					 + " VALUES(SC_MM_IDX.nextval,?,?,?,?,sysdate,?, ?, ?, ?,?, ?,?,?)";
+		}
 		
 		 
 		
@@ -41,7 +46,9 @@ public class MatchDao {
 			pstm.setInt(9, matchMaster.getTmMatch());
 			pstm.setString(10, matchMaster.getMatchTime());
 			pstm.setString(11, matchMaster.getMatchDate());
-			
+			if (match.equals("mercenary")) {
+				pstm.setInt(12, matchMaster.getMatchNum());
+			}
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(e);

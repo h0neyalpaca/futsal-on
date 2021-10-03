@@ -18,13 +18,13 @@ public class MatchingService {
 	MatchDao matchDao = new MatchDao();
 	AlarmDao alarmDao = new AlarmDao();
 	
-	public int matchRegister(MatchMaster matchMaster) {
+	public int matchRegister(MatchMaster matchMaster, String match) {
 		Connection conn = template.getConnection();
 		int res = 0;
 		
 		try {
 			//매치글쓰기
-			res = matchDao.matchRegister(matchMaster, conn);
+			res = matchDao.matchRegister(matchMaster,match ,conn);
 			//방금 가입한 회원의 아이디로 정보를 다시 조회			
 			
 			template.commit(conn);

@@ -19,45 +19,59 @@
 					</div>
 				</div>
 				<div class="search-wrap">
-					<form onsubmit="return false;">
+					<form onsubmit="return formCheck();" action="/matching/team/team-match-register" method="post" >
 						<dl>
 							<dt>경기지역</dt>
 							<dd class="matchRegion">
-								<label><input type="radio" class="bt1" value="seoul" name="region">서울</label>
-								<label><input type="radio" class="bt2" value="gyeonggi" name="region">경기</label>
-								<label><input type="radio" class="bt3" value="gangwon" name="region" >강원</label>
-								<label><input type="radio" class="bt4" value="chungcheong" name="region" />충청</label>
-								<label><input type="radio" class="bt5" value="jeolla" name="region" >전라</label>
-								<label><input type="radio" class="bt6" value="jeju" name="region" >제주</label>
-								<label><input type="radio" class="bt7" value="gyeongsang" name="region" />경상</label>
+								<label><input type="radio" class="bt1" value="LC11" name="localCode">서울</label>
+								<label><input type="radio" class="bt2" value="LC31" name="localCode">경기</label>
+								<label><input type="radio" class="bt3" value="LC32" name="localCode" >강원</label>
+								<label><input type="radio" class="bt4" value="LC33" name="localCode" />충청</label>
+								<label><input type="radio" class="bt5" value="LC35" name="localCode" >전라</label>
+								<label><input type="radio" class="bt6" value="LC39" name="localCode" >제주</label>
+								<label><input type="radio" class="bt7" value="LC37" name="localCode" />경상</label>
+								<span id="checkRegion" class="validMsg"></span>
 							</dd>
 						</dl>
 						<dl>
 							<dt>상세주소</dt>
 							<dd>
-								<input type="text" class="keyword"/><i class="fas fa-search" id="search"></i>
+								<input type="text" class="keyword" name="detailAddress"/><i class="fas fa-search" id="search"></i>
+								<span id="checkAddress" class="validMsg"></span>
 								<div id="map" style="width:200px;height:150px;"></div>
 							</dd>
 						</dl>
 						<dl>
 							<dt>매치방식</dt>
 							<dd class="matchStyle">
-								<label><input type="radio" name="size" value="small">5 : 5</label>
-								<label><input type="radio" name="size" value="medium">6 : 6</label>
-								<label><input type="radio" name="size" value="big">7 : 7</label>
+								<label><input type="radio" name="size" value="5">5 : 5</label>
+								<label><input type="radio" name="size" value="6">6 : 6</label>
+								<label><input type="radio" name="size" value="7">7 : 7</label>
+								<span id="checkMatchStyle"></span>
 							</dd>
 						</dl>
 						<dl>
 							<dt>매치날짜</dt>
-							<dd><input type="date" /></dd>
+							<dd>
+								<input type="date" name="date" id="currentDate"/>
+								<input type="time" name="time" min="8:00" max="22:00" id="currentTime"/>
+								<span id="checkMatchDate"></span>
+							</dd>
 						</dl>
 						<dl>
 							<dt>용병비</dt>
-							<dd><input type="number" step="1000" min="0"/></dd>
+							<dd>
+								<input type="number" step="1000" min="0" name="cost" id="pay"/>
+								<span id="checkMatchPay"></span>
+							</dd>
+							
 						</dl>
 						<dl class="recruit">
 							<dt>모집인원</dt>
-							<dd><input type="number" step="1" min="1" style="margin-left: 10px;"/></dd>
+							<dd>
+							<input type="number" step="1" min="1" style="margin-left: 10px;" name="mercenary" id="mercenary"/>
+							<span id="checkMercenary"></span>
+							</dd>
 						</dl>
 						<dl>	
 							<dt>상대팀 실력</dt>
@@ -65,11 +79,15 @@
 								<label><input type="radio" name="level" value="high">상</label>
 								<label><input type="radio" name="level" value="middle">중</label>
 								<label><input type="radio" name="level" value="low">하</label>
+								<span id="checkMatchLevel"></span>
 							</dd>
 						</dl>
 						<div class="textarea-wrap">
-							<textarea name="opinion" cols="100" rows="20" placeholder="내용을 입력해주세요." style="resize: none;"></textarea>
+							<textarea id="contentId" name="content"  cols="100" rows="20" placeholder="내용을 입력해주세요." style="resize: none;" >매너 게임해요!</textarea>
+							<input type="hidden" name="userId" value="${authentication.userId}">
+							<span id="checkContent"></span>
 						</div>
+						<input type="hidden" name="match" value="mercenary">
 						<input type="submit" value="등록">
 					</form>
 				</div> 
@@ -78,13 +96,13 @@
 		</div>
 	</section>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
-
+<script type="text/javascript" src="/resources/js/matching/mercenaryMatchForm.js"></script>
 </body>
 <script>
 (() => {
 
 	document.querySelector('.matchRegion').addEventListener('click', e => {
-		let region = document.getElementsByName('region');
+		let region = document.getElementsByName('localCode');
 		region.forEach((noCheck) => {
 		
 			if (noCheck.checked == true) {

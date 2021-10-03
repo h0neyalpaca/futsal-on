@@ -51,7 +51,7 @@ public class MatchingController extends HttpServlet {
 			teamMathForm(request,response);
 			break;
 		case "team-match-register":
-			teamMatchRegister(request,response);
+			matchRegister(request,response);
 			break;
 		case "team-match-search":
 			MatchSearch(request,response);
@@ -76,6 +76,9 @@ public class MatchingController extends HttpServlet {
 			break;
 		case "mercenary-match-form":
 			mercenaryMathForm(request,response);
+			break;
+		case "mercenary-match-register":
+			matchRegister(request,response);
 			break;
 		case "mercenary-modify":
 			mercenaryModify(request,response);
@@ -374,7 +377,12 @@ public class MatchingController extends HttpServlet {
 	}
 
 
-	private void teamMatchRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void matchRegister(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		MatchMaster matchMaster = new MatchMaster();
+		StringBuffer sb = new StringBuffer();
+		
+		String match = request.getParameter("match");
+		
 		String localCode = request.getParameter("localCode");
 		String detailAddress = request.getParameter("detailAddress");
 		int size = Integer.parseInt(request.getParameter("size"));
@@ -388,7 +396,7 @@ public class MatchingController extends HttpServlet {
 		
 		String matchDate = request.getParameter("date");
 		String matchTime = request.getParameter("time");
-		StringBuffer sb = new StringBuffer();
+		
 		
 		System.out.println(size); 
 		System.out.println(localCode);
@@ -396,8 +404,11 @@ public class MatchingController extends HttpServlet {
 		sb.append(matchDate+" ");
 		sb.append(matchTime);
 		
-		MatchMaster matchMaster = new MatchMaster();
 		
+		if (match.equals("mercenary")) {
+			String mercenary = request.getParameter("mercenary");
+			matchMaster.setMatchNum(Integer.parseInt(mercenary));
+		}
 		matchMaster.setUserId(userId);
 		matchMaster.setTmCode(teamCode);
 		matchMaster.setLocalCode(localCode);
@@ -405,15 +416,27 @@ public class MatchingController extends HttpServlet {
 		matchMaster.setExpense(expense);
 		matchMaster.setGrade(grade);
 		matchMaster.setTmMatch(size);
-		matchMaster.setTitle(detailAddress+" 매치 상대 구합니다!");
+		if (match.equals("team")) {
+			matchMaster.setTitle(detailAddress+" 매치 상대 구합니다!");
+		}else if(match.equals("mercenary")) {
+			matchMaster.setTitle(detailAddress+" 용병 구해요!");
+		}
+		
 		matchMaster.setMatchTime(matchTime);
 		matchMaster.setMatchDate(matchDate);
 		matchMaster.setContent(content);
 		
-		matchingService.matchRegister(matchMaster);
-		request.setAttribute("msg", "매치글 작성이 완료되었습니다.");
-		request.setAttribute("url", "/matching/team/team-list");
-		request.getRequestDispatcher("/common/result").forward(request, response);
+		matchingService.matchRegister(matchMaster,match);
+		if (match.equals("team")) {
+			request.setAttribute("msg", "매치글 작성이 완료되었습니다.");
+			request.setAttribute("url", "/matching/team/team-list");
+			request.getRequestDispatcher("/common/result").forward(request, response);
+		}else if(match.equals("mercenary")) {
+			request.setAttribute("msg", "용병신청글 작성이 완료되었습니다.");
+			request.setAttribute("url", "/matching/mercenary/mercenary-list");
+			request.getRequestDispatcher("/common/result").forward(request, response);
+		}
+		
 	
 	}
 
