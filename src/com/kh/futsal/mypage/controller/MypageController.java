@@ -299,7 +299,7 @@ public class MypageController extends HttpServlet {
 					return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
 				}
 			}
-		}else if(alarmMonth <= nowMonth && alarmDay < nowDate) {
+		}else if(alarmMonth < nowMonth) {
 			if((alarm.getIsStart() == 0 && !alarm.getContent().contains("종료"))){
 				alarmService.updateAlarmIsStart(alarm.getNtIdx(),alarm);
 			}else {
@@ -307,6 +307,16 @@ public class MypageController extends HttpServlet {
 					return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
 				}
 			}	
+		}else if(alarmMonth == nowMonth) {
+			if(alarmDay < nowDate) {
+				if((alarm.getIsStart() == 0 && !alarm.getContent().contains("종료"))){
+					alarmService.updateAlarmIsStart(alarm.getNtIdx(),alarm);
+				}else {
+					if(alarm.getContent().contains("종료")) {
+						return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
+					}
+				}	
+			}
 		}else {
 			if(alarm.getContent().contains("종료")) {
 				return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
