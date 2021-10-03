@@ -437,7 +437,7 @@ public class TeamDAO {
 					+ "join team tm on (mm.tm_code = tm.tm_code) "
 					+ "join team te on (mg.applicant_code = te.tm_code) "
 					+ "left join result rs on (mg.mg_idx = rs.mg_idx) "
-					+ "where (mm.tm_code = ? or mg.applicant_code = ?) and mm.state = 1 order by mg.mg_idx desc ";
+					+ "where (mm.tm_code = ? or mg.applicant_code = ?) and mm.state = 1 order by mm.match_date desc, mm.match_time desc ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, tmCode);
 			pstm.setString(2, tmCode);
@@ -481,7 +481,7 @@ public class TeamDAO {
 		ResultSet rset = null;
 		
 		try {
-			String sql = "SELECT * FROM MATCH_MASTER JOIN TEAM USING(TM_CODE) WHERE TM_CODE = ? ";
+			String sql = "SELECT * FROM MATCH_MASTER JOIN TEAM USING(TM_CODE) WHERE TM_CODE = ? ORDER BY MATCH_DATE DESC, MATCH_TIME DESC ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, tmCode);
 			rset = pstm.executeQuery();
@@ -502,7 +502,7 @@ public class TeamDAO {
 		ResultSet rset = null;
 		
 		try {
-			String sql = "SELECT * FROM MATCH_MASTER JOIN MATCH_GAME USING(MM_IDX) JOIN TEAM USING(TM_CODE) WHERE APPLICANT_CODE = ? ";
+			String sql = "SELECT * FROM MATCH_MASTER MM JOIN MATCH_GAME MG USING(MM_IDX) JOIN TEAM USING(TM_CODE) WHERE APPLICANT_CODE = ? ORDER BY MM.MATCH_DATE DESC, MM.MATCH_TIME DESC ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, tmCode);
 			rset = pstm.executeQuery();

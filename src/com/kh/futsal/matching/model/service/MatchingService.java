@@ -273,6 +273,27 @@ public class MatchingService {
 		
 		return res;
 	}
+	
+	public int matchCancel(String matchIdx, String hostCode, String rivalCode) {
+		Connection conn = template.getConnection();
+		int res = 0;
+		try {
+			res = matchDao.matchCancel(matchIdx, conn);
+			System.out.println(res);
+			if(res > 0) {
+				System.out.println(res);
+				res = matchDao.gmCntMinusUpdate(hostCode, rivalCode, conn);
+			}
+			template.commit(conn);
+		} catch (Exception e) {
+			template.rollback(conn);
+			throw e;
+		}finally {
+			template.close(conn);
+		}
+		
+		return res;
+	}
 
 	public List<MatchMaster> RecentView(String match) {
 		List<MatchMaster> RecentMatchList = new ArrayList<MatchMaster>();
