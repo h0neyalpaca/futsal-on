@@ -66,7 +66,7 @@ public class MatchingController extends HttpServlet {
 			MatchRequest(request,response);
 			break;
 		case "team-modify":
-			teamModify(request,response);
+			modify(request,response);
 			break;
 		case "team-modify-register":
 			teamModifyRegister(request,response);
@@ -81,7 +81,7 @@ public class MatchingController extends HttpServlet {
 			matchRegister(request,response);
 			break;
 		case "mercenary-modify":
-			mercenaryModify(request,response);
+			modify(request,response);
 			break;
 
 
@@ -451,6 +451,8 @@ public class MatchingController extends HttpServlet {
 		List<MatchMaster> matchList = matchingService.mercenaryListView(); 	
 		for (MatchMaster matchMaster : matchList) {
 			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
+			matchMaster.setCheckMatchTime(matchTimeCheck(matchMaster.getMatchDate(),matchMaster.getMatchTime()));
+
 		}
 		
 		request.setAttribute("matchList", matchList);
@@ -459,7 +461,7 @@ public class MatchingController extends HttpServlet {
 		request.getRequestDispatcher("/matching/mercenary/mercenary-list").forward(request, response);
 	}
 	
-	private void teamModify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void modify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String matchIdx = request.getParameter("matchIdx");
 		System.out.println(matchIdx);
 		//매치 번호를 이용해서 글의 정보를 가져온다.
@@ -484,6 +486,7 @@ public class MatchingController extends HttpServlet {
 		List<MatchMaster> matchList = matchingService.matchListView(); 	
 		for (MatchMaster matchMaster : matchList) {
 			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
+			matchMaster.setCheckMatchTime(matchTimeCheck(matchMaster.getMatchDate(),matchMaster.getMatchTime()));
 		}
 		
 		request.setAttribute("matchList", matchList);

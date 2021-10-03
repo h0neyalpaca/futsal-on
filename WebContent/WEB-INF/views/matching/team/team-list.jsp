@@ -79,6 +79,9 @@
 									<c:when test="${matchBox.getState() == 1}">
 										<div class="state end">모집완료</div>
 									</c:when>
+									<c:when test="${matchBox.isCheckMatchTime() == true}">
+										<div class="state end">모집완료</div>
+									</c:when>
 									<c:when test="${matchBox.getState() == 0}">
 										<div class="state recruiting">모집중</div>
 									</c:when>

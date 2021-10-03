@@ -17,11 +17,14 @@ public class MatchMaster {
 	private int tmMatch; // 매치 방식
 	private String matchDate; // 매치 날짜
 	private String matchTime; // 매치 시간
+	private boolean checkMatchTime; //매치 시간을 체크하여 1시간 지났을경우 true;
 
 	private int state;
 	
 	// 팀 dto
 	private String tmName; // 팀이름
+	
+
 	private String tmGrade; // 팀실력
 	private String tmInfo; // 소개글
 	private int gameCnt; // 총게임횟수
@@ -29,6 +32,17 @@ public class MatchMaster {
 	private int tmWin; // 승리횟수
 	private int tmLose; // 패배횟수
 	private String filePath; //파일경로
+	
+	
+
+	public boolean isCheckMatchTime() {
+		return checkMatchTime;
+	}
+
+
+	public void setCheckMatchTime(boolean checkMatchTime) {
+		this.checkMatchTime = checkMatchTime;
+	}
 
 
 	public int getState() {
@@ -235,8 +249,9 @@ public class MatchMaster {
 		return "MatchMaster [mmIdx=" + mmIdx + ", userId=" + userId + ", tmCode=" + tmCode + ", localCode=" + localCode
 				+ ", address=" + address + ", regDate=" + regDate + ", title=" + title + ", matchNum=" + matchNum
 				+ ", expense=" + expense + ", grade=" + grade + ", content=" + content + ", tmMatch=" + tmMatch
-				+ ", matchDate=" + matchDate + ", matchTime=" + matchTime + ", state=" + state + ", tmName=" + tmName
-				+ ", tmGrade=" + tmGrade + ", tmInfo=" + tmInfo + ", gameCnt=" + gameCnt + ", tmRating=" + tmRating
-				+ ", tmWin=" + tmWin + ", tmLose=" + tmLose + ", filePath=" + filePath + "]";
+				+ ", matchDate=" + matchDate + ", matchTime=" + matchTime + ", checkMatchTime=" + checkMatchTime
+				+ ", state=" + state + ", tmName=" + tmName + ", tmGrade=" + tmGrade + ", tmInfo=" + tmInfo
+				+ ", gameCnt=" + gameCnt + ", tmRating=" + tmRating + ", tmWin=" + tmWin + ", tmLose=" + tmLose
+				+ ", filePath=" + filePath + "]";
 	}
 }
