@@ -320,33 +320,40 @@ public class MatchingController extends HttpServlet {
 		
 		//년도 비교 현재 시간보다 더 많거나 같아야함
 		int nowYear = dateNow.getYear();
+	
 		if (nowYear > Integer.parseInt(date[0])) {
 			return true;
 		}
 		
 		//월 비교
 		int nowMonth = dateNow.getMonthValue();
+		
 		if (nowMonth > Integer.parseInt(date[1])) {
 			return true;
 		}
 		//일 비교
 		int nowDay = dateNow.getDayOfMonth();
+	
 		if (nowDay > Integer.parseInt(date[2])) {
 			return true;
+		}else if(nowDay == Integer.parseInt(date[2])) {
+			//시간 비교 1시간 뺀 시간으로 비교
+			int hour = timeNow.getHour();
+		
+			if (hour > (Integer.parseInt(time[0])-1)) {
+				return true;
+			}
+			
+			//분 비교
+			int minute = timeNow.getMinute();
+			
+
+			if (minute > Integer.parseInt(time[1])) {
+				return true;
+			}
 		}
 		
-		//시간 비교 1시간 뺀 시간으로 비교
-		int hour = timeNow.getHour();
-		if (hour > (Integer.parseInt(time[0])-1)) {
-			return true;
-		}
-		
-		//분 비교
-		int minute = timeNow.getMinute();
-		if (minute > Integer.parseInt(time[1])) {
-			return true;
-		}
-		
+
 		return false;
 	}
 
