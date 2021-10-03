@@ -468,7 +468,9 @@ public class MatchingController extends HttpServlet {
 		for (MatchMaster matchMaster : matchList) {
 			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
 			matchMaster.setCheckMatchTime(matchTimeCheck(matchMaster.getMatchDate(),matchMaster.getMatchTime()));
-
+			if (matchMaster.isCheckMatchTime()) {
+				matchingService.matchRequset(matchMaster.getMmIdx(),"team");
+			}	
 		}
 		
 		request.setAttribute("matchList", matchList);
@@ -514,6 +516,9 @@ public class MatchingController extends HttpServlet {
 		for (MatchMaster matchMaster : matchList) {
 			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
 			matchMaster.setCheckMatchTime(matchTimeCheck(matchMaster.getMatchDate(),matchMaster.getMatchTime()));
+			if (matchMaster.isCheckMatchTime()) {
+				matchingService.matchRequset(matchMaster.getMmIdx(),"team");
+			}
 		}
 		
 		request.setAttribute("matchList", matchList);

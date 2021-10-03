@@ -75,7 +75,8 @@ public class MatchDao {
 				" on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE"
 				+ " left outer join team"
 				+ " on MATCH_MASTER.TM_CODE = team.TM_CODE"
-				+ " where MATCH_NUM IS NULL";
+				+ " where MATCH_NUM IS NULL"
+				+ " order by state";
 		
 		try {
 			pstm = conn.prepareStatement(query);
@@ -218,7 +219,8 @@ public class MatchDao {
 				" on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE"
 				+ " left outer join team"
 				+ " on MATCH_MASTER.TM_CODE = team.TM_CODE" 
-				+ " where MATCH_MASTER.LOCAL_CODE = ? and MATCH_DATE = ? and GRADE = ? and MATCH_NUM IS "+match;
+				+ " where MATCH_MASTER.LOCAL_CODE = ? and MATCH_DATE = ? and GRADE = ? and MATCH_NUM IS "+match
+				+ " order by state";
 		
 		if (match.equals("NOT NULL")) {
 			query = "select "
@@ -231,7 +233,8 @@ public class MatchDao {
 					" on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE"
 					+ " left outer join team"
 					+ " on MATCH_MASTER.TM_CODE = team.TM_CODE" 
-					+ " where MATCH_MASTER.LOCAL_CODE = ? and MATCH_DATE = ? and GRADE = ? and MATCH_NUM IS NOT NULL";
+					+ " where MATCH_MASTER.LOCAL_CODE = ? and MATCH_DATE = ? and GRADE = ? and MATCH_NUM IS NOT NULL"
+					+ " order by state";
 		}
 		
 		
@@ -745,7 +748,8 @@ public class MatchDao {
 				" on MATCH_MASTER.LOCAL_CODE = location.LOCAL_CODE"
 				+ " left outer join team"
 				+ " on MATCH_MASTER.TM_CODE = team.TM_CODE"
-				+ " where MATCH_NUM IS NOT NULL";
+				+ " where MATCH_NUM IS NOT NULL"
+				+ " order by state";
 		
 		try {
 			pstm = conn.prepareStatement(query);
