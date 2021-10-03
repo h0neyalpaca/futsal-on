@@ -124,7 +124,7 @@ public class AlarmDao {
 			 	" from (select rownum rnum, notice.* " + 
 			 	" from (select * from notice" + 
 			 	" order by NT_date desc) notice" + 
-			 	" where user_id = ?)" + 
+			 	" where user_id = ? )" + 
 			 	" where rnum between ? and ?";
 		
 		PreparedStatement pstm = null;
@@ -195,7 +195,7 @@ public class AlarmDao {
 		ResultSet rset = null;
 		int res = 0;
 		
-		String sql = "select count(*) from notice where user_id = ? ";
+		String sql = "select count(*) from notice where user_id = ? and is_start = '1'";
 		
 		try {
 			pstm = conn.prepareStatement(sql);

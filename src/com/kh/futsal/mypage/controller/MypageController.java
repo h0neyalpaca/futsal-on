@@ -269,6 +269,7 @@ public class MypageController extends HttpServlet {
 		}
 		
 		System.out.println("alarms : " + alarms);
+		System.out.println("userId : " + userId);
 		
 		request.setAttribute("page", page);
 		request.setAttribute("alarms", alarms);
