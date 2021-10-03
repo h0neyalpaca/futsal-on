@@ -511,6 +511,27 @@ public class MatchDao {
 		
 		return res;
 	}
+	
+	public int gmCntMinusUpdate(String hostCode, String rivalCode, Connection conn) {
+		int res = 0;		
+		PreparedStatement pstm = null;
+		String query = "update TEAM set GAME_CNT = GAME_CNT-1 where TM_CODE = ?";
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, hostCode);
+			res = pstm.executeUpdate();
+			if(res>0) {
+				pstm.setString(1, rivalCode);
+				res = pstm.executeUpdate();
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
+		return res;
+	}
 
 
 	public MatchMaster getMatchModify(String matchIdx, Connection conn) {
@@ -598,7 +619,31 @@ public class MatchDao {
 		
 		return res;
 	}
-
+	
+	public int matchCancel(String matchIdx, Connection conn) {
+		int res = 0;		
+		PreparedStatement pstm = null;
+		String query = "DELETE FROM MATCH_GAME WHERE MM_IDX = ? ";
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, matchIdx);
+			res = pstm.executeUpdate();
+			System.out.println("a"+res);
+			if(res < 1) {
+				return res;
+			}
+			query = "UPDATE MATCH_MASTER SET STATE = 0 WHERE MM_IDX = ? ";
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, matchIdx);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
+		return res;
+	}
 
 	public List<MatchMaster> RecentMatch(Connection conn, String match) {
 		List<MatchMaster> memberList = new ArrayList<MatchMaster>();	
