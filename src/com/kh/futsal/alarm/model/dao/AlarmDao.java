@@ -123,7 +123,7 @@ public class AlarmDao {
 		String sql = "select *" + 
 			 	" from (select rownum rnum, notice.* " + 
 			 	" from (select * from notice" + 
-			 	" order by NT_date desc) notice" + 
+			 	" order by NT_date desc, is_start desc) notice" + 
 			 	" where user_id = ? )" + 
 			 	" where rnum between ? and ?";
 		
