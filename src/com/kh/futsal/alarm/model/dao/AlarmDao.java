@@ -124,7 +124,7 @@ public class AlarmDao {
 			 	" from (select rownum rnum, notice.* " + 
 			 	" from (select * from notice" + 
 			 	" order by NT_date desc) notice" + 
-			 	" where user_id = ?)" + 
+			 	" where user_id = ? and is_start = '1')" + 
 			 	" where rnum between ? and ?";
 		
 		PreparedStatement pstm = null;

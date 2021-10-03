@@ -35,7 +35,12 @@
 						</div>
 					</div>
 					<div class="notice-list-button">
+					<c:if test="${empty searchContent}">
 						<a href="/notice/notice-list?curPage=${curPage}">목록</a>
+					</c:if>
+					<c:if test="${not empty searchContent}">
+						<a href="/notice/notice-list?curPage=${curPage}&searchNotice=${searchContent}">목록</a>
+					</c:if>
 					</div>
 
 					

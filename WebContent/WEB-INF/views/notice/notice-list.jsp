@@ -101,7 +101,7 @@
 									<div class="board-wrap">
 										<div class="board-list">
 											<div class="inner-list">
-												<a href="/notice/notice-detail?curPage=${page.curPage}&noticeNo=${notice.nwIdx}">${notice.nwTitle}</a>
+												<a href="/notice/notice-detail?curPage=${page.curPage}&noticeNo=${notice.nwIdx}&searchNotice=${searchContent}">${notice.nwTitle}</a>
 											</div>
 										</div>
 									</div>
@@ -125,7 +125,7 @@
 					<c:if test="${page.curPage> page.pageSize }"> 
 							<li><a class="prev-noti" href="/notice/notice-list?curPage=${page.startPage-page.pageSize}"><i class="far fa-arrow-alt-circle-left"></i></a></li>
 					</c:if>
-					
+				
 					<c:forEach var="pageNum" begin="${page.startPage}" end="${page.endPage}">
 							<c:choose>
 							<c:when test="${page.curPage eq pageNum }">	
@@ -136,14 +136,12 @@
 							</c:otherwise>
 							</c:choose>
 					</c:forEach>
-					
+						
 					<c:if test="${page.endPage<page.totalPage }">
 						<li><a class="next-noti" href="/notice/notice-list?curPage=${page.endPage+1}"><i class="far fa-arrow-alt-circle-right"></i></a></li>
 					</c:if>
 				</ul>
 				</c:if>
-				
-				<!-- 검색 안 했을 때 -->
 				<c:if test="${empty searchContent}">
 				<table class="join-form">
 						<colgroup>

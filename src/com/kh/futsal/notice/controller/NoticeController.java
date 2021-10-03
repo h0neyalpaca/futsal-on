@@ -79,6 +79,11 @@ public class NoticeController extends HttpServlet {
 		System.out.println("nwIdx : " + nwIdx);
 		String curPage = request.getParameter("curPage");
 		System.out.println("curPage : " + curPage);
+		
+		String searchContent = null;
+		if(request.getParameter("searchNotice") != null) {
+			searchContent = request.getParameter("searchNotice");
+		}
 
 		
 		//로그인되어있는 id 가져오기
@@ -148,6 +153,8 @@ public class NoticeController extends HttpServlet {
 		System.out.println("nextDetail : " + nextDetail);
 		
 
+		
+		request.setAttribute("searchContent", searchContent);
 		request.setAttribute("noticeDetail", noticeDetail);
 		request.setAttribute("prevDetail", prevDetail);
 		request.setAttribute("nextDetail", nextDetail);
