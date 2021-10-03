@@ -25,7 +25,7 @@
 						<c:forEach items="${alarms}" var="alarm">
 							<c:if test="${alarm.isStart == 1}">
 								<tr>
-									<td>${alarm.state}</td>
+									<td><c:if test="${alarm.isStart == 1}">읽음</c:if><c:if test="${alarm.isStart == 0}">않읽음</c:if></td>
 									<td style="text-align:center;">
 										<a href="#">${alarm.content}</a>
 									</td>

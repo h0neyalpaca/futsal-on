@@ -37,6 +37,25 @@ public class AlarmDao {
 		}
 	}
 	
+
+	public int updateAlarmIsStartByMmIdx(String mmIdx, Connection conn) {
+		
+		String sql = "update notice set IS_START = 1 where mm_idx = ? ";
+		PreparedStatement pstm = null;
+		int res = 0;
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, mmIdx);
+			res = pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		return res;
+	}
+	
 	
 	public int updateAlarmIsStart(String ntIdx, Connection conn) {
 		
