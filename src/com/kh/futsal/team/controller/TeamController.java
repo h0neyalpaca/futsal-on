@@ -3,8 +3,6 @@ package com.kh.futsal.team.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kh.futsal.alarm.model.service.AlarmService;
 import com.kh.futsal.common.file.FileDTO;
 import com.kh.futsal.common.file.FileUtil;
 import com.kh.futsal.common.file.MultiPartParams;
@@ -30,7 +27,6 @@ public class TeamController extends HttpServlet {
        
 	private TeamService ts = new TeamService();
 	private MemberService ms = new MemberService();
-	private AlarmService alarmService = new AlarmService();
 	
     public TeamController() {
         super();
@@ -174,34 +170,11 @@ public class TeamController extends HttpServlet {
 	
 	private void teamBoard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Team team = (Team) request.getSession().getAttribute("team");
-		Member member = (Member) request.getSession().getAttribute("authentication");
-		String userId = member.getUserId();
 		Long nowDate = searchNowTime();
-		
-		List<MatchMaster> tmBoards = ts.selectTmBoards(team.getTmCode());
-		List<MatchMaster> mcBoards = ts.selectMcBoards(team.getTmCode());
-		List<MatchMaster> appliBoards = ts.selectTmApplications(team.getTmCode());
-
-		for (int i = 0; i < tmBoards.size(); i++) {
-			if(checkGameEnd(tmBoards.get(i))) {
-				alarmService.updateAlarmIsEnd(tmBoards.get(i),userId);
-			}
-		}
-		for (int j = 0; j < mcBoards.size(); j++) {
-			if(checkGameEnd(mcBoards.get(j))) {
-				alarmService.updateAlarmIsEnd(mcBoards.get(j),userId);
-			}
-		}
-		for (int k = 0; k < appliBoards.size(); k++) {
-			if(checkGameEnd(appliBoards.get(k))) {
-				alarmService.updateAlarmIsEnd(appliBoards.get(k),userId);
-			}
-		}
-		
 		request.setAttribute("nowDate",nowDate);
-		request.setAttribute("tmBoards", tmBoards);
-		request.setAttribute("mcBoards", mcBoards);
-		request.setAttribute("appliBoards", appliBoards);
+		request.setAttribute("tmBoards", ts.selectTmBoards(team.getTmCode()));
+		request.setAttribute("mcBoards", ts.selectMcBoards(team.getTmCode()));
+		request.setAttribute("appliBoards", ts.selectTmApplications(team.getTmCode()));
 		request.getRequestDispatcher("/team/managing/team-board").forward(request, response);
 	}
 	
@@ -402,42 +375,6 @@ public class TeamController extends HttpServlet {
 		response.setHeader("cache-control", "no-cache, no-store");
 		return response.getWriter();
 	}
-	
-	//알림 주기위한 메소드
-	private boolean checkGameEnd(MatchMaster match) {
-		String alarmDate = match.getMatchDate();
-		int alarmTime = Integer.parseInt(match.getMatchTime().substring(0, 2));
-		
-		int alarmMonth = Integer.parseInt(alarmDate.substring(5, 7));
-		int alarmDay = Integer.parseInt(alarmDate.substring(8, 10));
-		
-		String today = getToday();
-		String day = today.substring(0,10);
-		int time =  Integer.parseInt(today.substring(11,13));
-		int nowMonth = Integer.parseInt(day.substring(5, 7));
-		int nowDate = Integer.parseInt(day.substring(8, 10));
-		
-		if(alarmDate.equals(day)) {
-				if(alarmTime <= time) {
-					return true;
-				}
-		}else if(alarmMonth < nowMonth) {
-			return true;
-		}else if(alarmMonth == nowMonth) {
-			if(alarmDay < nowDate) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	//오늘 날짜와 시간 가져오는 메소드
-		private String getToday() {
-			LocalDateTime today = LocalDateTime.now();
-			DateTimeFormatter Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-			String todayTime = today.format(Formatter);
-			return todayTime;
-		}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

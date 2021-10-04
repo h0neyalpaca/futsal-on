@@ -31,7 +31,7 @@
 							<div class="match-box use-myteam">
 								<div class="tit-area">
 									<div class="tit-info">
-										<div class="state ${tmBoards.state eq 0?'recruiting':'end'}">${tmBoards.state eq 0?'모집중':'모집완료'}</div>
+										<div class="state ${tmBoards.state eq 0 and tmBoards.matchSchedule-100 ge nowDate?'recruiting':'end'}">${tmBoards.state eq 0 and tmBoards.matchSchedule-100 ge nowDate?'모집중':'모집완료'}</div>
 										<div class="tit">
 											<strong>${tmBoards.title}</strong>
 												별점 
@@ -101,7 +101,7 @@
 							<div class="match-box use-myteam">
 								<div class="tit-area">
 									<div class="tit-info">
-										<div class="state ${mcBoards.state eq 0?'recruiting':'end'}">${mcBoards.state eq 0?'모집중':'모집완료'}</div>
+										<div class="state ${mcBoards.state eq 0 and mcBoards.matchSchedule-100 ge nowDate?'recruiting':'end'}">${mcBoards.state eq 0 and mcBoards.matchSchedule-100 ge nowDate?'모집중':'모집완료'}</div>
 										<div class="tit">
 											<strong>${mcBoards.title}</strong>
 												별점 
@@ -156,6 +156,7 @@
 										<li><span class="tit">매치방식</span>${mcBoards.tmMatch}:${mcBoards.tmMatch}</li>
 										<li><span class="tit">실력</span>${mcBoards.grade eq 'high'?'상':mcBoards.grade eq 'middle'?'중':'하'}</li>
 										<li><span class="tit">구장비</span>${mcBoards.expense}원</li>
+										<li><span class="tit">모집인원</span>${mcBoards.matchNum}명 남음</li>
 									</ul>
 									<div class="txt">${mcBoards.content}</div>
 								</div>
@@ -171,7 +172,7 @@
 							<div class="match-box use-myteam">
 								<div class="tit-area">
 									<div class="tit-info">
-										<div class="state ${appliBoards.state eq 0?'recruiting':'end'}">${appliBoards.state eq 0?'모집중':'모집완료'}</div>
+										<div class="state ${appliBoards.state eq 0 and appliBoards.matchSchedule-100 ge nowDate?'recruiting':'end'}">${appliBoards.state eq 0 and appliBoards.matchSchedule-100 ge nowDate?'모집중':'모집완료'}</div>
 										<div class="tit">
 											<strong>${appliBoards.title}</strong>
 												별점 
