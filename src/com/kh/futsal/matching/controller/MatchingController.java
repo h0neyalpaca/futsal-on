@@ -87,7 +87,7 @@ public class MatchingController extends HttpServlet {
 		case "mercenary-modify":
 			modify(request,response);
 			break;
-
+			
 
 		default:
 		}
@@ -248,9 +248,17 @@ public class MatchingController extends HttpServlet {
 			request.setAttribute("msg", "매치글 삭제를 완료하였습니다.");
 			request.setAttribute("url", "/team/managing/team-board");
 			request.getRequestDispatcher("/common/result").forward(request, response);
+		} else if (delAndModify.equals("취소")) {
+			if (res == matchingService.matchCancel(matchIdx,request.getParameter("hostCode"),request.getParameter("rivalCode"))) {
+				//alarmService.deleteAlarm(matchIdx); //유저 아이디 필요
+				request.setAttribute("msg", "오류가 발생하였습니다.");
+				request.setAttribute("url", "/team/managing/team-board");
+				request.getRequestDispatcher("/common/result").forward(request, response);
+			}
+			request.setAttribute("msg", "매치글 취소를 완료하였습니다.");
+			request.setAttribute("url", "/team/managing/team-board");
+			request.getRequestDispatcher("/common/result").forward(request, response);
 		}
-		
-
 		
 	}
 
