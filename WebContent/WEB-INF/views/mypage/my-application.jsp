@@ -24,7 +24,7 @@
 							<div class="tit-info">
 								<c:choose>
 									<c:when test="${match.state == 0}"><div class="state recruiting">모집중</div></c:when>
-									<c:when test="${match.state == 1}"><div class="state recruiting" style="background-color: gray;">게임완료</div></c:when>
+									<c:when test="${match.state == 1}"><div class="state recruiting" style="background-color: gray;">모집완료</div></c:when>
 								</c:choose>
 								<div class="tit">
 									<strong>${match.title}</strong>

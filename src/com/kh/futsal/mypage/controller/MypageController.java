@@ -281,11 +281,13 @@ public class MypageController extends HttpServlet {
 		List<Alarm> alarmsPage = alarmService.selectAlarmListPage(userId , page);
 
 		for (int i = 0; i < alarms.size(); i++) {
-			times.add(checkAlarmState(alarms.get(i)));
+			checkAlarmState(alarms.get(i));
 		}
-		System.out.println("알림 내역 totalNoticeCnt : " + totalNoticeCnt);
-		//System.out.println(alarms);
-		System.out.println(alarmsPage);
+		
+		for (int i = 0; i < alarmsPage.size(); i++) {
+			times.add(checkAlarmState(alarmsPage.get(i)));
+		}
+		
 		
 		request.setAttribute("page", page);
 		request.setAttribute("alarms", alarms);
