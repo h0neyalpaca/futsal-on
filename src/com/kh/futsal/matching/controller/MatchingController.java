@@ -169,6 +169,7 @@ public class MatchingController extends HttpServlet {
 			
 			String matchDate = request.getParameter("date");
 			String matchTime = request.getParameter("time");
+			String userId = request.getParameter("userId");
 			
 			
 			
@@ -189,17 +190,19 @@ public class MatchingController extends HttpServlet {
 				request.getRequestDispatcher("/common/result").forward(request, response);
 				return;
 			}
-			
+			alarmService.deleteAlarm(matchIdx);
+			alarmService.insertAlarm(matchMaster, userId);
 			request.setAttribute("msg", "매치글 수정을 완료하였습니다.");
 			request.setAttribute("url", "/team/managing/team-board");
 			request.getRequestDispatcher("/common/result").forward(request, response);
 		}else if (delAndModify.equals("삭제")) {			
 			if (res == matchingService.matchDel(matchIdx)) {
-				alarmService.deleteAlarm(matchIdx);
 				request.setAttribute("msg", "오류가 발생하였습니다.");
 				request.setAttribute("url", "/team/managing/team-board");
 				request.getRequestDispatcher("/common/result").forward(request, response);
+				return;
 			}
+			alarmService.deleteAlarm(matchIdx);
 			request.setAttribute("msg", "매치글 삭제를 완료하였습니다.");
 			request.setAttribute("url", "/team/managing/team-board");
 			request.getRequestDispatcher("/common/result").forward(request, response);

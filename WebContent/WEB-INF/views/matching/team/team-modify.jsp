@@ -81,6 +81,7 @@
 						</div>
 						
 						<div class="submit-wrap">
+							<input type="hidden" name="userId" value="${authentication.userId}">
 							<input type="hidden" name="matchIdx" value="${matchIdx}">
 							<input type="submit" name="modify" value="수정">
 							<input type="submit" id="del" name="modify" value="삭제">
