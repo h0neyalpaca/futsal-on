@@ -22,7 +22,7 @@
 							<th style="width:60%">알림내용</th>
 							<th>날짜</th>
 						</tr>
-						<c:forEach items="${alarms}" var="alarm" varStatus="status">
+						<c:forEach items="${alarmsPage}" var="alarm" varStatus="status">
 							<c:if test="${alarm.isStart == 1}">
 								<tr>
 									<td><c:if test="${alarm.state == 1}">읽음</c:if><c:if test="${alarm.state == 0}">안읽음</c:if></td>

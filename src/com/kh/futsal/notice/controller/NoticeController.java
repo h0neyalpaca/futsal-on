@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.kh.futsal.common.code.member.MemberGrade;
 import com.kh.futsal.common.pagination.PageInfo;
 import com.kh.futsal.common.pagination.Pagination;
 import com.kh.futsal.member.model.dto.Member;
@@ -56,6 +57,17 @@ public class NoticeController extends HttpServlet {
 	
 	private void noticeForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//notice 작성이 가능한 등급은? 관리자
+		Member member = (Member) request.getSession().getAttribute("authentication");
+		MemberGrade adminGrade = MemberGrade.valueOf(member.getGrade());
+		
+		if(adminGrade.ROLE.equals("admin")) {
+			 //noticeDetail = noticeService.selectAllSupportList();
+		}else {
+			String userId = member.getUserId();
+			//supportList = noticeService.selectSupportList(userId, page);
+		}
+		
+		
 		request.getRequestDispatcher("/notice/notice-form").forward(request, response);
 		
 		
