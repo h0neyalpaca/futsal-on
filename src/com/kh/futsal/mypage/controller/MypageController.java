@@ -217,6 +217,7 @@ public class MypageController extends HttpServlet {
 			
 			if(checkGameEnd(matchList.get(i))) {
 				alarmService.updateAlarmIsEnd(matchList.get(i),userId);
+				matchList.get(i).setState(2);
 			}
 		}
 		
@@ -247,7 +248,7 @@ public class MypageController extends HttpServlet {
 		int nowDate = Integer.parseInt(day.substring(8, 10));
 		
 		if(alarmDate.equals(day)) {
-			if(alarmTime <= time) {
+			if(alarmTime < time) {
 					return true;
 			}
 		}else if(alarmMonth < nowMonth) {
