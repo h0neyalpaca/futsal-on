@@ -118,13 +118,47 @@ public class AlarmDao {
 		}
 		
 	}
-	public List<Alarm> selectAlarmList (String userId,PageInfo page, Connection conn){
+	
+	public List<Alarm> selectAlarmList (String userId, Connection conn){
+			
+			String sql = "select * from notice where user_id = ?";
+			
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			List<Alarm> alarms = new ArrayList<Alarm>();
+			try {
+				pstm = conn.prepareStatement(sql);
+				pstm.setString(1, userId);
+				rset = pstm.executeQuery();
+				
+				while(rset.next()) {
+					Alarm alarm = new Alarm();
+					alarm.setContent(rset.getString("content"));
+					alarm.setNtDate(rset.getString("nt_date"));
+					alarm.setIsStart(rset.getInt("is_start"));
+					alarm.setMatchTime(rset.getString("match_time"));
+					alarm.setMmIdx(rset.getString("mm_idx"));
+					alarm.setNtIdx(rset.getString("nt_idx"));
+					alarm.setState(rset.getInt("state"));
+					alarm.setUserId(rset.getString("user_id"));
+					alarms.add(alarm);
+				}
+			} catch (SQLException e) {
+				throw new DataAccessException(e);
+			}finally {
+				template.close(rset, pstm);
+			}
+			return alarms;
+		}
+
+	//페이징용
+	public List<Alarm> selectAlarmListPage (String userId,PageInfo page, Connection conn){
 		
 		String sql = "select *" + 
 			 	" from (select rownum rnum, notice.* " + 
 			 	" from (select * from notice" + 
-			 	" order by NT_date desc, is_start desc) notice" + 
-			 	" where user_id = ? )" + 
+			 	" order by NT_date desc) notice" + 
+			 	" where user_id = ? and is_start = '1' )" + 
 			 	" where rnum between ? and ?";
 		
 		PreparedStatement pstm = null;

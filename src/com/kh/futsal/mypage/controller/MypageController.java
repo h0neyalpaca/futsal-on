@@ -276,15 +276,20 @@ public class MypageController extends HttpServlet {
 		curPage =  Integer.parseInt(pageNum);
 		
 		PageInfo page = Pagination.getPageInfo(curPage, totalNoticeCnt);
+		List<Alarm> alarms = alarmService.selectNoticetList(userId);
 		
-		List<Alarm> alarms = alarmService.selectNoticetList(userId , page);
+		List<Alarm> alarmsPage = alarmService.selectAlarmListPage(userId , page);
 
 		for (int i = 0; i < alarms.size(); i++) {
 			times.add(checkAlarmState(alarms.get(i)));
 		}
-		System.out.println(alarms);
+		System.out.println("알림 내역 totalNoticeCnt : " + totalNoticeCnt);
+		//System.out.println(alarms);
+		System.out.println(alarmsPage);
+		
 		request.setAttribute("page", page);
 		request.setAttribute("alarms", alarms);
+		request.setAttribute("alarmsPage", alarmsPage);
 		request.setAttribute("times",times);
 		request.getRequestDispatcher("/mypage/personal-notice").forward(request, response);
 	}

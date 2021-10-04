@@ -15,17 +15,30 @@ public class AlarmService {
 	private AlarmDao alarmDao = new AlarmDao();
 	
 	//알람 리스트 가져오기
-	public List<Alarm> selectNoticetList(String userId,  PageInfo page) {
+	public List<Alarm> selectNoticetList(String userId) {
 			
 			Connection conn = template.getConnection();
 			List<Alarm> alarms = null;
 			try {
-				alarms = alarmDao.selectAlarmList(userId, page, conn);
+				alarms = alarmDao.selectAlarmList(userId, conn);
 			} finally {
 				template.close(conn);
 			}
 			return alarms;
 		}
+	
+	//페이징용 알람 리스트
+	public List<Alarm> selectAlarmListPage(String userId,  PageInfo page) {
+		
+		Connection conn = template.getConnection();
+		List<Alarm> alarms = null;
+		try {
+			alarms = alarmDao.selectAlarmListPage(userId, page, conn);
+		} finally {
+			template.close(conn);
+		}
+		return alarms;
+	}
 	
 	//매치 신청시 알람 데이터 추가용(팀 매치 신청이면 userId에 팀장 아이디 )
 	//매치글 작성시도 알람 추가하여 팀장에게 알려주기
