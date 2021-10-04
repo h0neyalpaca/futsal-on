@@ -311,9 +311,13 @@ public class MatchingController extends HttpServlet {
 			System.out.println(matchMaster.getMatchNum()-1);
 			if (0==(matchMaster.getMatchNum()-1)) {
 				matchingService.matchRequset(matchIdx,"end");
+			}else {
+				matchingService.matchRequset(matchIdx,match);
 			}
+		}else {
+			matchingService.matchRequset(matchIdx,match);
 		}
-		matchingService.matchRequset(matchIdx,match);
+		
 		
 		//team에 전적수 추가
 		//신청팀 전적 추가
