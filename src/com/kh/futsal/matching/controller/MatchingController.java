@@ -307,7 +307,12 @@ public class MatchingController extends HttpServlet {
 		if (match.equals("team")) {
 			requsetTeamCode = matchingService.checkRequset(userId);
 			
-			if (requsetTeamCode.equals(tmCode)) {
+			if (requsetTeamCode == null) {
+				request.setAttribute("msg","팀이 없으시면 매치를 신청하실수 없습니다.팀을 들어가시거나 팀을 생성해주세요!");
+				request.setAttribute("url", "/matching/team/team-list");
+				request.getRequestDispatcher("/common/result").forward(request, response);
+				return;
+			}else if (requsetTeamCode.equals(tmCode)) {
 				response.sendRedirect("matching/team/team-list?err=1");
 				return;
 			}
@@ -385,7 +390,7 @@ public class MatchingController extends HttpServlet {
 	}
 
 
-	private boolean matchTimeCheck(String matchDate,String matchTime) {
+	public boolean matchTimeCheck(String matchDate,String matchTime) {
 		LocalDate dateNow = LocalDate.now();
 		LocalTime timeNow = LocalTime.now();
 
@@ -452,9 +457,13 @@ public class MatchingController extends HttpServlet {
 		
 		if (match.equals("NULL")) {
 			request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
+			return;
 		}else if(match.equals("NOT NULL")) {
 			request.getRequestDispatcher("/matching/mercenary/mercenary-list").forward(request, response);
+			return;
 		}
+		
+		request.getRequestDispatcher("/index").forward(request, response);
 		
 	}
 
@@ -593,7 +602,6 @@ public class MatchingController extends HttpServlet {
 		
 		request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
 	}
-
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub

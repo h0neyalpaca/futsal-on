@@ -58,7 +58,9 @@
 							</dd>
 						</dl>
 						<input type="hidden" name="match" value="team">
+						<input type="hidden" name="page" value="team">
 						<input type="submit" value="검색">
+						
 					</form>
 				</div>
 				<!-- End search wrap -->

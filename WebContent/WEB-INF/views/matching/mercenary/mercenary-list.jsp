@@ -56,7 +56,9 @@
 							</dd>
 						</dl>
 						<input type="hidden" name="match" value="mercenary">
+						<input type="hidden" name="page" value="mercenary">
 						<input type="submit" value="검색">
+		
 					</form>
 				</div> <!-- End search wrap -->
 				<!-- <h2>새로 모집중인 매치</h2> -->

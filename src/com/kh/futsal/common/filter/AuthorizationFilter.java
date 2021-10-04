@@ -128,6 +128,9 @@ public class AuthorizationFilter implements Filter {
 		case "team-list":
 			break;
 		default:
+			if (httpRequest.getSession().getAttribute("authentication") == null) {
+				throw new HandlableException(ErrorCode.REDIRECT_LOGIN_PAGE_NO_MESSAGE);
+			}
 			matchingOnlyLeaderAuthorize(httpRequest, httpResponse, uriArr);
 			break;
 		}
