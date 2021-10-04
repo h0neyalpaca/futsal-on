@@ -271,13 +271,14 @@ public class MatchDao {
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		
-		String query = "select *"
-					+ " from"
-					+ " (select rownum rnum, mm_idx, mg_idx, user_id"
-					+ " from match_game "
-					+ " where user_id = ?"
-					+ " order by state)"
-					+ " where rnum between ? and ?";
+		String query = "select * from" + 
+				"(select mm_idx, mg_idx, user_id,ROWNUM rnum" + 
+				" from" + 
+				" (select mm_idx, mg_idx, user_id" + 
+				" from match_game" + 
+				" where user_id = ? " + 
+				" order by state,MATCH_DATE desc))"
+				+ " where rnum between ? and ?";
 
 		try {
 			pstm = conn.prepareStatement(query);

@@ -107,7 +107,7 @@ public class MatchingService {
 		
 		try {
 			mgList = matchDao.matchGameList(userId, page, conn);
-			
+			System.out.println(mgList);
 		} finally {
 			template.close(conn);
 		}
