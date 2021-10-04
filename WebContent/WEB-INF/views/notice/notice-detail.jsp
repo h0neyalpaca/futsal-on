@@ -31,7 +31,7 @@
 					</div>
 					<div class="article-container">
 						<div class="article-inner">
-							<p>${noticeDetail.nwContent}</p>
+							<pre>${noticeDetail.nwContent}</pre>
 						</div>
 					</div>
 					<div class="notice-list-button">

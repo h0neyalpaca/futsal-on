@@ -62,7 +62,7 @@
 										<div class="board-list">
 											<div class="inner-list top-notice-list">
 
-												<a href="/notice/notice-detail?noticeNo=${mainNotice.nwIdx}">${mainNotice.nwTitle}</a>
+												<a href="/notice/notice-detail?curPage=${page.curPage}&noticeNo=${mainNotice.nwIdx}">${mainNotice.nwTitle}</a>
 
 											</div>
 										</div>
