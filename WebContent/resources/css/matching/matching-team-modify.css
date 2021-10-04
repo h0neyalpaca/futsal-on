@@ -79,9 +79,10 @@
 	border: 1px solid var(--color-gray);
 }
 
-.new-match-wrap input[type="submit"] {
+.new-match-wrap input[type="submit"]{
 	margin-top: 30px;
 }
+
 
 .textarea-wrap {
 	border: 1px solid var(--color-gray);
@@ -149,6 +150,18 @@ textarea:focus {
 	cursor:pointer;
 	width: 48%;
 }
+
+.new-match-wrap input[type="button"]{
+	font-weight:bold;
+	padding:16px 25px;
+	background: linear-gradient(45deg, #000, #1c1350, #000);
+	color:#ffffff;
+	border-radius:5px;
+	border:none;
+	cursor:pointer;
+	width: 48%;
+}
+
 
 .submit-wrap {
 	display: flex;

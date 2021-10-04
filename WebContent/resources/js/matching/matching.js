@@ -1,4 +1,5 @@
 let formCheck = () => {
+
 	
 	let localCode = document.getElementsByName('localCode');
 	

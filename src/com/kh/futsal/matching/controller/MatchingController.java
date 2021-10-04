@@ -558,13 +558,15 @@ public class MatchingController extends HttpServlet {
 			request.getRequestDispatcher("/common/result").forward(request, response);
 		}
 		//가져온 정보를 뿌려준다
+		System.out.println("matchNum값이 null일때 출력 : " + matchModify.getMatchNum());
 		
-		if (matchModify.getMatchNum() != null) {
+		if (matchModify.getMatchNum() != 0) {
 			request.setAttribute("matchIdx", matchIdx);
 			request.setAttribute("matchModify", matchModify);
 			request.getRequestDispatcher("/matching/mercenary/mercenary-modify").forward(request, response);
 			
 		}else {
+			
 			request.setAttribute("matchIdx", matchIdx);
 			request.setAttribute("matchModify", matchModify);
 			request.getRequestDispatcher("/matching/team/team-modify").forward(request, response);

@@ -19,7 +19,7 @@
 					</div>
 				</div>
 				<div class="search-wrap">									
-					<form onsubmit="return formCheck();" action="/matching/team/team-modify-register" method="post">
+					<form onsubmit="return formCheck();"action="/matching/team/team-modify-register" method="post">
 						<dl>
 							<dt>경기지역</dt>
 							<dd class="matchRegion">
@@ -83,8 +83,10 @@
 						<div class="submit-wrap">
 							<input type="hidden" name="userId" value="${authentication.userId}">
 							<input type="hidden" name="matchIdx" value="${matchIdx}">
-							<input type="submit" name="modify" value="수정">
-							<input type="submit" id="del" name="modify" value="삭제">
+							<input type="submit" id="modi" name="modify" value="수정" onclick="return modi()">
+							
+							<input type="submit" id="del" name="modify" value="삭제" onclick="return cancel()">
+							
 						</div>
 					</form>
 				</div> 
@@ -98,14 +100,25 @@
 <script type="text/javascript" src="/resources/js/matching/matching.js"></script>
 </body>
 <script type="text/javascript">
+let cancel = () => {
+	if (window.confirm("정말로 삭제 하시겠습니까?")) {
+		location.href="/matching/team/team-modify-register?matchIdx=${matchIdx}&modify=삭제";
+	}else{
+		return false;
+	}
+}
+
+let modi = () => {
+	if (window.confirm("수정 하시겠습니까?")) {
+		return true;
+	}else{
+		return false;
+	}
+}
+</script>
+<script type="text/javascript">
 (() => {
-	document.querySelector('#del').addEventListener('click',e=>{
-		if (window.confirm("정말로 삭제 하시겠습니까?")) {
-			
-			location.href="/matching/team/team-modify-register?matchIdx=${matchIdx}&modify=삭제";
-		}
-	})
-	
+
 	let region = document.getElementsByName('localCode');
 	let checkLocal = '${matchModify.getLocalCode()}';
 	
