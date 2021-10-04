@@ -186,7 +186,7 @@ public class SupportDao {
 	}
 
 	public List<Support> selectAllSupportList(Connection conn) {
-		String sql = "select * from board ";
+		String sql = "select * from board order by is_answer,reg_date desc";
 		
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
