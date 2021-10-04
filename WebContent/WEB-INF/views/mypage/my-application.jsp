@@ -76,7 +76,7 @@
 										</span>
 									</div>
 								<c:choose>
-									<c:when test="${match.state == 0}"><div class="btn-appli" onclick="location.href='/mypage/my-application-delete?mgIdx=${datas.mgList[status.index].mgIdx}';">신청취소</div></c:when>
+									<c:when test="${match.state == 0 || match.state == 1}"><div class="btn-appli" onclick="location.href='/mypage/my-application-delete?mgIdx=${datas.mgList[status.index].mgIdx}';">신청취소</div></c:when>
 									<c:when test="${match.state == 2}"><div  class="btn-appli">게임 종료</div></c:when>
 								</c:choose>
 							</div>
