@@ -691,7 +691,9 @@ public class MatchDao {
 				+ " left outer join team"
 				+ " on MATCH_MASTER.TM_CODE = team.TM_CODE"
 				+ " where MATCH_NUM IS "+match
-				+ " order by MM_IDX DESC";
+				+ " order by decode(state,0,1),mm_idx desc"; 
+		
+		//select * from match_master order by decode(state,0,1),mm_idx desc; 
 		
 		if (match.equals("NOT NULL")) {
 			query = "select "
@@ -705,7 +707,7 @@ public class MatchDao {
 					+ " left outer join team"
 					+ " on MATCH_MASTER.TM_CODE = team.TM_CODE"
 					+ " where MATCH_NUM IS "+match
-					+ " order by MM_IDX DESC";
+					+ " order by decode(state,0,1),mm_idx desc"; 
 			}
 		
 		try {

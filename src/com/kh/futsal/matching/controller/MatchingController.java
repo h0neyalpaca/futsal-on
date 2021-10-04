@@ -3,6 +3,7 @@ package com.kh.futsal.matching.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -98,16 +99,24 @@ public class MatchingController extends HttpServlet {
 		String match = request.getParameter("match");
 		
 		if (match.equals("team")) {
-			matchList = matchingService.matchListView(); 	
+			matchList = matchingService.matchListView(); 
+			
 		}else if (match.equals("mercenary")) {
 			matchList = matchingService.mercenaryListView();
 		}
+		
 		for (MatchMaster matchMaster : matchList) {
+			matchMaster.setCheckMatchTime(matchTimeCheck(matchMaster.getMatchDate(),matchMaster.getMatchTime()));
 			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
 		}
-		matchList.sort(Comparator.comparing(MatchMaster::getTmRating,Comparator.reverseOrder()));
 		
-		request.setAttribute("matchList", matchList);
+		//matchList.sort(Comparator.comparing(MatchMaster::getTmRating,Comparator.reverseOrder()));
+		//별점이 db에 있지않기때문에 상태를 기준으로 서로 다른 dto에 담은 다음에 정렬 후 머지한다.
+		List<MatchMaster> sortedList = stateAndRatingSort(matchList);
+		
+		
+		
+		request.setAttribute("matchList", sortedList);
 		
 		if (match.equals("team")) {
 			request.getRequestDispatcher("/matching/team/team-list").forward(request, response);
@@ -118,6 +127,38 @@ public class MatchingController extends HttpServlet {
 		
 	}
 	
+
+	private List stateAndRatingSort(List<MatchMaster> matchList) {
+		List<MatchMaster> firstList = new ArrayList<MatchMaster>();
+		List<MatchMaster> secondList = new ArrayList<MatchMaster>();
+		List<MatchMaster> res = new ArrayList<MatchMaster>();
+		
+		for (MatchMaster matchMaster : matchList) {
+			if (matchMaster.getState()==0) {
+				firstList.add(matchMaster);
+			}else {
+				secondList.add(matchMaster);
+			}
+		}
+		
+		for (MatchMaster matchMaster : firstList) {
+			System.out.println(matchMaster);
+		}
+		//별점 순으로 sort
+		firstList.sort(Comparator.comparing(MatchMaster::getTmRating,Comparator.reverseOrder()));
+		secondList.sort(Comparator.comparing(MatchMaster::getTmRating,Comparator.reverseOrder()));
+		
+		//병합
+		res.addAll(firstList);
+		res.addAll(secondList);
+		
+		
+		
+		//리턴
+		return res;
+		
+	}
+
 
 	private void SearchRecent(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		String match = request.getParameter("match");
@@ -133,6 +174,7 @@ public class MatchingController extends HttpServlet {
 		List<MatchMaster> matchList = matchingService.RecentView(match);
 		
 		for (MatchMaster matchMaster : matchList) {
+			matchMaster.setCheckMatchTime(matchTimeCheck(matchMaster.getMatchDate(),matchMaster.getMatchTime()));
 			matchMaster.setTmRating(teamService.selectTmAvgRating(matchMaster.getTmCode()));
 		}
 		request.setAttribute("matchList", matchList);
