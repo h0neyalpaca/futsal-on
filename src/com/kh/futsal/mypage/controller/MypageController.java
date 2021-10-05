@@ -322,7 +322,7 @@ public class MypageController extends HttpServlet {
 			}
 		}else {
 			if(alarm.getContent().contains("종료")) {
-				return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
+				return (alarmTime+1)+":"+ alarm.getMatchTime().substring(3);
 			}
 		}
 		return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);
@@ -349,7 +349,7 @@ public class MypageController extends HttpServlet {
 			alarmService.updateAlarmIsStart(alarm.getNtIdx(),alarm);
 		}else {
 			if(alarm.getContent().contains("종료")) {
-				return (alarmTime+2)+":"+ alarm.getMatchTime().substring(3);
+				return (alarmTime+1)+":"+ alarm.getMatchTime().substring(3);
 			}
 		}
 		return (alarmTime-4)+":"+ alarm.getMatchTime().substring(3);

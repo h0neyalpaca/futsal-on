@@ -92,7 +92,11 @@
 							</ul>
 							<ul>
 								<li><span class="tit">매치방식</span>${match.tmMatch}:${match.tmMatch}</li>
-								<li><span class="tit">실력</span>${match.grade}</li>
+								<li><span class="tit">실력</span><c:choose>
+								<c:when test="${match.grade == 'high'}">상</c:when>
+								<c:when test="${match.grade == 'middle'}">중</c:when>
+								<c:when test="${match.grade == 'low'}">하</c:when>
+								</c:choose></li>
 								<li><span class="tit">용병비</span>${match.expense}</li>
 							</ul>
 							<div class="txt">${match.content}</div>
