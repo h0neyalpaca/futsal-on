@@ -615,9 +615,12 @@ public class MatchDao {
 			pstm.setInt(7, matchMaster.getTmMatch());
 			pstm.setString(8, matchMaster.getMatchTime());
 			pstm.setString(9, matchMaster.getMatchDate());
-			pstm.setString(11, matchMaster.getMmIdx());
+			
 			if (match.equals("mercenary")) {
+				pstm.setString(11, matchMaster.getMmIdx());
 				pstm.setInt(10, matchMaster.getMatchNum());
+			}else {
+				pstm.setString(10, matchMaster.getMmIdx());
 			}
 			
 			res = pstm.executeUpdate();

@@ -249,6 +249,25 @@ public class AlarmDao {
 		return res;
 	}
 
+	public void regAlarm(MatchMaster matchMaster, String userId, Connection conn) {
+		PreparedStatement pstm = null;
+		String query = "insert into notice values(sc_nt_idx.nextval ,0,?,?,?,?,0,SC_MM_IDX.currval) ";
+		try {
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, matchMaster.getMatchDate());
+			pstm.setString(2, "["+ matchMaster.getTitle()+"]가 4시간 후에 시작됩니다");
+			pstm.setString(3, userId);
+			pstm.setString(4, matchMaster.getMatchTime());
+			
+
+			pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		} finally {
+			template.close(pstm);
+		}
+	}
+
 	
 	
 }

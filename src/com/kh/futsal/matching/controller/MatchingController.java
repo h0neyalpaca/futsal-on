@@ -222,7 +222,11 @@ public class MatchingController extends HttpServlet {
 			matchMaster.setExpense(expense);
 			matchMaster.setGrade(grade);
 			matchMaster.setTmMatch(size);
-			matchMaster.setTitle(detailAddress+" 용병 구합니다!");
+			if (match.equals("team")) {
+				matchMaster.setTitle(detailAddress+" 매치 상대 구합니다!");
+			}else if(match.equals("mercenary")) {
+				matchMaster.setTitle(detailAddress+" 용병 구해요!");
+			}
 			matchMaster.setMatchTime(matchTime);
 			matchMaster.setMatchDate(matchDate);
 			matchMaster.setContent(content);
@@ -520,6 +524,10 @@ public class MatchingController extends HttpServlet {
 		matchMaster.setContent(content);
 		
 		matchingService.matchRegister(matchMaster,match);
+		
+
+		
+		alarmService.regAlarm(matchMaster, userId);
 		if (match.equals("team")) {
 			request.setAttribute("msg", "매치글 작성이 완료되었습니다.");
 			request.setAttribute("url", "/matching/team/team-list");

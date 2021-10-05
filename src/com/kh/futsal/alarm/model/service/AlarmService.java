@@ -129,6 +129,16 @@ public class AlarmService {
 		return res;
 	}
 
+	public void regAlarm(MatchMaster matchMaster, String userId) {
+		Connection conn = template.getConnection();
+		try {
+			alarmDao.regAlarm(matchMaster,userId,conn);
+			template.commit(conn);
+		}finally {
+			template.close(conn);
+		}
+	}
+
 	
 
 }
