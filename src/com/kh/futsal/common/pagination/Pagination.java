@@ -8,13 +8,13 @@ public class Pagination {
 		
 		PageInfo pageInfo = null;
 		
-		int pageSize = 2; //한 번에 표시할 페이지 수
+		int pageSize = 4; //한 번에 표시할 페이지 수
 		int startPage = 0; //현재 페이지의 시작 번호
 		int endPage = 0; //현제 페이지의 마지막 번호
 		int totalPage = 0; //페이지 총 갯수
 		int startNo = 0;
 		int endNo = 0;
-		int boardSize = 2; //페이지당 게시물 수 
+		int boardSize = 3; //페이지당 게시물 수 
 		 
 		//totalPage 페이지 총 갯수
 		if(totalNoticeCnt % boardSize > 0) {
