@@ -222,7 +222,7 @@ public class MatchingController extends HttpServlet {
 			matchMaster.setExpense(expense);
 			matchMaster.setGrade(grade);
 			matchMaster.setTmMatch(size);
-			matchMaster.setTitle(detailAddress+" 매치 상대 구합니다!");
+			matchMaster.setTitle(detailAddress+" 용병 구합니다!");
 			matchMaster.setMatchTime(matchTime);
 			matchMaster.setMatchDate(matchDate);
 			matchMaster.setContent(content);
@@ -254,6 +254,7 @@ public class MatchingController extends HttpServlet {
 				request.setAttribute("msg", "오류가 발생하였습니다.");
 				request.setAttribute("url", "/team/managing/team-board");
 				request.getRequestDispatcher("/common/result").forward(request, response);
+				return;
 			}
 			request.setAttribute("msg", "매치글 취소를 완료하였습니다.");
 			request.setAttribute("url", "/team/managing/team-board");

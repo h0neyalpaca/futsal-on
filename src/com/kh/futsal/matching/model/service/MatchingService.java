@@ -241,6 +241,7 @@ public class MatchingService {
 		int res = 0;
 		try {
 			//매치글쓰기
+			
 			res = matchDao.matchModify(matchMaster,match, conn);
 			//방금 가입한 회원의 아이디로 정보를 다시 조회			
 			
@@ -260,6 +261,7 @@ public class MatchingService {
 		int res = 0;
 		try {
 			//매치글 삭제
+			matchDao.deleteMatchGame(matchIdx,conn);
 			res = matchDao.matchDel(matchIdx, conn);
 					
 			
