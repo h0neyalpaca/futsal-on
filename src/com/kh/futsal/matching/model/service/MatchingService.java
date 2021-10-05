@@ -261,7 +261,7 @@ public class MatchingService {
 		int res = 0;
 		try {
 			//매치글 삭제
-			matchDao.deleteMatchGame(matchIdx,conn);
+			matchDao.delMatchGame(matchIdx,conn);
 			res = matchDao.matchDel(matchIdx, conn);
 					
 			

@@ -230,6 +230,7 @@ public class MatchingController extends HttpServlet {
 			matchMaster.setMatchTime(matchTime);
 			matchMaster.setMatchDate(matchDate);
 			matchMaster.setContent(content);
+		
 			if (res == matchingService.matchModify(matchMaster,match)) {
 				request.setAttribute("msg", "오류가 발생하였습니다.");
 				request.setAttribute("url", "/team/managing/team-board");

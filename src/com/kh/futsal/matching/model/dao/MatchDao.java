@@ -375,6 +375,26 @@ public class MatchDao {
 		}
 		
 	}	
+public void delMatchGame(String mmIdx, Connection conn) {
+		
+		String sql = "delete from match_game where mm_idx = ? ";
+		
+		PreparedStatement pstm = null;
+		
+		try {
+			pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1, mmIdx);
+			
+			pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}finally {
+			template.close(pstm);
+		}
+		
+	}	
 	
 	
 	public MatchGame selectMatch(String mgIdx, Connection conn) {
